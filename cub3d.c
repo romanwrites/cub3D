@@ -6,7 +6,7 @@
 /*   By: mkristie <kukinpower@ya.ru>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/21 23:01:03 by mkristie          #+#    #+#             */
-/*   Updated: 2020/08/02 11:34:53 by mkristie         ###   ########.fr       */
+/*   Updated: 2020/08/03 18:25:45 by mkristie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int			main(void)
 	void	*mlx_win;
 
 	mlx = mlx_init();
-	mlx_win = mlx_new_window(mlx, 1920, 1080, "Hello world!");
+	mlx_win = mlx_new_window(mlx, 1920, 1080, "mkristie");
 	mlx_loop(mlx);
 	return (0);
 }
