@@ -3,8 +3,6 @@ NAME = cub3D
 FLAGS = -Wall -Wextra -Werror
 CC = gcc
 
-HEADERS = -I./mlx -I.
-
 NORM = norminette *.c *.h
 
 SRC =	cub3d.c \
@@ -13,24 +11,19 @@ SRC =	cub3d.c \
 
 OBJ =	$(SRC:.c=.o)
 
-D_FILES = $(patsubst %.o, %.d, $(OBJ))
+#D_FILES = $(patsubst %.o, %.d, $(OBJ))
+#include $(wildcard $(D_FILES))
 
-include $(wildcard $(D_FILES))
-
-# assuming that you have the mlx source in a directory named mlx in the root of your project:
 %.o: %.c
 	$(CC) $(FLAGS) -Imlx -c $< -o $@
 
 all: $(NAME)
 
-# To link with the required internal MacOS API’s:
 $(NAME):	$(OBJ)
-			$(CC) $(FLAGS) -I ./mlx cub3d.c -L. -lmlx -framework OpenGL -framework AppKit -o $(NAME)
-			@echo "cub3D\n"
+			$(CC) $(FLAGS) -I ./mlx $(SRC) -L. -lmlx -framework OpenGL -framework AppKit -o $(NAME)
+#			@echo Compiling $(CLION_EXE_DIR)/$@ ...
 
-# Do mind that you need the libmlx.dylib in the same directory as your build target as it is a dynamic library!
-
-.PHONY: mlx, clean_mlx, norm, fclean, clean, re, all
+.PHONY: mlx clean_mlx norm fclean clean re all
 
 mlxclean:
 		@cd mlx && make clean
@@ -48,6 +41,7 @@ norm:
 clean:	#mlxclean
 		rm -f $(OBJ)
 		rm -f *.d
+		rm -f cub3D
 
 fclean:
 		@rm -f libmlx.dylib
