@@ -8,6 +8,11 @@ NORM = norminette *.c *.h
 SRC =	cub3d.c \
 		trgb_colors.c \
 		trgb_colors_operations.c \
+		parser.c \
+		drawings.c \
+		exit_program.c \
+		get_next_line/get_next_line.c \
+		get_next_line/get_next_line_utils.c \
 
 OBJ =	$(SRC:.c=.o)
 
