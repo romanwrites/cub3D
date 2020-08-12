@@ -17,7 +17,7 @@
 #include <math.h>
 #include <fcntl.h>
 #include "get_next_line.h"
-
+#include "libft.h"
 
 
 
@@ -42,54 +42,133 @@
 # define ERR_ARG_SAVE -4
 # define ERR_READ_MAP -6
 # define ERR_MAP_VALIDITY -7
+# define ERR_MAP_R -8
+# define ERR_MAP_BAD_ARG -9
+# define ERR_MAP_T -10
+# define ERR_BAD_MAP -11
+# define ERR_MAP_C -12
+# define ERR_MAP_OPEN -13
+
 
 
 /* structs */
-//двусвязный
-//#ifdef t_list
-//#undef s_list
-//#endif
 
-#define s_list s_list
-#include "libft.h"
-#undef s_list
-#define s_smthing
-
-typedef struct		s_list
-{
-	void			*content;
-	size_t			len;
-	struct s_list	*next;
-	struct s_list	*previous;
-}					t_list;
 //#include "libft.h"
+typedef float    GLfloat;
+
+typedef struct	mlx_img_list_s
+{
+	int			width;
+	int			height;
+	char			*buffer;
+	GLfloat		vertexes[8];
+	struct mlx_img_list_s	*next;
+} mlx_img_list_t;
 
 typedef struct	s_data {
-	void	*img;
-	char	*addr;
-	int		bits_per_pixel;
-	int		line_length;
-	int		endian;
+	void		*img;
+	unsigned char		*addr;
+	int			bits_per_pixel;
+	int			line_length;
+	int			endian;
 }				t_data;
 
-typedef struct  s_game {
-	void        *mlx;
-	void        *win;
-	t_data 		img;
-}               t_game;
+typedef struct	s_conf {
+	int			res_w;
+	int			res_h;
+	char		*no_path;
+	char		*so_path;
+	char		*we_path;
+	char		*ea_path;
+	char		*s_path;
+	int			floor_color[3];
+	int			ceiling_color[3];
+	char		player_direction;
+	char 		*map_array;
+	int			map_w;
+	int			map_h;
+}				t_conf;
+
+typedef struct s_keys {
+	unsigned int	w;
+	unsigned int	s;
+	unsigned int	a;
+	unsigned int	d;
+	unsigned int	arrow_left;
+	unsigned int	arrow_right;
+}				t_keys;
+
+
+typedef struct s_player {
+	double			p_x;
+	double			p_y;
+//	double			ppl_x;
+//	double			ppl_y;
+//	double			pdir_x;
+//	double			pdir_y;
+}				t_player;
+
+typedef struct		s_game {
+	void			*mlx;
+	void			*win;
+	t_data 			img;
+	t_conf			map;
+	t_linked_list	*head;
+	t_linked_list	*lst;
+	t_linked_list	*tmp;
+	t_keys			keys;
+}					t_game;
+
 
 
 /* parse */
-//_Bool		parse_map(int ac, char *filename, char *save);
+void			parse_map(t_game *sv);
+//_Bool 		is_valid_map_bit(char c);
+
 _Bool		parse_args(int ac, char *filename, char *save);
-_Bool 		is_valid_map_bit(char c);
-void			read_map(const int fd, t_list **map, t_game *sv);
+void			read_map(const int fd, t_game *sv);
+void			what_is_line_content(const char *str, t_game *sv, _Bool *map_started_flag);
+
+
+
+
 void	ft_put_map_line(char *s); //tmp
+_Bool				ft_all_isprint(const char *s);
+_Bool				ft_all_digits(const char *s);
+_Bool 		is_valid_map_bit(char c);
+
+void			parse_textures(const char *str, t_conf *map);
+_Bool 		texture_paths_filled(t_conf *map);
+
+void			parse_color(const char *str, t_conf *map);
+
+
+
+
+/* draw_map */
+void		draw_map(t_game *sv);
+
+
+
+
+
+/* init */
+
+void		init_game(t_game *sv);
+
+
+
+
+
+/* hooks */
+void 		ft_event(int key, t_game *sv);
+void	ft_put_map_line(char *s);
 
 
 /* exit */
-int				ft_close(int exit_code);
 void			ft_error_close(int error_code);
+int				ft_close(int exit_code, t_game *sv);
+
 
 
 /* colors */
