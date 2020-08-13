@@ -54,23 +54,12 @@
 /* structs */
 
 //#include "libft.h"
-typedef float    GLfloat;
-
-typedef struct	mlx_img_list_s
-{
-	int			width;
-	int			height;
-	char			*buffer;
-	GLfloat		vertexes[8];
-	struct mlx_img_list_s	*next;
-} mlx_img_list_t;
-
 typedef struct	s_data {
-	void		*img;
-	unsigned char		*addr;
-	int			bits_per_pixel;
-	int			line_length;
-	int			endian;
+	void				*img;
+	unsigned int		*addr;
+	int					bits_per_pixel;
+	int					line_length;
+	int					endian;
 }				t_data;
 
 typedef struct	s_conf {
@@ -85,8 +74,9 @@ typedef struct	s_conf {
 	int			ceiling_color[3];
 	char		player_direction;
 	char 		*map_array;
-	int			map_w;
-	int			map_h;
+	int			map_cols;
+	int			map_rows;
+	int 		player_num;
 }				t_conf;
 
 typedef struct s_keys {
@@ -147,7 +137,7 @@ void			parse_color(const char *str, t_conf *map);
 
 /* draw_map */
 void		draw_map(t_game *sv);
-
+void		create_map_array(t_game *sv);
 
 
 

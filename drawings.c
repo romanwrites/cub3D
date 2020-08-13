@@ -15,7 +15,6 @@
 void		my_mlx_pixel_put(t_data *data, int x, int y, unsigned int color)
 {
 	char    *dst;
-
 	dst = data->addr + (y * data->line_length + x * (data->bits_per_pixel / 8)); //data->addr массив пикселей. Массив чаров. по 4. имиках может скинуть формулу
 	*(unsigned int*)dst = color;
 }

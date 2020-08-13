@@ -135,16 +135,16 @@ void			append_to_max_len(t_game *sv)
 //	size_t		max_len;
 
 //	sv->tmp = sv->lst;
-	sv->map.map_w = find_max_len(sv);
+	sv->map.map_cols = find_max_len(sv);
 	sv->tmp = sv->lst;
 	while (sv->tmp->next != NULL)
 	{
-		if (sv->tmp->len < sv->map.map_w)
-			append_spaces(sv->tmp->content, sv, sv->map.map_w);
+		if (sv->tmp->len < sv->map.map_cols)
+			append_spaces(sv->tmp->content, sv, sv->map.map_cols);
 		sv->tmp = sv->tmp->next;
 	}
-	if (sv->tmp->len < sv->map.map_w)
-		append_spaces(sv->tmp->content, sv, sv->map.map_w);
+	if (sv->tmp->len < sv->map.map_cols)
+		append_spaces(sv->tmp->content, sv, sv->map.map_cols);
 }
 
 void			check_horizontal_border(const char *str)
@@ -201,23 +201,23 @@ void			parse_map(t_game *sv)
 	sv->tmp = sv->lst;
 	all_map_bits_are_valid(sv);
 	check_horizontal_border(sv->tmp->content);
-	sv->map.map_h += 1; //count lines: top line
+	sv->map.map_rows += 1; //count lines: top line
 //	printf("bottom: %s\n", sv->tmp->content);
 	sv->tmp = sv->lst;
 	check_horizontal_border(sv->tmp->content);
-	sv->map.map_h += 1; //count lines: bottom line
+	sv->map.map_rows += 1; //count lines: bottom line
 //	printf("top: %s\n", sv->tmp->content);
 	check_vertical_borders(sv);
 	append_to_max_len(sv);
 	sv->tmp = sv->lst->next;
 	while (sv->tmp->next->next != NULL)
 	{
-		sv->map.map_h += 1; //count lines
+		sv->map.map_rows += 1; //count lines
 		check_sign(sv->tmp->content, sv->tmp->previous->content, sv->tmp->next->content, sv);
 //		printf("KEK: %s\n", sv->tmp->previous->content);
 		sv->tmp = sv->tmp->next;
 	}
-	sv->map.map_h += 1;
+	sv->map.map_rows += 1;
 	sv->tmp = sv->lst;
 	convert_spaces_to_ones(sv);
 //	printf("KEK: %s\n", sv->tmp->previous->content);

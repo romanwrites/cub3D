@@ -28,9 +28,10 @@ static void				init_map(t_conf *map)
 	map->ceiling_color[1] = 0;
 	map->ceiling_color[2] = 0;
 	map->player_direction = 0;
-	map->map_w = 0;
-	map->map_h = 0;
+	map->map_cols = 0;
+	map->map_rows = 0;
 	map->map_array = NULL;
+	map->player_num = 0;
 }
 
 static void		init_keys(t_game *sv)
