@@ -79,12 +79,12 @@ void		draw_map(t_game *sv)
 	i = 0;
 	j = 0;
 
-	float player_x = 3.456; // player x position
-	float player_y = 2.345; // player y position
-	float player_a = 1.523; // player view direction
-	const float fov = M_PI/3.; // field of view
+	double player_x = 3.456; // player x position
+	double player_y = 2.345; // player y position
+	double player_a = 1.523; // player view direction
+	const double fov = M_PI/3.; // field of view
 
-	const int rect_w = sv->map.res_h / (map_w * 2);
+	const int rect_w = sv->map.res_w / (map_w * 2);
 	const int rect_h = sv->map.res_h / map_h;
 
 	while (i < map_h)
@@ -107,25 +107,25 @@ void		draw_map(t_game *sv)
 		i++;
 	}
 
-//	for (size_t i=0; i < (sv->map.res_w / 2); i++)
-//	{ // draw the visibility cone AND the "3D" view
-//		float angle = player_a-fov/2 + fov * i / ((float)(sv->map.res_w / 2));
-//		for (float t=0; t<20; t+=.05)
-//		{
-//			float cx = player_x + t * cos(angle);
-//			float cy = player_y + t * sin(angle);
-//
-//			int pix_x = cx * rect_w;
-//			int pix_y = cy * rect_h;
-//			sv->img.addr[pix_x + pix_y * sv->map.res_w] = create_trgb(0, 255, 0, 0); // this draws the visibility cone
-//
-//			if (sv->map.map_array[((int)cx) + ((int)cy) * map_w] != '0')
-//			{ // our ray touches a wall, so draw the vertical column to create an illusion of 3D
-//				size_t column_height = sv->map.res_h / t;
-//				draw_rectangle(sv, sv->map.res_w, sv->map.res_h, sv->map.res_w / 2 + i, sv->map.res_h / 2 - column_height / 2, 1, column_height, create_trgb(0, 255, 255, 0));
-//				break;
-//			}
-//		}
-//	}
+	for (size_t i=0; i < (sv->map.res_w / 2); i++)
+	{ // draw the visibility cone AND the "3D" view
+		double angle = player_a-fov/2 + fov * i / ((double)(sv->map.res_w / 2));
+		for (double t=0; t<20; t+=.05)
+		{
+			double cx = player_x + t * cos(angle);
+			double cy = player_y + t * sin(angle);
+
+			int pix_x = cx * rect_w;
+			int pix_y = cy * rect_h;
+			sv->img.addr[pix_x + pix_y * sv->map.res_w] = create_trgb(0, 255, 0, 0); // this draws the visibility cone
+
+			if (sv->map.map_array[((int)cx) + ((int)cy) * map_w] != '0')
+			{ // our ray touches a wall, so draw the vertical column to create an illusion of 3D
+				size_t column_height = sv->map.res_h / t;
+				draw_rectangle(sv, sv->map.res_w, sv->map.res_h, sv->map.res_w / 2 + i, sv->map.res_h / 2 - column_height / 2, 1, column_height, create_trgb(0, 255, 255, 0));
+				break;
+			}
+		}
+	}
 }
 
