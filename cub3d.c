@@ -36,37 +36,23 @@ int			main(int argc, char **argv)
 	filename[ft_strlen(filename) - 4] = '\0';
 	create_map_array(&sv);
 
-//	printf("map:\n%s\nlen: %zu", sv.map.map_array, ft_strlen(sv.map.map_array));
-	printf("bits_per_pixel: %d, line_length %%d: %d, line_length %%u: %d, endian: %d\n", sv.img.bits_per_pixel, sv.img.line_length, sv.img.line_length, sv.img.endian);
 	sv.mlx = mlx_init();
 	sv.win = mlx_new_window(sv.mlx, sv.map.res_w, sv.map.res_h, filename);
 	sv.img.img = mlx_new_image(sv.mlx, sv.map.res_w, sv.map.res_h);
 	printf("w: %d, h: %d\n", sv.map.res_w,sv.map.res_h);
-	printf("bits_per_pixel: %d, line_length %%d: %d, line_length %%u: %d, endian: %d\n", sv.img.bits_per_pixel, sv.img.line_length, sv.img.line_length, sv.img.endian);
 	sv.img.addr = mlx_get_data_addr(sv.img.img, &sv.img.bits_per_pixel, &sv.img.line_length,
 								 &sv.img.endian);
-	printf("bits_per_pixel: %d, line_length %%d: %d, line_length %%u: %d, endian: %d\n", sv.img.bits_per_pixel, sv.img.line_length, sv.img.line_length, sv.img.endian);
-
-//	mlx_put_image_to_window(sv.mlx, sv.win, sv.img.img, 0, 0);
-
-
-
-//	draw_map(&sv);
-//	mlx_put_image_to_window(sv.mlx, sv.win, sv.img.img, 0, 0);
 
 	printf("bits_per_pixel: %d, line_length %%d: %d, line_length %%u: %d, endian: %d\n", sv.img.bits_per_pixel, sv.img.line_length, sv.img.line_length, sv.img.endian);
 
 
 //	mlx_hook(sv.win, 2, 1L<<0, ft_event, &sv);
 //	printf("bits_per_pixel: %u, line_length: %u\n", vars->img.addr[0], vars->img.addr[1], vars->img.addr[2], vars->img.addr[3]);
-	printf("bits_per_pixel: %d, line_length %%d: %d, line_length %%u: %d, endian: %d\n", sv.img.bits_per_pixel, sv.img.line_length, sv.img.line_length, sv.img.endian);
 //	printf("data.addr: %s\nlen data.addr: %zu\n", sv.img.addr, ft_strlen(sv.img.addr));
 	printf("lines size: %d\n", sv.map.map_rows);
 	printf("player: %d\n", sv.map.player_num);
 
 
-//	mlx_loop_hook(vars.mlx, render_next_frame, YourStruct);
-//	mlx_loop(sv.mlx);
 	mlx_key_hook(sv.win, ft_event, &sv);
 	mlx_hook(sv.win, 17, 1L << 17, ft_close, &sv);
 	mlx_loop(sv.mlx);

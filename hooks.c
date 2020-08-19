@@ -20,6 +20,10 @@ void	ft_put_map_line(char *s)
 	write(1, "|\n", 2);
 }
 
+double incr_a = 0;
+double increase_a_coefficient_12 = 2 * M_PI / 12;
+double incr_xy = 0;
+
 void 		ft_event(int key, t_game *sv) // pass struct
 {
 	unsigned int colours[] = {0, 0, 0, 0};
@@ -31,7 +35,16 @@ void 		ft_event(int key, t_game *sv) // pass struct
 //		colours[1] = 255;
 //		colours[2] = 0;
 //		colours[3] = 0;
-		draw_map(sv);
+
+        sv->player.player_x = 0 + incr_xy; // player x position
+        sv->player.player_y = 0 + incr_xy; // player y position
+        sv->player.player_a = 0;
+        printf("player_a: %f, player_x: %f, player_y: %f\n", sv->player.player_a, sv->player.player_x, sv->player.player_y);
+        incr_a += increase_a_coefficient_12;
+        incr_xy += 1;
+        draw_black_screen(sv, sv->map.res_w, sv->map.res_h, create_trgb(0, 10, 10, 10));
+//		draw_map(sv);
+
 		mlx_put_image_to_window(sv->mlx, sv->win, sv->img.img, 0, 0);
 	}
 	if (key == 14)

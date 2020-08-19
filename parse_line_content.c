@@ -78,6 +78,7 @@ int			find_max_len(t_game *sv)
 			max = sv->tmp->len;
 		sv->tmp = sv->tmp->next;
 	}
+	sv->map.max_len = max;
 	printf("max_len = %d\n", max); //debug print
 	return (max);
 }
@@ -246,6 +247,9 @@ void			what_is_line_content(const char *str, t_game *sv, \
 		parse_map(sv);
 	}
 	else
+	{
 		ft_error_close(ERR_MAP_VALIDITY);
+	}
+
 //	printf("%s\n%d %d\n", str, map->res_w, map->res_h);
 }

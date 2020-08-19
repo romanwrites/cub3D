@@ -77,6 +77,15 @@ typedef struct	s_conf {
 	int			map_cols;
 	int			map_rows;
 	int 		player_num;
+	size_t		max_len;
+	double 		pos_x;
+	double 		pos_y; //x and y start position
+	double 		dir_x;
+	double 		dir_y; //x and y direction vector
+	double		plane_x; //the 2d raycaster version of camera plane
+	double		plane_y;
+	double		time; //time of current frame
+	double		old_time; //time of previous frame
 }				t_conf;
 
 typedef struct s_keys {
@@ -90,12 +99,11 @@ typedef struct s_keys {
 
 
 typedef struct s_player {
-	double			p_x;
-	double			p_y;
-//	double			ppl_x;
-//	double			ppl_y;
-//	double			pdir_x;
-//	double			pdir_y;
+//	double			p_x;
+//	double			p_y;
+	double player_x; // player x position
+	double player_y; // player y position
+	double player_a;
 }				t_player;
 
 typedef struct		s_game {
@@ -107,6 +115,7 @@ typedef struct		s_game {
 	t_linked_list	*lst;
 	t_linked_list	*tmp;
 	t_keys			keys;
+	t_player        player;
 }					t_game;
 
 
@@ -115,20 +124,20 @@ typedef struct		s_game {
 void			parse_map(t_game *sv);
 //_Bool 		is_valid_map_bit(char c);
 
-_Bool		parse_args(int ac, char *filename, char *save);
+_Bool		    parse_args(int ac, char *filename, char *save);
 void			read_map(const int fd, t_game *sv);
 void			what_is_line_content(const char *str, t_game *sv, _Bool *map_started_flag);
 
 
 
 
-void	ft_put_map_line(char *s); //tmp
-_Bool				ft_all_isprint(const char *s);
-_Bool				ft_all_digits(const char *s);
-_Bool 		is_valid_map_bit(char c);
+void			ft_put_map_line(char *s); //tmp
+_Bool			ft_all_isprint(const char *s);
+_Bool			ft_all_digits(const char *s);
+_Bool 		    is_valid_map_bit(char c);
 
 void			parse_textures(const char *str, t_conf *map);
-_Bool 		texture_paths_filled(t_conf *map);
+_Bool 		    texture_paths_filled(t_conf *map);
 
 void			parse_color(const char *str, t_conf *map);
 
@@ -136,23 +145,25 @@ void			parse_color(const char *str, t_conf *map);
 
 
 /* draw_map */
-void		draw_map(t_game *sv);
-void		create_map_array(t_game *sv);
+void			draw_map(t_game *sv); // bad algorithm
+
+void			create_map_array(t_game *sv);
+void			draw_black_screen(t_game *sv, int win_h, int win_w, int color);
 
 
 
 
 /* init */
 
-void		init_game(t_game *sv);
+void			init_game(t_game *sv);
 
 
 
 
 
 /* hooks */
-void 		ft_event(int key, t_game *sv);
-void	ft_put_map_line(char *s);
+void 			ft_event(int key, t_game *sv);
+void			ft_put_map_line(char *s);
 
 
 /* exit */
@@ -162,18 +173,18 @@ int				ft_close(int exit_code, t_game *sv);
 
 
 /* colors */
-unsigned int		create_trgb(unsigned int t, unsigned int r, \
+unsigned int	create_trgb(unsigned int t, unsigned int r, \
 								unsigned int g, unsigned int b);
-unsigned int		get_t(unsigned int trgb);
-unsigned int		get_r(unsigned int trgb);
-unsigned int		get_g(unsigned int trgb);
-unsigned int		get_b(unsigned int trgb);
-unsigned int		add_shade(double distance, unsigned int color);
-unsigned int		get_opposite(unsigned int color);
+unsigned int	get_t(unsigned int trgb);
+unsigned int	get_r(unsigned int trgb);
+unsigned int	get_g(unsigned int trgb);
+unsigned int	get_b(unsigned int trgb);
+unsigned int	add_shade(double distance, unsigned int color);
+unsigned int	get_opposite(unsigned int color);
 
 /* drawings */
-void		my_mlx_pixel_put(t_data *data, int x, int y, unsigned int color);
-void		draw_line_bresenham(int x0, int y0, int x1, int y1, unsigned int *colours, t_data *img);
+void			my_mlx_pixel_put(t_data *data, int x, int y, unsigned int color);
+void			draw_line_bresenham(int x0, int y0, int x1, int y1, unsigned int *colours, t_data *img);
 
 
 #endif

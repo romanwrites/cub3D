@@ -4,12 +4,5 @@
     <mapping directory="$PROJECT_DIR$" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/get_next_line" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/libft" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/others_cub3d/c_codamibo" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/others_cub3d/c_glagan" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/others_cub3d/c_ilaystone" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/others_cub3d/c_markveligod" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/others_cub3d/c_phperrot" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/others_cub3d/c_rcharlie" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/others_cub3d/c_t0mm4rx" vcs="Git" />
   </component>
 </project>

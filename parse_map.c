@@ -28,7 +28,6 @@ static void			check_map_params(t_game *sv)
 
 void			read_map(const int fd, t_game *sv)
 {
-	printf("fd: %d\n", fd); //////debug
 	char			*line;
 	int				bytes_read;
 
