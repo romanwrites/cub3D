@@ -19,13 +19,13 @@ void		my_mlx_pixel_put(t_data *data, int x, int y, unsigned int color)
 	*(unsigned int*)dst = color;
 }
 
-void		draw_line_bresenham(int x0, int y0, int x1, int y1, unsigned int *colours, t_data *img)
+void		draw_line_bresenham(int x0, int y0, int x1, int y1, unsigned int colour, t_data *img)
 {
 	int		delta_x;
 	int		delta_y;
 	int 	delta_x_abs;
 	int 	delta_y_abs;
-	unsigned int 	colour = create_trgb(colours[0], colours[1], colours[2], colours[3]);
+//	unsigned int 	colour = create_trgb(colours[0], colours[1], colours[2], colours[3]);
 	int accretion = 0;
 
 	delta_x = x1 - x0;
