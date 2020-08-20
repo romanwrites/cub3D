@@ -168,14 +168,12 @@ void		create_map_array(t_game *sv)
 	{
 		while (((char *)sv->lst->content)[i])
 		{
-			if (((char *)sv->lst->content)[i] == 'N' || ((char *)sv->lst->content)[i] == 'S' || \
-				((char *)sv->lst->content)[i] == 'W' || ((char *)sv->lst->content)[i] == 'E')
+			sv->map.map_array[j] = ((char *)sv->lst->content)[i];
+			if (sv->map.map_array[j] == 'N' || sv->map.map_array[j] == 'S' || \
+				sv->map.map_array[j] == 'W' || sv->map.map_array[j] == 'E')
 			{
 				set_player_vectors(sv, j, i);
-				sv->map.map_array[j] = '0';
 			}
-			else
-				sv->map.map_array[j] = ((char *)sv->lst->content)[i];
 			i++;
 			j++;
 		}
@@ -183,7 +181,6 @@ void		create_map_array(t_game *sv)
 		sv->lst = sv->lst->next;
 	}
 	sv->map.map_array[j] = '\0';
-	printf("\n\nMAP-------------------------------%s\n\n", sv->map.map_array);
 	set_plane_and_time(sv);
 }
 
