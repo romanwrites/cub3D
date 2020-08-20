@@ -151,6 +151,8 @@ void			create_map_array(t_game *sv);
 void			draw_black_screen(t_game *sv, int win_h, int win_w, int color);
 
 
+void		casting_frame(t_game *sv);
+
 
 
 /* init */
@@ -184,7 +186,7 @@ unsigned int	get_opposite(unsigned int color);
 
 /* drawings */
 void			my_mlx_pixel_put(t_data *data, int x, int y, unsigned int color);
-void			draw_line_bresenham(int x0, int y0, int x1, int y1, unsigned int *colours, t_data *img);
+void		draw_line_bresenham(int x0, int y0, int x1, int y1, unsigned int colour, t_data *img);
 
 
 #endif

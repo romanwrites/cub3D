@@ -43,16 +43,17 @@ void 		ft_event(int key, t_game *sv) // pass struct
         incr_a += increase_a_coefficient_12;
         incr_xy += 1;
         draw_black_screen(sv, sv->map.res_w, sv->map.res_h, create_trgb(0, 10, 10, 10));
-//		draw_map(sv);
+		draw_map(sv);
 
 		mlx_put_image_to_window(sv->mlx, sv->win, sv->img.img, 0, 0);
 	}
 	if (key == 14)
 	{
-		colours[0] = 0;
-		colours[1] = 0;
-		colours[2] = 255;
-		colours[3] = 0;
+		mlx_put_image_to_window(sv->mlx, sv->win, sv->img.img, 0, 0);
+//		colours[0] = 0;
+//		colours[1] = 0;
+//		colours[2] = 255;
+//		colours[3] = 0;
 	}
 	if (key == 53)
 	{

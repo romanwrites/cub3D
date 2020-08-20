@@ -150,7 +150,7 @@ void		casting_frame(t_game *sv)
 		}
 
 		//draw the pixels of the stripe as a vertical line
-//		draw_line_bresenham()
+		draw_line_bresenham(x, drawStart, x, drawEnd, color, &sv->img);
 //		verLine(x, drawStart, drawEnd, color);
 	}
 }
@@ -185,7 +185,6 @@ void		create_map_array(t_game *sv)
 	sv->map.map_array[j] = '\0';
 	printf("\n\nMAP-------------------------------%s\n\n", sv->map.map_array);
 	set_plane_and_time(sv);
-	casting_frame(sv);
 }
 
 void draw_rectangle(t_game *sv, const int img_w, const int img_h, const int x, const int y, const int w, const int h, int color)
