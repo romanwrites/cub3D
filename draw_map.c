@@ -15,38 +15,48 @@
 void		set_player_vectors(t_game *sv, int j, int i)
 {
 	sv->map.player_num = j;
-	sv->map.pos_x = i;
-	sv->map.pos_y = (j - i) / sv->map.max_len;
+	sv->map.pos_x = (double)i + 0.5; // не позволять сдвинуться внутрь стены
+	sv->map.pos_y = (((double)j - i) / sv->map.max_len) + 0.5;
 	if (sv->map.map_array[j] == 'N')
 	{
 		sv->map.dir_x = 0;
 		sv->map.dir_y = -1;
+		sv->map.plane_x = 1;
+		sv->map.plane_y = 0;
 	}
 	else if (sv->map.map_array[j] == 'S')
 	{
 		sv->map.dir_x = 0;
 		sv->map.dir_y = 1;
+		sv->map.plane_x = -1;
+		sv->map.plane_y = 0;
 	}
 	else if (sv->map.map_array[j] == 'W')
 	{
-		sv->map.dir_x = -1;
-		sv->map.dir_y = 0;
+		sv->map.dir_x = -1; //0 перпендикуляр
+		sv->map.dir_y = 0; //1 перпендикуляр
+		sv->map.plane_x = 0;
+		sv->map.plane_y = -1;
 	}
 	else if (sv->map.map_array[j] == 'E')
 	{
 		sv->map.dir_x = 1;
 		sv->map.dir_y = 0;
+		sv->map.plane_x = 0;
+		sv->map.plane_y = 1;
 	}
+	sv->map.plane_x *= tan(80/2 * M_PI/180);
+	sv->map.plane_y *= tan(80/2 * M_PI/180);
 	printf ("\nPOSITION-------------------------\nx: %f, y: %f, dir_x: %f, dir_y: %f\n\n", sv->map.pos_x,sv->map.pos_y,sv->map.dir_x,	sv->map.dir_y);
 }
 
 void		set_plane_and_time(t_game *sv)
 {
-	sv->map.plane_x = 0;
-	sv->map.plane_y = 0.66; //the 2d raycaster version of camera plane
+//	sv->map.plane_x = 0; //   // всегда должны быть перпендикулярны вектору направления
+//	sv->map.plane_y = 1; //the 2d raycaster version of camera plane
+	// потом этот вектор буду вращать с вектором направления      //
 	sv->map.time = 0; //time of current frame
 	sv->map.old_time = 0;; //time of previous frame
-
 }
 
 void		casting_frame(t_game *sv)
@@ -58,16 +68,16 @@ void		casting_frame(t_game *sv)
 		double ray_dir_x = sv->map.dir_x  + sv->map.plane_x * camera_x;
 		double ray_dir_y = sv->map.dir_y + sv->map.plane_y * camera_x;
 		//which box of the map we're in
-		int map_x = (int)sv->map.pos_x;
-		int map_y = (int)sv->map.pos_y;
+		int map_x = (int)floor(sv->map.pos_x);// флор зануляет дробную часть
+		int map_y = (int)floor(sv->map.pos_y);
 
 		//length of ray from current position to next x or y-side
 		double side_dist_x;
 		double side_dist_y;
 
 		//length of ray from one x or y-side to next x or y-side
-		double deltaDistX = abs(1 / ray_dir_x);
-		double deltaDistY = abs(1 / ray_dir_y);
+		double deltaDistX = fabs(1 / ray_dir_x);
+		double deltaDistY = fabs(1 / ray_dir_y);
 		double perpWallDist;
 
 		//what direction to step in x or y-direction (either +1 or -1)
@@ -77,7 +87,7 @@ void		casting_frame(t_game *sv)
 		int hit = 0; //was there a wall hit?
 		int side; //was a NS or a EW wall hit?
 		//calculate step and initial sideDist
-		if(ray_dir_x < 0)
+		if (ray_dir_x < 0)
 		{
 			stepX = -1;
 			side_dist_x = (sv->map.pos_x - map_x) * deltaDistX;
@@ -87,7 +97,7 @@ void		casting_frame(t_game *sv)
 			stepX = 1;
 			side_dist_x = (map_x + 1.0 - sv->map.pos_x) * deltaDistX;
 		}
-		if(ray_dir_y < 0)
+		if (ray_dir_y < 0)
 		{
 			stepY = -1;
 			side_dist_y = (sv->map.pos_y - map_y) * deltaDistY;
@@ -101,25 +111,31 @@ void		casting_frame(t_game *sv)
 		while (hit == 0)
 		{
 			//jump to next map square, OR in x-direction, OR in y-direction
-			if(side_dist_x < side_dist_y)
+			if (side_dist_x < side_dist_y)
 			{
 				side_dist_x += deltaDistX;
 				map_x += stepX;
-				side = 0;
+				// в зависимости от того куда ударился луч — отрисовать стену. Если ударялся в стену спереди или сзади
+				// определять в какую сторону шагал луч. степ_х будет якорем какую сторону для сайда выбрать
+				side = 0; // стороны 0 1 2 3 по сторонам. если луч шагал наверх?
 			}
 			else
 			{
 				side_dist_y += deltaDistY;
 				map_y += stepY;
+				// а здесь определять по stepY западная или восточная стена.
+				// после сохранить эти же значения во всех остальных функциях
+				// можно создать массив где хранятся текстуры и обращаться к текстуре по сайду
+				// имеет значение только последний шаг который я делал до стены.
 				side = 1;
 			}
 			//Check if ray has hit a wall
-			if(sv->map.map_array[map_x + map_y * sv->map.max_len] > 0)
+			if(sv->map.map_array[map_x + map_y * sv->map.max_len] == '1')
 				hit = 1; //map_array
 		}
 		//Calculate distance projected on camera direction (Euclidean distance will give fisheye effect!)
 		if(side == 0)
-			perpWallDist = (map_x - sv->map.pos_x + (1 - stepX) / 2) / ray_dir_x;
+			perpWallDist = (map_x - sv->map.pos_x + (1 - stepX) / 2) / ray_dir_x; //перпендикулярное расстояние от плоскости камеры до точки где ударился об стену. так избавляемся от фишая
 		else
 			perpWallDist = (map_y - sv->map.pos_y + (1 - stepY) / 2) / ray_dir_y;
 
@@ -140,17 +156,17 @@ void		casting_frame(t_game *sv)
 			case 2:  color = create_trgb(0, 0, 255, 0);  break; //green
 			case 3:  color = create_trgb(0, 0, 0, 255);   break; //blue
 			case 4:  color = create_trgb(0, 255, 255, 255);  break; //white
-			default: color = create_trgb(0, 0, 255, 255); break; //yellow
+			default: color = create_trgb(0, 0, 255, 255); break;
 		}
 
 		//give x and y sides different brightness
-		if(side == 1)
+		if (side == 1)
 		{
 			color = color / 2;
 		}
 
 		//draw the pixels of the stripe as a vertical line
-		draw_line_bresenham(x, drawStart, x, drawEnd, color, &sv->img);
+		draw_line_bresenham(x, drawStart, x, drawEnd, color, sv);
 //		verLine(x, drawStart, drawEnd, color);
 	}
 }

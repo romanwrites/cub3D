@@ -12,14 +12,14 @@
 
 #include "cub3d.h"
 
-void		my_mlx_pixel_put(t_data *data, int x, int y, unsigned int color)
+void		my_mlx_pixel_put(t_game *sv, int x, int y, unsigned int color)
 {
-	char    *dst;
-	dst = data->addr + (y * data->line_length + x * (data->bits_per_pixel / 8)); //data->addr массив пикселей. Массив чаров. по 4. имиках может скинуть формулу
+	unsigned int *dst;
+	dst = sv->img.addr + (y * sv->img.line_length + x * (sv->img.bits_per_pixel / 8)); //data->addr массив пикселей. Массив чаров. по 4. имиках может скинуть формулу
 	*(unsigned int*)dst = color;
 }
 
-void		draw_line_bresenham(int x0, int y0, int x1, int y1, unsigned int colour, t_data *img)
+void		draw_line_bresenham(int x0, int y0, int x1, int y1, unsigned int colour, t_game *sv)
 {
 	int		delta_x;
 	int		delta_y;
@@ -39,7 +39,7 @@ void		draw_line_bresenham(int x0, int y0, int x1, int y1, unsigned int colour, t
 		const int direction = delta_y != 0 ? (delta_y > 0 ? 1 : -1) : 0;
 		for (int x = x0; delta_x > 0 ? x <= x1 : x >= x1; delta_x > 0 ? x++ : x--)
 		{
-			my_mlx_pixel_put(img, x, y, colour);
+			my_mlx_pixel_put(sv, x, y, colour);
 			accretion += delta_y_abs;
 			if (accretion >= delta_x_abs)
 			{
@@ -54,7 +54,7 @@ void		draw_line_bresenham(int x0, int y0, int x1, int y1, unsigned int colour, t
 		const int direction = delta_x != 0 ? (delta_x > 0 ? 1 : -1) : 0;
 		for (int y = y0; delta_y > 0 ? y <= y1 : y >= y1; delta_y > 0 ? y++ : y--)
 		{
-			my_mlx_pixel_put(img, x, y, colour);
+			my_mlx_pixel_put(sv, x, y, colour);
 			accretion += delta_x_abs;
 			if (accretion >= delta_y_abs)
 			{

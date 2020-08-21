@@ -56,7 +56,7 @@
 //#include "libft.h"
 typedef struct	s_data {
 	void				*img;
-	unsigned int		*addr;
+	unsigned char		*addr;
 	int					bits_per_pixel;
 	int					line_length;
 	int					endian;
@@ -185,8 +185,7 @@ unsigned int	add_shade(double distance, unsigned int color);
 unsigned int	get_opposite(unsigned int color);
 
 /* drawings */
-void			my_mlx_pixel_put(t_data *data, int x, int y, unsigned int color);
-void		draw_line_bresenham(int x0, int y0, int x1, int y1, unsigned int colour, t_data *img);
-
+void		my_mlx_pixel_put(t_game *sv, int x, int y, unsigned int color);
+void		draw_line_bresenham(int x0, int y0, int x1, int y1, unsigned int colour, t_game *sv);
 
 #endif

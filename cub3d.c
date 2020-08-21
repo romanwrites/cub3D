@@ -46,8 +46,7 @@ int			main(int argc, char **argv)
 								 &sv.img.endian);
 
 
-	casting_frame(&sv);
-
+//	casting_frame(&sv);
 
 
 	printf("bits_per_pixel: %d, line_length %%d: %d, line_length %%u: %d, endian: %d\n", sv.img.bits_per_pixel, sv.img.line_length, sv.img.line_length, sv.img.endian);
@@ -63,5 +62,6 @@ int			main(int argc, char **argv)
 	mlx_key_hook(sv.win, ft_event, &sv);
 	mlx_hook(sv.win, 17, 1L << 17, ft_close, &sv);
 	mlx_loop(sv.mlx);
+
 	exit(0);
 }

@@ -49,11 +49,13 @@ void 		ft_event(int key, t_game *sv) // pass struct
 	}
 	if (key == 14)
 	{
+		casting_frame(sv);
+//		for (int j = 0; j < 100; j++)
+//		{
+//			draw_line_bresenham(0, j, 100, j, create_trgb(0, 255, 0, 0), sv);
+//		}
+//		draw_line_bresenham(0, 0, 100, 0, create_trgb(0, 255, 0, 0), sv);
 		mlx_put_image_to_window(sv->mlx, sv->win, sv->img.img, 0, 0);
-//		colours[0] = 0;
-//		colours[1] = 0;
-//		colours[2] = 255;
-//		colours[3] = 0;
 	}
 	if (key == 53)
 	{
@@ -68,11 +70,7 @@ void 		ft_event(int key, t_game *sv) // pass struct
 	}
 //	else
 //		return ;
-//	for(int j = 0; j < 100; j++)
-//	{
-//		draw_line_bresenham(0, j, 100, j, colours, &sv->img);
-//	}
-//	draw_line_bresenham(0, 0, 100, 0, colours, &vars->img);
+
 //	draw_map(sv);
 //	for(int k = 1; k < 2700; k += 4)
 //	{
