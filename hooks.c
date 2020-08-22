@@ -12,6 +12,8 @@
 
 #include "cub3d.h"
 
+int x = 0;
+
 void	ft_put_map_line(char *s)
 {
 	if (!s)
@@ -28,7 +30,56 @@ void 		ft_event(int key, t_game *sv) // pass struct
 {
 	unsigned int colours[] = {0, 0, 0, 0};
 
+	double frameTime = 1;
+	double moveSpeed = 0.3; //the constant value is in squares/second
+	double rotSpeed = frameTime * 3.0; //the constant value is in radians/second
+
 	printf("key: %d\n", key);
+
+
+
+	if (key == W)
+	{
+		int mx_x, mx_y, my_x, my_y;
+		mx_x = (int)((int)sv->map.pos_x + sv->map.dir_x * moveSpeed);
+		mx_y = (int)sv->map.pos_y;
+		my_x = (int)sv->map.pos_x;
+		my_y = (int)((int)sv->map.pos_y + sv->map.dir_y * moveSpeed);
+		if (sv->map.map_array[mx_x + mx_y * sv->map.max_len] == '0')
+			sv->map.pos_x += sv->map.dir_x * moveSpeed;
+		if (sv->map.map_array[my_x + my_y * sv->map.max_len] == '0')
+			sv->map.pos_y += sv->map.dir_y * moveSpeed;
+
+//		draw_black_screen(sv, sv->map.res_w, sv->map.res_h, create_trgb(0, 0, 0, 0));
+		mlx_destroy_image(sv->mlx, sv->img.img);
+		casting_frame(sv);
+		mlx_put_image_to_window(sv->mlx, sv->win, sv->img.img, 0, 0);
+
+
+
+//		if(sv->map.map_array[(int)sv->map.pos_x + sv->map.dir_x * moveSpeed][(int)sv->map.pos_y] == '0') sv->map.pos_x += sv->map.dir_x * moveSpeed;
+//		if(sv->map.map_array[(int)sv->map.pos_x][(int)sv->map.pos_y + sv->map.dir_y * moveSpeed] == '0') sv->map.pos_y += sv->map.dir_y * moveSpeed;
+
+//		if(worldMap[int(posX - dirX * moveSpeed)][int(posY)] == false) posX -= dirX * moveSpeed;
+//		if(worldMap[int(posX)][int(posY - dirY * moveSpeed)] == false) posY -= dirY * moveSpeed;
+	}
+	if (key == S)
+	{
+		int mx_x, mx_y, my_x, my_y;
+		mx_x = (int) ((int) sv->map.pos_x - sv->map.dir_x * moveSpeed);
+		mx_y = (int) sv->map.pos_y;
+		my_x = (int) sv->map.pos_x;
+		my_y = (int) ((int) sv->map.pos_y - sv->map.dir_y * moveSpeed);
+		if (sv->map.map_array[mx_x + mx_y * sv->map.max_len] == '0')
+			sv->map.pos_x -= sv->map.dir_x * moveSpeed;
+		if (sv->map.map_array[my_x + my_y * sv->map.max_len] == '0')
+			sv->map.pos_y -= sv->map.dir_y * moveSpeed;
+
+//		draw_black_screen(sv, sv->map.res_w, sv->map.res_h, create_trgb(0, 0, 0, 0));
+		mlx_destroy_image(sv->mlx, sv->img.img);
+		casting_frame(sv);
+		mlx_put_image_to_window(sv->mlx, sv->win, sv->img.img, 0, 0);
+	}
 	if (key == 3)
 	{
 //		colours[0] = 0;
@@ -42,7 +93,8 @@ void 		ft_event(int key, t_game *sv) // pass struct
         printf("player_a: %f, player_x: %f, player_y: %f\n", sv->player.player_a, sv->player.player_x, sv->player.player_y);
         incr_a += increase_a_coefficient_12;
         incr_xy += 1;
-        draw_black_screen(sv, sv->map.res_w, sv->map.res_h, create_trgb(0, 10, 10, 10));
+
+		mlx_destroy_image(sv->mlx, sv->img.img);
 		draw_map(sv);
 
 		mlx_put_image_to_window(sv->mlx, sv->win, sv->img.img, 0, 0);
@@ -50,6 +102,7 @@ void 		ft_event(int key, t_game *sv) // pass struct
 	if (key == 14)
 	{
 		casting_frame(sv);
+//		x++;
 //		for (int j = 0; j < 100; j++)
 //		{
 //			draw_line_bresenham(0, j, 100, j, create_trgb(0, 255, 0, 0), sv);

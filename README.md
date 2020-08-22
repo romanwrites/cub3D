@@ -11,3 +11,7 @@
 ### Raycasting
 
 * [Lode's Computer Graphics Tutorial Raycasting](https://lodev.org/cgtutor/raycasting.html)
+* [🎥 DDA Line Drawing Algorithm](https://www.youtube.com/watch?v=W5P8GlaEOSI)
+
+### Others
+* [🎥 Bresenham's Line Drawing Algorithm](https://www.youtube.com/watch?v=RGB-wlatStc)

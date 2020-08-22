@@ -25,6 +25,8 @@ void			ft_error_close(int error_code)
 		write(2, "Error!\nMap params are bad. Check colours.\n", 42);
 	else if (error_code == ERR_MAP_OPEN)
 		write(2, "Error!\nMap borders are open.\n", 29);
+	else if (error_code == ERR_MAP_BAD_ARG)
+		write(2, "Error!\nMap arg is bad.\n", 23);
 	exit(EXIT_FAILURE);
 }
 

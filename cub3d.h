@@ -26,10 +26,10 @@
 /* temp */
 
 /* keys */
-# define W 13
-# define S 1
-# define A 0
-# define D 2
+//# define W 13
+//# define S 1
+//# define A 0
+//# define D 2
 # define LEFT 123
 # define RIGHT 124
 # define ESC 53
@@ -49,6 +49,13 @@
 # define ERR_MAP_C -12
 # define ERR_MAP_OPEN -13
 
+
+enum		e_keys {
+	A = 0,
+	S = 1,
+	D = 2,
+	W = 13,
+};
 
 
 /* structs */
@@ -151,7 +158,7 @@ void			create_map_array(t_game *sv);
 void			draw_black_screen(t_game *sv, int win_h, int win_w, int color);
 
 
-void		casting_frame(t_game *sv);
+void			casting_frame(t_game *sv);
 
 
 

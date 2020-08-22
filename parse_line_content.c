@@ -57,11 +57,15 @@ void			check_sign(const char *str, const char *previous, const char *next, t_gam
 			else
 				ft_error_close(ERR_MAP_VALIDITY);
 		}
-		if (str[j] != '1')
+		if (str[j] != '1' && str[j] != ' ' )
 		{
 			if (str[j - 1] == ' ' || (str[j + 1] == ' ' || str[j + 1] == '\0') || \
                 previous[j] == ' ' || next[j] == ' ')
+			{
+//				printf("filename: \n");
 				ft_error_close(ERR_MAP_OPEN);
+			}
+
 		}
 		j++;
 	}
@@ -233,8 +237,11 @@ void			what_is_line_content(const char *str, t_game *sv, \
 		return ;
 	else if (!(*str) && *map_started_flag)
 		ft_error_close(ERR_MAP_VALIDITY);
-	if (ft_isspace(*str) && !(*map_started_flag))
-		ft_error_close(ERR_MAP_BAD_ARG);
+//	if (ft_isspace(*str) && !(*map_started_flag))
+//	{
+//		printf("filename: \n");
+//		ft_error_close(ERR_MAP_BAD_ARG);
+//	}
 	else if (*str == 'R')
 		handle_resolution(str, &sv->map);
 	else if (*str == 'N' || *str == 'S' || *str == 'W' || *str == 'E')

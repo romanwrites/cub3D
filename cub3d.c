@@ -25,6 +25,7 @@ int			main(int argc, char **argv)
 		{
 			init_game(&sv);
 			read_map(open(argv[1], O_RDONLY), &sv);
+			printf("filename: %s\n", argv[1]);
 		}
 //		ft_my_lstiter(sv.head, (void *)ft_put_map_line);  //дебаг печать
 	}
@@ -47,6 +48,7 @@ int			main(int argc, char **argv)
 
 
 //	casting_frame(&sv);
+//	mlx_put_image_to_window(&sv.mlx, &sv.win, &sv.img.img, 0, 0);
 
 
 	printf("bits_per_pixel: %d, line_length %%d: %d, line_length %%u: %d, endian: %d\n", sv.img.bits_per_pixel, sv.img.line_length, sv.img.line_length, sv.img.endian);
@@ -59,7 +61,9 @@ int			main(int argc, char **argv)
 	printf("player: %d\n", sv.map.player_num);
 
 
-	mlx_key_hook(sv.win, ft_event, &sv);
+//	mlx_key_hook(sv.win, ft_event, &sv);
+	mlx_hook(sv.win, 2, 1L<<0, ft_event, &sv);//press
+//	mlx_hook(sv.win, 3, 1L<<1, ft_event, &sv);//release
 	mlx_hook(sv.win, 17, 1L << 17, ft_close, &sv);
 	mlx_loop(sv.mlx);
 
