@@ -147,7 +147,7 @@ void		check_buttons_state(t_game *sv)
 //	init_keys(sv);
 }
 
-void		press_button(int key, t_game *sv)
+int		press_key(int key, t_game *sv)
 {
 	if (key == W)
 		sv->keys.w = 1;
@@ -161,9 +161,10 @@ void		press_button(int key, t_game *sv)
 		sv->keys.left = 1;
 	if (key == RIGHT)
 		sv->keys.right = 1;
+	return (0);
 }
 
-void		release_button(int key, t_game *sv)
+int		release_key(int key, t_game *sv)
 {
 	if (key == W)
 		sv->keys.w = 0;
@@ -179,6 +180,7 @@ void		release_button(int key, t_game *sv)
 		sv->keys.right = 0;
 	if (key == ESC)
 		ft_close(key, sv);
+	return (0);
 }
 
 

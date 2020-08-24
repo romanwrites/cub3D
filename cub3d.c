@@ -76,12 +76,12 @@ int			main(int argc, char **argv)
 	printf("player: %d\n", sv.map.player_num);
 
 
-//	mlx_key_hook(sv.win, press_button, &sv);
+//	mlx_key_hook(sv.win, press_key, &sv);
 
 	mlx_loop_hook(sv.mlx, render_frame, &sv);
 
-	mlx_hook(sv.win, 2, 1L<<0, press_button, &sv);//press
-	mlx_hook(sv.win, 3, 1L<<1, release_button, &sv);//release
+	mlx_hook(sv.win, KEY_PRESS, KEY_PRESS_MASK, press_key, &sv);
+	mlx_hook(sv.win, KEY_RELEASE, KEY_RELEASE_MASK, release_key, &sv);
 
 	mlx_hook(sv.win, 17, 1L << 17, ft_close, &sv);
 	mlx_loop(sv.mlx);

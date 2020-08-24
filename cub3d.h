@@ -42,10 +42,16 @@
 //# define ERR_MAP_C -12
 //# define ERR_MAP_OPEN -13
 
-# define MOVE_SPEED 0.14
-# define ROTATION_SPEED 0.07
-# define NINETY_DEGREES 2 * M_PI / 4
+# define MOVE_SPEED					0.14
+# define ROTATION_SPEED				0.07
+# define NINETY_DEGREES				2 * M_PI / 4
+# define TEX_W						64
+# define TEX_H						64
 
+# define KEY_PRESS_MASK				(1L<<0)
+# define KEY_RELEASE_MASK			(1L<<1)
+# define KEY_PRESS					2
+# define KEY_RELEASE				3
 
 
 
@@ -81,7 +87,6 @@ enum		e_keys {
 
 /* structs */
 
-//#include "libft.h"
 
 typedef struct	s_data {
 	void				*img;
@@ -180,8 +185,8 @@ void			draw_black_screen(t_game *sv, int win_h, int win_w, int color);
 /* hooks and render */
 void 			ft_event(int key, t_game *sv);
 void			ft_put_map_line(char *s);
-void		press_button(int key, t_game *sv);
-void		release_button(int key, t_game *sv);
+int		press_key(int key, t_game *sv);
+int		release_key(int key, t_game *sv);
 void		check_buttons_state(t_game *sv);
 
 void			casting_frame(t_game *sv);
