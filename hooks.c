@@ -50,10 +50,12 @@ void 		ft_event(int key, t_game *sv) // pass struct
 		if (sv->map.map_array[my_x + my_y * sv->map.max_len] == '0')
 			sv->map.pos_y += sv->map.dir_y * moveSpeed;
 
-//		draw_black_screen(sv, sv->map.res_w, sv->map.res_h, create_trgb(0, 0, 0, 0));
-		mlx_destroy_image(sv->mlx, sv->img.img);
+		sv->img.img = mlx_new_image(sv->mlx, sv->map.res_w, sv->map.res_h);
+		sv->img.addr = mlx_get_data_addr(sv->img.img, &sv->img.bits_per_pixel, &sv->img.line_length,
+										&sv->img.endian);
 		casting_frame(sv);
 		mlx_put_image_to_window(sv->mlx, sv->win, sv->img.img, 0, 0);
+		mlx_destroy_image(sv->mlx, sv->img.img);
 
 
 
@@ -75,10 +77,33 @@ void 		ft_event(int key, t_game *sv) // pass struct
 		if (sv->map.map_array[my_x + my_y * sv->map.max_len] == '0')
 			sv->map.pos_y -= sv->map.dir_y * moveSpeed;
 
-//		draw_black_screen(sv, sv->map.res_w, sv->map.res_h, create_trgb(0, 0, 0, 0));
-		mlx_destroy_image(sv->mlx, sv->img.img);
+		sv->img.img = mlx_new_image(sv->mlx, sv->map.res_w, sv->map.res_h);
+		sv->img.addr = mlx_get_data_addr(sv->img.img, &sv->img.bits_per_pixel, &sv->img.line_length,
+										 &sv->img.endian);
+
 		casting_frame(sv);
 		mlx_put_image_to_window(sv->mlx, sv->win, sv->img.img, 0, 0);
+		mlx_destroy_image(sv->mlx, sv->img.img);
+	}
+	if (key == A)
+	{
+		int mx_x, mx_y, my_x, my_y;
+		mx_x = (int) ((int) sv->map.pos_x - sv->map.dir_x * moveSpeed);
+		mx_y = (int) sv->map.pos_y;
+		my_x = (int) sv->map.pos_x;
+		my_y = (int) ((int) sv->map.pos_y - sv->map.dir_y * moveSpeed);
+		if (sv->map.map_array[mx_x + mx_y * sv->map.max_len] == '0')
+			sv->map.pos_x -= sv->map.dir_x * moveSpeed;
+		if (sv->map.map_array[my_x + my_y * sv->map.max_len] == '0')
+			sv->map.pos_y -= sv->map.dir_y * moveSpeed;
+
+		sv->img.img = mlx_new_image(sv->mlx, sv->map.res_w, sv->map.res_h);
+		sv->img.addr = mlx_get_data_addr(sv->img.img, &sv->img.bits_per_pixel, &sv->img.line_length,
+										 &sv->img.endian);
+
+		casting_frame(sv);
+		mlx_put_image_to_window(sv->mlx, sv->win, sv->img.img, 0, 0);
+		mlx_destroy_image(sv->mlx, sv->img.img);
 	}
 	if (key == 3)
 	{

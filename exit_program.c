@@ -38,7 +38,6 @@ int				ft_close(int exit_code, t_game *sv)
 	if (exit_code == 53)
 	{
 		printf("I am printing ESC when 53 is passed\n");
-		mlx_destroy_image(sv->mlx, sv->img.img);
 		mlx_destroy_window(sv->mlx, sv->win);
 		exit(EXIT_SUCCESS);
 	}

@@ -36,20 +36,24 @@ int			main(int argc, char **argv)
 	filename = argv[1];
 	filename[ft_strlen(filename) - 4] = '\0';
 
+	printf("w: %d, h: %d\n", sv.map.res_w,sv.map.res_h);
 
 	create_map_array(&sv);
 
 	sv.mlx = mlx_init();
 	sv.win = mlx_new_window(sv.mlx, sv.map.res_w, sv.map.res_h, filename);
+
 	sv.img.img = mlx_new_image(sv.mlx, sv.map.res_w, sv.map.res_h);
-	printf("w: %d, h: %d\n", sv.map.res_w,sv.map.res_h);
 	sv.img.addr = mlx_get_data_addr(sv.img.img, &sv.img.bits_per_pixel, &sv.img.line_length,
 								 &sv.img.endian);
 
 
+	casting_frame(&sv);
+	mlx_put_image_to_window(sv.mlx, sv.win, sv.img.img, 0, 0);
+	mlx_destroy_image(sv.mlx, sv.img.img);
+
 //	casting_frame(&sv);
 //	mlx_put_image_to_window(&sv.mlx, &sv.win, &sv.img.img, 0, 0);
-
 
 	printf("bits_per_pixel: %d, line_length %%d: %d, line_length %%u: %d, endian: %d\n", sv.img.bits_per_pixel, sv.img.line_length, sv.img.line_length, sv.img.endian);
 
