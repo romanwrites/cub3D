@@ -32,6 +32,16 @@ static void				init_map(t_conf *map)
 	map->map_rows = 0;
 	map->map_array = NULL;
 	map->player_num = 0;
+}// всё остальное инициализировать перед сдачей проекта
+
+static void		init_keys(t_game *sv)
+{
+	sv->keys.w = 0;
+	sv->keys.a = 0;
+	sv->keys.s = 0;
+	sv->keys.d = 0;
+	sv->keys.left = 0;
+	sv->keys.right = 0;
 }
 
 

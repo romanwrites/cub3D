@@ -127,9 +127,9 @@ void		casting_frame(t_game *sv)
 				// определять в какую сторону шагал луч. степ_х будет якорем какую сторону для сайда выбрать
 				side = 0; // стороны 0 1 2 3 по сторонам. если луч шагал наверх?
 				if (step_x < 0)
-					color = create_trgb(0, 255, 0, 0); // EAST
+					color = create_trgb(0, 255, 0, 0) / 2; // EAST
 				else
-					color = create_trgb(0, 0, 255, 0); // WEST
+					color = create_trgb(0, 0, 255, 0) / 2; // WEST
 			}
 			else
 			{

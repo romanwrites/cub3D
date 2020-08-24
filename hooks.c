@@ -120,6 +120,7 @@ void		move_d(t_game *sv)
 
 int		render_frame(t_game *sv)
 {
+	printf("LOLKEK------------------");
 	check_buttons_state(sv);
 	sv->img.img = mlx_new_image(sv->mlx, sv->map.res_w, sv->map.res_h);
 	sv->img.addr = mlx_get_data_addr(sv->img.img, &sv->img.bits_per_pixel, &sv->img.line_length,
@@ -161,6 +162,14 @@ int		press_key(int key, t_game *sv)
 		sv->keys.left = 1;
 	if (key == RIGHT)
 		sv->keys.right = 1;
+//	if (key == 3 || key == 14)
+//	{
+//		sv->north.img = mlx_new_image(sv->mlx, sv->map.res_w, sv->map.res_h);
+//		sv->north.addr = mlx_get_data_addr(sv->north.img, &sv->north.bits_per_pixel, &sv->north.line_length,
+//										  &sv->north.endian);
+//		mlx_xpm_file_to_image(sv->north.img, sv->map.no_path, &sv->map.no_w, &sv->map.no_w);
+//		mlx_put_image_to_window(sv->mlx, sv->win, sv->north.img, 0, 0);
+//	}
 	return (0);
 }
 

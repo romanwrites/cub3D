@@ -43,7 +43,7 @@
 //# define ERR_MAP_OPEN -13
 
 # define MOVE_SPEED					0.14
-# define ROTATION_SPEED				0.07
+# define ROTATION_SPEED				0.1
 # define NINETY_DEGREES				2 * M_PI / 4
 # define TEX_W						64
 # define TEX_H						64
@@ -90,7 +90,7 @@ enum		e_keys {
 
 typedef struct	s_data {
 	void				*img;
-	char		*addr;
+	char				*addr;
 	int					bits_per_pixel;
 	int					line_length;
 	int					endian;
@@ -100,6 +100,8 @@ typedef struct	s_conf {
 	int			res_w;
 	int			res_h;
 	char		*no_path;
+	int			no_w;
+	int			no_h;
 	char		*so_path;
 	char		*we_path;
 	char		*ea_path;
@@ -120,8 +122,8 @@ typedef struct	s_conf {
 	double		plane_y;
 	double		time; //time of current frame
 	double		old_time; //time of previous frame
-	double move_speed;
-	double rotation_speed;
+	double		move_speed;
+	double		rotation_speed;
 }				t_conf;
 
 typedef struct s_keys {
@@ -132,7 +134,6 @@ typedef struct s_keys {
 	_Bool		left;
 	_Bool		right;
 }				t_keys;
-
 
 typedef struct s_player {
 	double player_x; // player x position
@@ -150,9 +151,11 @@ typedef struct		s_game {
 	t_linked_list	*tmp;
 	t_keys			keys;
 	t_player        player;
+	t_data			north;
+	t_data			south;
+	t_data			west;
+	t_data			east;
 }					t_game;
-
-
 
 /* parse */
 void			parse_map(t_game *sv);
@@ -196,9 +199,8 @@ int		render_frame(t_game *sv);
 
 
 /* init */
-
 void			init_game(t_game *sv);
-void		init_keys(t_game *sv);
+//void		init_keys(t_game *sv);
 
 
 

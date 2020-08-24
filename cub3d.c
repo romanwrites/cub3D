@@ -13,15 +13,7 @@
 #include "cub3d.h"
 
 
-void		init_keys(t_game *sv)
-{
-	sv->keys.w = 0;
-	sv->keys.a = 0;
-	sv->keys.s = 0;
-	sv->keys.d = 0;
-	sv->keys.left = 0;
-	sv->keys.right = 0;
-}
+
 
 int			main(int argc, char **argv)
 {
@@ -36,7 +28,6 @@ int			main(int argc, char **argv)
 		{
 			init_game(&sv);
 			read_map(open(argv[1], O_RDONLY), &sv);
-			printf("filename: %s\n", argv[1]);
 		}
 //		ft_my_lstiter(sv.head, (void *)ft_put_map_line);  //дебаг печать
 	}
@@ -59,17 +50,14 @@ int			main(int argc, char **argv)
 								 &sv.img.endian);
 
 
-	casting_frame(&sv);
-	mlx_put_image_to_window(sv.mlx, sv.win, sv.img.img, 0, 0);
-	mlx_destroy_image(sv.mlx, sv.img.img);
 
-//	casting_frame(&sv);
-//	mlx_put_image_to_window(&sv.mlx, &sv.win, &sv.img.img, 0, 0);
+
+
+	casting_frame(&sv);
+//	mlx_put_image_to_window(sv.mlx, sv.win, sv.img.img, 0, 0);
+//	mlx_destroy_image(sv.mlx, sv.img.img);
 
 	printf("bits_per_pixel: %d, line_length %%d: %d, line_length %%u: %d, endian: %d\n", sv.img.bits_per_pixel, sv.img.line_length, sv.img.line_length, sv.img.endian);
-
-
-//	mlx_hook(sv.win, 2, 1L<<0, ft_event, &sv);
 //	printf("bits_per_pixel: %u, line_length: %u\n", vars->img.addr[0], vars->img.addr[1], vars->img.addr[2], vars->img.addr[3]);
 //	printf("data.addr: %s\nlen data.addr: %zu\n", sv.img.addr, ft_strlen(sv.img.addr));
 	printf("lines size: %d\n", sv.map.map_rows);
@@ -78,7 +66,7 @@ int			main(int argc, char **argv)
 
 //	mlx_key_hook(sv.win, press_key, &sv);
 
-	mlx_loop_hook(sv.mlx, render_frame, &sv);
+//	mlx_loop_hook(sv.mlx, render_frame, &sv);
 
 	mlx_hook(sv.win, KEY_PRESS, KEY_PRESS_MASK, press_key, &sv);
 	mlx_hook(sv.win, KEY_RELEASE, KEY_RELEASE_MASK, release_key, &sv);
