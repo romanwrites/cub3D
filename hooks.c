@@ -22,17 +22,174 @@ void	ft_put_map_line(char *s)
 	write(1, "|\n", 2);
 }
 
-double incr_a = 0;
 double increase_a_coefficient_12 = 2 * M_PI / 12;
-double incr_xy = 0;
+
+void		turn_left(t_game *sv)
+{
+	double old_dir_x;
+	double old_plane_x;
+
+	old_dir_x = sv->map.dir_x;
+	old_plane_x = sv->map.plane_x;
+	sv->map.dir_x = sv->map.dir_x * cos(-ROTATION_SPEED) - sv->map.dir_y * sin(-ROTATION_SPEED);
+	sv->map.dir_y = old_dir_x * sin(-ROTATION_SPEED) + sv->map.dir_y * cos(-ROTATION_SPEED);
+	sv->map.plane_x = sv->map.plane_x * cos(-ROTATION_SPEED) - sv->map.plane_y * sin(-ROTATION_SPEED);
+	sv->map.plane_y = old_plane_x * sin(-ROTATION_SPEED) + sv->map.plane_y * cos(-ROTATION_SPEED);
+}
+
+void		turn_right(t_game *sv)
+{
+	double old_dir_x;
+	double old_plane_x;
+
+	old_dir_x = sv->map.dir_x;
+	old_plane_x = sv->map.plane_x;
+	sv->map.dir_x = sv->map.dir_x * cos(ROTATION_SPEED) - sv->map.dir_y * sin(ROTATION_SPEED);
+	sv->map.dir_y = old_dir_x * sin(ROTATION_SPEED) + sv->map.dir_y * cos(ROTATION_SPEED);
+	sv->map.plane_x = sv->map.plane_x * cos(ROTATION_SPEED) - sv->map.plane_y * sin(ROTATION_SPEED);
+	sv->map.plane_y = old_plane_x * sin(ROTATION_SPEED) + sv->map.plane_y * cos(ROTATION_SPEED);
+}
+
+void		move_w(t_game *sv)
+{
+	int mx_x;
+	int mx_y;
+	int my_x;
+	int my_y;
+
+	mx_x = (int)(sv->map.pos_x + sv->map.dir_x * MOVE_SPEED);
+	mx_y = (int)(sv->map.pos_y);
+	my_x = (int)(sv->map.pos_x);
+	my_y = (int)(sv->map.pos_y + sv->map.dir_y * MOVE_SPEED);
+	if (sv->map.map_array[mx_x + mx_y * sv->map.max_len] == '0')
+		sv->map.pos_x += sv->map.dir_x * MOVE_SPEED;
+	if (sv->map.map_array[my_x + my_y * sv->map.max_len] == '0')
+		sv->map.pos_y += sv->map.dir_y * MOVE_SPEED;
+}
+
+void		move_s(t_game *sv)
+{
+	int mx_x;
+	int mx_y;
+	int my_x;
+	int my_y;
+
+	mx_x = (int)(sv->map.pos_x - sv->map.dir_x * MOVE_SPEED);
+	mx_y = (int)(sv->map.pos_y);
+	my_x = (int)(sv->map.pos_x);
+	my_y = (int)(sv->map.pos_y - sv->map.dir_y * MOVE_SPEED);
+	if (sv->map.map_array[mx_x + mx_y * sv->map.max_len] == '0')
+		sv->map.pos_x -= sv->map.dir_x * MOVE_SPEED;
+	if (sv->map.map_array[my_x + my_y * sv->map.max_len] == '0')
+		sv->map.pos_y -= sv->map.dir_y * MOVE_SPEED;
+}
+
+void		move_a(t_game *sv)
+{
+	int mx_x;
+	int mx_y;
+	int my_x;
+	int my_y;
+
+	mx_x = (int)(sv->map.pos_x - sv->map.plane_x * MOVE_SPEED);
+	mx_y = (int)(sv->map.pos_y);
+	my_x = (int)(sv->map.pos_x);
+	my_y = (int)(sv->map.pos_y - sv->map.plane_y * MOVE_SPEED);
+	if (sv->map.map_array[mx_x + mx_y * sv->map.max_len] == '0')
+		sv->map.pos_x -= sv->map.plane_x * MOVE_SPEED;
+	if (sv->map.map_array[my_x + my_y * sv->map.max_len] == '0')
+		sv->map.pos_y -= sv->map.plane_y * MOVE_SPEED;
+}
+
+void		move_d(t_game *sv)
+{
+	int mx_x;
+	int mx_y;
+	int my_x;
+	int my_y;
+
+	mx_x = (int)(sv->map.pos_x + sv->map.plane_x * MOVE_SPEED);
+	mx_y = (int)(sv->map.pos_y);
+	my_x = (int)(sv->map.pos_x);
+	my_y = (int)(sv->map.pos_y + sv->map.plane_y * MOVE_SPEED);
+	if (sv->map.map_array[mx_x + mx_y * sv->map.max_len] == '0')
+		sv->map.pos_x += sv->map.plane_x * MOVE_SPEED;
+	if (sv->map.map_array[my_x + my_y * sv->map.max_len] == '0')
+		sv->map.pos_y += sv->map.plane_y * MOVE_SPEED;
+}
+
+int		render_frame(t_game *sv)
+{
+	check_buttons_state(sv);
+	sv->img.img = mlx_new_image(sv->mlx, sv->map.res_w, sv->map.res_h);
+	sv->img.addr = mlx_get_data_addr(sv->img.img, &sv->img.bits_per_pixel, &sv->img.line_length,
+									 &sv->img.endian);
+	casting_frame(sv);
+	mlx_put_image_to_window(sv->mlx, sv->win, sv->img.img, 0, 0);
+	mlx_destroy_image(sv->mlx, sv->img.img);
+	return (0);
+}
+
+void		check_buttons_state(t_game *sv)
+{
+	if (sv->keys.left)
+		turn_left(sv);
+	if (sv->keys.right)
+		turn_right(sv);
+	if (sv->keys.w)
+		move_w(sv);
+	if (sv->keys.s)
+		move_s(sv);
+	if (sv->keys.a)
+		move_a(sv);
+	if (sv->keys.d)
+		move_d(sv);
+//	init_keys(sv);
+}
+
+void		press_button(int key, t_game *sv)
+{
+	if (key == W)
+		sv->keys.w = 1;
+	if (key == S)
+		sv->keys.s = 1;
+	if (key == A)
+		sv->keys.a = 1;
+	if (key == D)
+		sv->keys.d = 1;
+	if (key == LEFT)
+		sv->keys.left = 1;
+	if (key == RIGHT)
+		sv->keys.right = 1;
+}
+
+void		release_button(int key, t_game *sv)
+{
+	if (key == W)
+		sv->keys.w = 0;
+	if (key == S)
+		sv->keys.s = 0;
+	if (key == A)
+		sv->keys.a = 0;
+	if (key == D)
+		sv->keys.d = 0;
+	if (key == LEFT)
+		sv->keys.left = 0;
+	if (key == RIGHT)
+		sv->keys.right = 0;
+	if (key == ESC)
+		ft_close(key, sv);
+}
+
+
 
 void 		ft_event(int key, t_game *sv) // pass struct
 {
 	unsigned int colours[] = {0, 0, 0, 0};
 
 	double frameTime = 1;
-	double moveSpeed = 0.3; //the constant value is in squares/second
-	double rotSpeed = frameTime * 3.0; //the constant value is in radians/second
+	double move_speed = 0.3; //the constant value is in squares/second
+	double rotation_speed = 0.3; //the constant value is in radians/second
 
 	printf("key: %d\n", key);
 
@@ -41,14 +198,14 @@ void 		ft_event(int key, t_game *sv) // pass struct
 	if (key == W)
 	{
 		int mx_x, mx_y, my_x, my_y;
-		mx_x = (int)((int)sv->map.pos_x + sv->map.dir_x * moveSpeed);
-		mx_y = (int)sv->map.pos_y;
-		my_x = (int)sv->map.pos_x;
-		my_y = (int)((int)sv->map.pos_y + sv->map.dir_y * moveSpeed);
+		mx_x = (int)(sv->map.pos_x + sv->map.dir_x * MOVE_SPEED);
+		mx_y = (int)(sv->map.pos_y);
+		my_x = (int)(sv->map.pos_x);
+		my_y = (int)(sv->map.pos_y + sv->map.dir_y * MOVE_SPEED);
 		if (sv->map.map_array[mx_x + mx_y * sv->map.max_len] == '0')
-			sv->map.pos_x += sv->map.dir_x * moveSpeed;
+			sv->map.pos_x += sv->map.dir_x * MOVE_SPEED;
 		if (sv->map.map_array[my_x + my_y * sv->map.max_len] == '0')
-			sv->map.pos_y += sv->map.dir_y * moveSpeed;
+			sv->map.pos_y += sv->map.dir_y * MOVE_SPEED;
 
 		sv->img.img = mlx_new_image(sv->mlx, sv->map.res_w, sv->map.res_h);
 		sv->img.addr = mlx_get_data_addr(sv->img.img, &sv->img.bits_per_pixel, &sv->img.line_length,
@@ -68,14 +225,14 @@ void 		ft_event(int key, t_game *sv) // pass struct
 	if (key == S)
 	{
 		int mx_x, mx_y, my_x, my_y;
-		mx_x = (int) ((int) sv->map.pos_x - sv->map.dir_x * moveSpeed);
-		mx_y = (int) sv->map.pos_y;
-		my_x = (int) sv->map.pos_x;
-		my_y = (int) ((int) sv->map.pos_y - sv->map.dir_y * moveSpeed);
+		mx_x = (int)(sv->map.pos_x - sv->map.dir_x * MOVE_SPEED);
+		mx_y = (int)(sv->map.pos_y);
+		my_x = (int)(sv->map.pos_x);
+		my_y = (int)(sv->map.pos_y - sv->map.dir_y * MOVE_SPEED);
 		if (sv->map.map_array[mx_x + mx_y * sv->map.max_len] == '0')
-			sv->map.pos_x -= sv->map.dir_x * moveSpeed;
+			sv->map.pos_x -= sv->map.dir_x * MOVE_SPEED;
 		if (sv->map.map_array[my_x + my_y * sv->map.max_len] == '0')
-			sv->map.pos_y -= sv->map.dir_y * moveSpeed;
+			sv->map.pos_y -= sv->map.dir_y * MOVE_SPEED;
 
 		sv->img.img = mlx_new_image(sv->mlx, sv->map.res_w, sv->map.res_h);
 		sv->img.addr = mlx_get_data_addr(sv->img.img, &sv->img.bits_per_pixel, &sv->img.line_length,
@@ -88,14 +245,73 @@ void 		ft_event(int key, t_game *sv) // pass struct
 	if (key == A)
 	{
 		int mx_x, mx_y, my_x, my_y;
-		mx_x = (int) ((int) sv->map.pos_x - sv->map.dir_x * moveSpeed);
-		mx_y = (int) sv->map.pos_y;
-		my_x = (int) sv->map.pos_x;
-		my_y = (int) ((int) sv->map.pos_y - sv->map.dir_y * moveSpeed);
+		mx_x = (int)(sv->map.pos_x - sv->map.plane_x * MOVE_SPEED);
+		mx_y = (int)(sv->map.pos_y);
+		my_x = (int)(sv->map.pos_x);
+		my_y = (int)(sv->map.pos_y - sv->map.plane_y * MOVE_SPEED);
 		if (sv->map.map_array[mx_x + mx_y * sv->map.max_len] == '0')
-			sv->map.pos_x -= sv->map.dir_x * moveSpeed;
+			sv->map.pos_x -= sv->map.plane_x * MOVE_SPEED;
 		if (sv->map.map_array[my_x + my_y * sv->map.max_len] == '0')
-			sv->map.pos_y -= sv->map.dir_y * moveSpeed;
+			sv->map.pos_y -= sv->map.plane_y * MOVE_SPEED;
+		
+		sv->img.img = mlx_new_image(sv->mlx, sv->map.res_w, sv->map.res_h);
+		sv->img.addr = mlx_get_data_addr(sv->img.img, &sv->img.bits_per_pixel, &sv->img.line_length,
+										 &sv->img.endian);
+
+		casting_frame(sv);
+		mlx_put_image_to_window(sv->mlx, sv->win, sv->img.img, 0, 0);
+		mlx_destroy_image(sv->mlx, sv->img.img);
+	}
+	if (key == D)
+	{
+		int mx_x, mx_y, my_x, my_y;
+		mx_x = (int)(sv->map.pos_x + sv->map.plane_x * MOVE_SPEED);
+		mx_y = (int)(sv->map.pos_y);
+		my_x = (int)(sv->map.pos_x);
+		my_y = (int)(sv->map.pos_y + sv->map.plane_y * MOVE_SPEED);
+		if (sv->map.map_array[mx_x + mx_y * sv->map.max_len] == '0')
+			sv->map.pos_x += sv->map.plane_x * MOVE_SPEED;
+		if (sv->map.map_array[my_x + my_y * sv->map.max_len] == '0')
+			sv->map.pos_y += sv->map.plane_y * MOVE_SPEED;
+
+		sv->img.img = mlx_new_image(sv->mlx, sv->map.res_w, sv->map.res_h);
+		sv->img.addr = mlx_get_data_addr(sv->img.img, &sv->img.bits_per_pixel, &sv->img.line_length,
+										 &sv->img.endian);
+
+		casting_frame(sv);
+
+		mlx_put_image_to_window(sv->mlx, sv->win, sv->img.img, 0, 0);
+		mlx_destroy_image(sv->mlx, sv->img.img);
+	}
+	if (key == LEFT) // формула поворота ротейшн матрицы
+	{
+		//both camera direction and camera plane must be rotated
+		double old_dir_x = sv->map.dir_x;
+		sv->map.dir_x = sv->map.dir_x * cos(-ROTATION_SPEED) - sv->map.dir_y * sin(-ROTATION_SPEED);
+		sv->map.dir_y = old_dir_x * sin(-ROTATION_SPEED) + sv->map.dir_y * cos(-ROTATION_SPEED);
+		double old_plane_x = sv->map.plane_x;
+		sv->map.plane_x = sv->map.plane_x * cos(-ROTATION_SPEED) - sv->map.plane_y * sin(-ROTATION_SPEED);
+		sv->map.plane_y = old_plane_x * sin(-ROTATION_SPEED) + sv->map.plane_y * cos(-ROTATION_SPEED);
+		
+
+		sv->img.img = mlx_new_image(sv->mlx, sv->map.res_w, sv->map.res_h);
+		sv->img.addr = mlx_get_data_addr(sv->img.img, &sv->img.bits_per_pixel, &sv->img.line_length,
+										 &sv->img.endian);
+
+		casting_frame(sv);
+		mlx_put_image_to_window(sv->mlx, sv->win, sv->img.img, 0, 0);
+		mlx_destroy_image(sv->mlx, sv->img.img);
+	}
+	if (key == RIGHT)
+	{
+		//both camera direction and camera plane must be rotated
+		double old_dir_x = sv->map.dir_x;
+		sv->map.dir_x = sv->map.dir_x * cos(ROTATION_SPEED) - sv->map.dir_y * sin(ROTATION_SPEED);
+		sv->map.dir_y = old_dir_x * sin(ROTATION_SPEED) + sv->map.dir_y * cos(ROTATION_SPEED);
+		double old_plane_x = sv->map.plane_x;
+		sv->map.plane_x = sv->map.plane_x * cos(ROTATION_SPEED) - sv->map.plane_y * sin(ROTATION_SPEED);
+		sv->map.plane_y = old_plane_x * sin(ROTATION_SPEED) + sv->map.plane_y * cos(ROTATION_SPEED);
+
 
 		sv->img.img = mlx_new_image(sv->mlx, sv->map.res_w, sv->map.res_h);
 		sv->img.addr = mlx_get_data_addr(sv->img.img, &sv->img.bits_per_pixel, &sv->img.line_length,
@@ -107,17 +323,11 @@ void 		ft_event(int key, t_game *sv) // pass struct
 	}
 	if (key == 3)
 	{
-//		colours[0] = 0;
-//		colours[1] = 255;
-//		colours[2] = 0;
-//		colours[3] = 0;
 
-        sv->player.player_x = 0 + incr_xy; // player x position
-        sv->player.player_y = 0 + incr_xy; // player y position
+        sv->player.player_x = 0 ; // player x position
+        sv->player.player_y = 0 ; // player y position
         sv->player.player_a = 0;
         printf("player_a: %f, player_x: %f, player_y: %f\n", sv->player.player_a, sv->player.player_x, sv->player.player_y);
-        incr_a += increase_a_coefficient_12;
-        incr_xy += 1;
 
 		mlx_destroy_image(sv->mlx, sv->img.img);
 		draw_map(sv);

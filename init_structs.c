@@ -34,15 +34,6 @@ static void				init_map(t_conf *map)
 	map->player_num = 0;
 }
 
-static void		init_keys(t_game *sv)
-{
-	sv->keys.w = 0;
-	sv->keys.s = 0;
-	sv->keys.a = 0;
-	sv->keys.d = 0;
-	sv->keys.arrow_left = 0;
-	sv->keys.arrow_right = 0;
-}
 
 static void		init_img(t_game *sv)
 {

@@ -12,6 +12,17 @@
 
 #include "cub3d.h"
 
+
+void		init_keys(t_game *sv)
+{
+	sv->keys.w = 0;
+	sv->keys.a = 0;
+	sv->keys.s = 0;
+	sv->keys.d = 0;
+	sv->keys.left = 0;
+	sv->keys.right = 0;
+}
+
 int			main(int argc, char **argv)
 {
 	t_game	sv;
@@ -65,9 +76,13 @@ int			main(int argc, char **argv)
 	printf("player: %d\n", sv.map.player_num);
 
 
-//	mlx_key_hook(sv.win, ft_event, &sv);
-	mlx_hook(sv.win, 2, 1L<<0, ft_event, &sv);//press
-//	mlx_hook(sv.win, 3, 1L<<1, ft_event, &sv);//release
+//	mlx_key_hook(sv.win, press_button, &sv);
+
+	mlx_loop_hook(sv.mlx, render_frame, &sv);
+
+	mlx_hook(sv.win, 2, 1L<<0, press_button, &sv);//press
+	mlx_hook(sv.win, 3, 1L<<1, release_button, &sv);//release
+
 	mlx_hook(sv.win, 17, 1L << 17, ft_close, &sv);
 	mlx_loop(sv.mlx);
 

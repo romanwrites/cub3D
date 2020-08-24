@@ -46,7 +46,7 @@ void		set_player_vectors(t_game *sv, int j, int i)
 		sv->map.plane_y = 1;
 	}
 	sv->map.map_array[j] = '0';
-	sv->map.plane_x *= tan(80/2 * M_PI/180); // FOV
+	sv->map.plane_x *= tan(80/2 * M_PI/180); // FOV // можно просто значение написать, можно задефайнить фов
 	sv->map.plane_y *= tan(80/2 * M_PI/180);
 	printf ("\nPOSITION-------------------------\nx: %f, y: %f, dir_x: %f, dir_y: %f\n\n", sv->map.pos_x,sv->map.pos_y,sv->map.dir_x,	sv->map.dir_y);
 }
@@ -84,7 +84,7 @@ void		casting_frame(t_game *sv)
 		//length of ray from one x or y-side to next x or y-side
 		double delta_dist_x = fabs(1 / ray_dir_x);
 		double delta_dist_y = fabs(1 / ray_dir_y);
-		double perp_wall_dist;
+		double perp_wall_dist; //нужно для избегания фишай эффекта
 
 		//what direction to step in x or y-direction (either +1 or -1)
 		int step_x;

@@ -25,45 +25,67 @@
 #include <stdio.h>
 /* temp */
 
-/* keys */
-//# define W 13
-//# define S 1
-//# define A 0
-//# define D 2
-# define LEFT 123
-# define RIGHT 124
-# define ESC 53
+
 
 /* errors */
-# define ERR_MALLOC -1
-# define ERR_ARGC_MIN -2
-# define ERR_ARGC_MAX -5
-# define ERR_FILENAME -3
-# define ERR_ARG_SAVE -4
-# define ERR_READ_MAP -6
-# define ERR_MAP_VALIDITY -7
-# define ERR_MAP_R -8
-# define ERR_MAP_BAD_ARG -9
-# define ERR_MAP_T -10
-# define ERR_BAD_MAP -11
-# define ERR_MAP_C -12
-# define ERR_MAP_OPEN -13
+//# define ERR_MALLOC -1
+//# define ERR_ARGC_MIN -2
+//# define ERR_ARGC_MAX -5
+//# define ERR_FILENAME -3
+//# define ERR_ARG_SAVE -4
+//# define ERR_READ_MAP -6
+//# define ERR_MAP_VALIDITY -7
+//# define ERR_MAP_R -8
+//# define ERR_MAP_BAD_ARG -9
+//# define ERR_MAP_T -10
+//# define ERR_BAD_MAP -11
+//# define ERR_MAP_C -12
+//# define ERR_MAP_OPEN -13
+
+# define MOVE_SPEED 0.14
+# define ROTATION_SPEED 0.07
+# define NINETY_DEGREES 2 * M_PI / 4
 
 
-enum		e_keys {
-	A = 0,
-	S = 1,
-	D = 2,
-	W = 13,
+
+
+
+enum		e_errors {
+	ERR_MALLOC = -15,
+	ERR_ARGC_MIN,
+	ERR_ARGC_MAX,
+	ERR_FILENAME,
+	ERR_ARG_SAVE,
+	ERR_READ_MAP,
+	ERR_MAP_VALIDITY,
+	ERR_MAP_R,
+	ERR_MAP_BAD_ARG,
+	ERR_MAP_T,
+	ERR_BAD_MAP,
+	ERR_MAP_C,
+	ERR_MAP_OPEN,
 };
+
+/* keys */
+enum		e_keys {
+	A,
+	S,
+	D,
+	W = 13,
+	ESC = 53,
+	LEFT = 123,
+	RIGHT = 124,
+};
+
 
 
 /* structs */
 
 //#include "libft.h"
+
 typedef struct	s_data {
 	void				*img;
-	unsigned char		*addr;
+	char		*addr;
 	int					bits_per_pixel;
 	int					line_length;
 	int					endian;
@@ -93,21 +115,21 @@ typedef struct	s_conf {
 	double		plane_y;
 	double		time; //time of current frame
 	double		old_time; //time of previous frame
+	double move_speed;
+	double rotation_speed;
 }				t_conf;
 
 typedef struct s_keys {
-	unsigned int	w;
-	unsigned int	s;
-	unsigned int	a;
-	unsigned int	d;
-	unsigned int	arrow_left;
-	unsigned int	arrow_right;
+	_Bool		w;
+	_Bool		s;
+	_Bool		a;
+	_Bool		d;
+	_Bool		left;
+	_Bool		right;
 }				t_keys;
 
 
 typedef struct s_player {
-//	double			p_x;
-//	double			p_y;
 	double player_x; // player x position
 	double player_y; // player y position
 	double player_a;
@@ -135,9 +157,6 @@ _Bool		    parse_args(int ac, char *filename, char *save);
 void			read_map(const int fd, t_game *sv);
 void			what_is_line_content(const char *str, t_game *sv, _Bool *map_started_flag);
 
-
-
-
 void			ft_put_map_line(char *s); //tmp
 _Bool			ft_all_isprint(const char *s);
 _Bool			ft_all_digits(const char *s);
@@ -158,21 +177,28 @@ void			create_map_array(t_game *sv);
 void			draw_black_screen(t_game *sv, int win_h, int win_w, int color);
 
 
+/* hooks and render */
+void 			ft_event(int key, t_game *sv);
+void			ft_put_map_line(char *s);
+void		press_button(int key, t_game *sv);
+void		release_button(int key, t_game *sv);
+void		check_buttons_state(t_game *sv);
+
 void			casting_frame(t_game *sv);
+
+int		render_frame(t_game *sv);
 
 
 
 /* init */
 
 void			init_game(t_game *sv);
+void		init_keys(t_game *sv);
 
 
 
 
 
-/* hooks */
-void 			ft_event(int key, t_game *sv);
-void			ft_put_map_line(char *s);
 
 
 /* exit */
