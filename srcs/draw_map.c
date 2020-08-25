@@ -172,7 +172,11 @@ void		cast_frame(t_game *sv)
 //		}
 
 		//draw the pixels of the stripe as a vertical line
-		draw_line_bresenham(x, draw_start, x, draw_end, color, sv);
+		for (int y = draw_start; y < draw_end; y++)
+		{
+			my_mlx_pixel_put(sv, x, y, get_pixel(&sv->north,x % 64,y % 64));
+		}
+//		draw_line_bresenham(x, draw_start, x, draw_end, color, sv);
 	}
 }
 

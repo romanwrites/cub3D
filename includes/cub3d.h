@@ -194,7 +194,8 @@ void				parse_color(const char *str, t_conf *map);
 
 
 
-
+//textures
+unsigned int	get_pixel(t_data *img, int x, int y);
 
 
 

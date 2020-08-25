@@ -14,7 +14,7 @@ set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -L. -lmlx -framework OpenGL -framework AppK
 file(GLOB
         LIBFT "libft/libft/*.c")
 file(GLOB
-        SRCS "srcs/*.c" "srcs/parser/*.c")
+        SRCS "srcs/*.c" "srcs/parser/*.c" "srcs/utils/*.c")
 
 add_executable(cub3D
         get_next_line/get_next_line.c
@@ -27,4 +27,4 @@ add_executable(cub3D
         libft/libft/double_linked_lists/ft_my_lstnew.c
         libft/libft/double_linked_lists/ft_my_lstadd_back.c
         libft/libft/double_linked_lists/ft_my_lstlast.c
-        libft/libft/double_linked_lists/ft_my_lstiter.c)
+        libft/libft/double_linked_lists/ft_my_lstiter.c srcs/utils/get_pixel.c)

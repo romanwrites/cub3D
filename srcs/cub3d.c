@@ -49,13 +49,27 @@ int			main(int argc, char **argv)
 								 &sv.img.endian);
 
 
-//	sv.north.img = mlx_new_image(sv.mlx, sv.map.res_w, sv.map.res_h);
-//	sv.north.addr = mlx_get_data_addr(sv.north.img, &sv.north.bits_per_pixel, &sv.north.line_length,
-//									  &sv.north.endian);
-//	mlx_xpm_file_to_image(sv.north.img, sv.map.no_path, &sv.map.no_w, &sv.map.no_w);
+
+
+
+	sv.north.img = mlx_xpm_file_to_image(sv.mlx, sv.map.no_path, &sv.map.no_w, &sv.map.no_w);
+	sv.north.addr = mlx_get_data_addr(sv.north.img, &sv.north.bits_per_pixel, &sv.north.line_length,
+									  &sv.north.endian);
+
+
+//	int y = 0;
+//	for (int x = 0; x < 63; x++)
+//	{
+//		for (int y = 0; y < 63; y++)
+//		{
+//			my_mlx_pixel_put(&sv, x, y, get_pixel(&sv.north,x,y));
+//		}
+//	}
+
+
 //	mlx_put_image_to_window(sv.mlx, sv.win, sv.north.img, 0, 0);
 
-	cast_frame(&sv);
+//	cast_frame(&sv);
 	mlx_put_image_to_window(sv.mlx, sv.win, sv.img.img, 0, 0);
 	mlx_destroy_image(sv.mlx, sv.img.img);
 
