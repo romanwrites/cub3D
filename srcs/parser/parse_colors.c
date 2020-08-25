@@ -54,13 +54,13 @@ void				parse_color(const char *str, t_conf *map)
 	i = 2;
 	j = -1;
 	if ((str[0] == 'C' && c) || (str[0] == 'F' && f) || \
-		str[1] != ' ' || !(ft_isdigit(str[2])) || !(count_commas(str)))
+		!(ft_isdigit(str[1])) || !(count_commas(str)))
 		ft_error_close(ERR_MAP_C);
 	while (ft_isdigit(str[i]) || str[i] == ',')
 		i++;
 	if (i > 13 || str[i] != '\0')
 		ft_error_close(ERR_MAP_C);
-	if (!(rgb = ft_split(str + 2, ',')))
+	if (!(rgb = ft_split(str + 1, ',')))
 		ft_error_close(ERR_MALLOC);
 	check_rgb(rgb);
 	if (str[0] == 'C')
@@ -77,4 +77,16 @@ void				parse_color(const char *str, t_conf *map)
 	}
 	else
 		ft_error_close(ERR_MAP_C);
+}
+
+void		handle_color(const char *str, t_conf *map)
+{
+	char		*tmp;
+
+	if (!(ft_all_isprint(str)))
+		ft_error_close(ERR_MAP_C);
+	if (!(tmp = ft_replace(str, " ", "")))
+		ft_error_close(ERR_MALLOC);
+	parse_color(tmp, map);
+	free(tmp);
 }

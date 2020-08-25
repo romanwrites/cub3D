@@ -43,3 +43,27 @@ _Bool 		is_valid_map_bit(char c)
 	return (c == '0' || c == '1' || c == '2' || c == ' ' || \
 			c == 'N' || c == 'S' || c == 'W' || c == 'E');
 }
+
+void		all_map_bits_are_valid(t_game *sv)
+{
+	int 	i;
+
+	i = 0;
+	while (sv->tmp->next != NULL)
+	{
+		while (is_valid_map_bit(((char *)(sv->tmp->content))[i]))
+		{
+			i++;
+		}
+		if ((((char *)(sv->tmp->content))[i]) != '\0')
+			ft_error_close(ERR_MAP_VALIDITY);
+		i = 0;
+		sv->tmp = sv->tmp->next;
+	}
+	while (is_valid_map_bit(((char *)(sv->tmp->content))[i]))
+	{
+		i++;
+	}
+	if ((((char *)(sv->tmp->content))[i]) != '\0')
+		ft_error_close(ERR_MAP_VALIDITY);
+}

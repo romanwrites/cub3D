@@ -29,17 +29,28 @@ static void			save_path(char **dst, const char *src)
 
 void			parse_textures(const char *str, t_conf *map)
 {
-	if (ft_strnstr(str, "NO ", 3) && !(ft_isspace(str[3])))
-		save_path(&map->no_path, str + 3);
-	else if (ft_strnstr(str, "SO ", 3) && !(ft_isspace(str[3])))
-		save_path(&map->so_path, str + 3);
-	else if (ft_strnstr(str, "WE ", 3) && !(ft_isspace(str[3])))
-		save_path(&map->we_path, str + 3);
-	else if (ft_strnstr(str, "EA ", 3) && !(ft_isspace(str[3])))
-		save_path(&map->ea_path, str + 3);
-	else if (str[0] == 'S' && str[1] == ' ' && !(ft_isspace(str[2])))
-		save_path(&map->s_path, str + 2);
+	if (ft_strnstr(str, "NO", 2) && !(ft_isspace(str[2])))
+		save_path(&map->no_path, str + 2);
+	else if (ft_strnstr(str, "SO", 2) && !(ft_isspace(str[2])))
+		save_path(&map->so_path, str + 2);
+	else if (ft_strnstr(str, "WE", 2) && !(ft_isspace(str[2])))
+		save_path(&map->we_path, str + 2);
+	else if (ft_strnstr(str, "EA", 2) && !(ft_isspace(str[2])))
+		save_path(&map->ea_path, str + 2);
+	else if (str[0] == 'S')
+		save_path(&map->s_path, str + 1);
 	else
 		ft_error_close(ERR_MAP_T);
 }
 
+void		handle_textures(const char *str, t_conf *map)
+{
+	char		*tmp;
+
+	if (texture_paths_filled(map) || !(ft_all_isprint(str)))
+		ft_error_close(ERR_MAP_T);
+	if (!(tmp = ft_replace(str, " ", "")))
+		ft_error_close(ERR_MALLOC);
+	parse_textures(tmp, map);
+	free(tmp);
+}

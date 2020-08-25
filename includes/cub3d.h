@@ -6,7 +6,7 @@
 /*   By: mkristie <kukinpower@ya.ru>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/19 11:03:51 by mkristie          #+#    #+#             */
-/*   Updated: 2020/08/05 22:59:13 by mkristie         ###   ########.fr       */
+/*   Updated: 2020/08/25 18:17:11 by mkristie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@
 //# define ERR_MAP_OPEN -13
 
 # define MOVE_SPEED					0.14
-# define ROTATION_SPEED				0.1
+# define ROT				0.1
 # define NINETY_DEGREES				2 * M_PI / 4
 # define TEX_W						64
 # define TEX_H						64
@@ -123,7 +123,7 @@ typedef struct	s_conf {
 	double		time; //time of current frame
 	double		old_time; //time of previous frame
 	double		move_speed;
-	double		rotation_speed;
+	// double		ROT;
 }				t_conf;
 
 typedef struct s_keys {
@@ -157,23 +157,46 @@ typedef struct		s_game {
 	t_data			east;
 }					t_game;
 
-/* parse */
+/* parse_map */
 void			parse_map(t_game *sv);
-//_Bool 		is_valid_map_bit(char c);
 
 _Bool		    parse_args(int ac, char *filename, char *save);
 void			read_map(const int fd, t_game *sv);
-void			what_is_line_content(const char *str, t_game *sv, _Bool *map_started_flag);
+void			what_is_line_content(char *str, t_game *sv, _Bool *map_started_flag);
 
-void			ft_put_map_line(char *s); //tmp
+
+
+//parse_map_utils1
 _Bool			ft_all_isprint(const char *s);
 _Bool			ft_all_digits(const char *s);
 _Bool 		    is_valid_map_bit(char c);
+void			all_map_bits_are_valid(t_game *sv);
 
+
+//parse_map_utils2
+void			check_horizontal_border(const char *str);
+void			check_vertical_borders(t_game *sv);
+void			check_sign(const char *str, const char *previous, const char *next, t_game *sv);
+void			check_map_params(t_game *sv);
+
+//parse_resolution
+void		parse_resolution(char *str, t_conf *map);
+
+//parse_textures
+void		handle_textures(const char *str, t_conf *map);
 void			parse_textures(const char *str, t_conf *map);
 _Bool 		    texture_paths_filled(t_conf *map);
 
-void			parse_color(const char *str, t_conf *map);
+
+//parse_color
+void		handle_color(const char *str, t_conf *map);
+void				parse_color(const char *str, t_conf *map);
+
+
+
+
+
+
 
 
 
@@ -185,28 +208,27 @@ void			create_map_array(t_game *sv);
 void			draw_black_screen(t_game *sv, int win_h, int win_w, int color);
 
 
-/* hooks and render */
-void 			ft_event(int key, t_game *sv);
-void			ft_put_map_line(char *s);
-int		press_key(int key, t_game *sv);
-int		release_key(int key, t_game *sv);
-void		check_buttons_state(t_game *sv);
-
-void			casting_frame(t_game *sv);
-
-int		render_frame(t_game *sv);
+/* render */
+void			cast_frame(t_game *sv);
+int				render_frame(t_game *sv);
 
 
 
 /* init */
 void			init_game(t_game *sv);
-//void		init_keys(t_game *sv);
 
+/* keys */
+int			press_key(int key, t_game *sv);
+int			release_key(int key, t_game *sv);
+void		check_buttons_state(t_game *sv);
 
-
-
-
-
+/* moves and turns */
+void		move_w(t_game *sv);
+void		move_a(t_game *sv);
+void		move_s(t_game *sv);
+void		move_d(t_game *sv);
+void		turn_left(t_game *sv);
+void		turn_right(t_game *sv);
 
 /* exit */
 void			ft_error_close(int error_code);
@@ -227,5 +249,8 @@ unsigned int	get_opposite(unsigned int color);
 /* drawings */
 void		my_mlx_pixel_put(t_game *sv, int x, int y, unsigned int color);
 void		draw_line_bresenham(int x0, int y0, int x1, int y1, unsigned int colour, t_game *sv);
+
+
+
 
 #endif

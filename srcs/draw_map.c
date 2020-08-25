@@ -6,7 +6,7 @@
 /*   By: mkristie <kukinpower@ya.ru>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/12 03:24:11 by mkristie          #+#    #+#             */
-/*   Updated: 2020/08/12 03:24:35 by mkristie         ###   ########.fr       */
+/*   Updated: 2020/08/25 18:17:14 by mkristie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ void		set_plane_and_time(t_game *sv)
 	sv->map.old_time = 0;; //time of previous frame
 }
 
-void		casting_frame(t_game *sv)
+void		cast_frame(t_game *sv)
 {
 	unsigned int color;
 

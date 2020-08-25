@@ -12,11 +12,9 @@
 
 #include "cub3d.h"
 
-
-
-
 int			main(int argc, char **argv)
 {
+
 	t_game	sv;
 	char	*filename;
 	if (argc == 1)
@@ -28,6 +26,7 @@ int			main(int argc, char **argv)
 		{
 			init_game(&sv);
 			read_map(open(argv[1], O_RDONLY), &sv);
+			check_map_params(&sv);
 		}
 //		ft_my_lstiter(sv.head, (void *)ft_put_map_line);  //дебаг печать
 	}
@@ -50,12 +49,15 @@ int			main(int argc, char **argv)
 								 &sv.img.endian);
 
 
+//	sv.north.img = mlx_new_image(sv.mlx, sv.map.res_w, sv.map.res_h);
+//	sv.north.addr = mlx_get_data_addr(sv.north.img, &sv.north.bits_per_pixel, &sv.north.line_length,
+//									  &sv.north.endian);
+//	mlx_xpm_file_to_image(sv.north.img, sv.map.no_path, &sv.map.no_w, &sv.map.no_w);
+//	mlx_put_image_to_window(sv.mlx, sv.win, sv.north.img, 0, 0);
 
-
-
-	casting_frame(&sv);
-//	mlx_put_image_to_window(sv.mlx, sv.win, sv.img.img, 0, 0);
-//	mlx_destroy_image(sv.mlx, sv.img.img);
+	cast_frame(&sv);
+	mlx_put_image_to_window(sv.mlx, sv.win, sv.img.img, 0, 0);
+	mlx_destroy_image(sv.mlx, sv.img.img);
 
 	printf("bits_per_pixel: %d, line_length %%d: %d, line_length %%u: %d, endian: %d\n", sv.img.bits_per_pixel, sv.img.line_length, sv.img.line_length, sv.img.endian);
 //	printf("bits_per_pixel: %u, line_length: %u\n", vars->img.addr[0], vars->img.addr[1], vars->img.addr[2], vars->img.addr[3]);
@@ -66,7 +68,7 @@ int			main(int argc, char **argv)
 
 //	mlx_key_hook(sv.win, press_key, &sv);
 
-//	mlx_loop_hook(sv.mlx, render_frame, &sv);
+	mlx_loop_hook(sv.mlx, render_frame, &sv);
 
 	mlx_hook(sv.win, KEY_PRESS, KEY_PRESS_MASK, press_key, &sv);
 	mlx_hook(sv.win, KEY_RELEASE, KEY_RELEASE_MASK, release_key, &sv);
