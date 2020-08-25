@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<project version="4">
-  <component name="VcsDirectoryMappings">
-    <mapping directory="$PROJECT_DIR$" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/get_next_line" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/libft" vcs="Git" />
-  </component>
-</project>
