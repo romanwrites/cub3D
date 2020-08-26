@@ -6,57 +6,17 @@
 /*   By: mkristie <kukinpower@ya.ru>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/12 03:24:11 by mkristie          #+#    #+#             */
-/*   Updated: 2020/08/25 18:17:14 by mkristie         ###   ########.fr       */
+/*   Updated: 2020/08/26 20:58:11 by mkristie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-void		set_player_vectors(t_game *sv, int j, int i)
-{
-	sv->map.player_num = j;
-	sv->map.pos_x = (double)i + 0.5;
-	sv->map.pos_y = (((double)j - i) / sv->map.max_len) + 0.5;
-	if (sv->map.map_array[j] == 'N')
-	{
-		sv->map.dir_x = 0;
-		sv->map.dir_y = -0.66;
-		sv->map.plane_x = 0.66;
-		sv->map.plane_y = 0;
-	}
-	else if (sv->map.map_array[j] == 'S')
-	{
-		sv->map.dir_x = 0;
-		sv->map.dir_y = 1;
-		sv->map.plane_x = -1;
-		sv->map.plane_y = 0;
-	}
-	else if (sv->map.map_array[j] == 'W')
-	{
-		sv->map.dir_x = -1;
-		sv->map.dir_y = 0;
-		sv->map.plane_x = 0;
-		sv->map.plane_y = -1;
-	}
-	else if (sv->map.map_array[j] == 'E')
-	{
-		sv->map.dir_x = 1;
-		sv->map.dir_y = 0;
-		sv->map.plane_x = 0;
-		sv->map.plane_y = 1;
-	}
-	sv->map.map_array[j] = '0';
-	sv->map.plane_x *= FOV;
-	sv->map.plane_y *= FOV;
-}
-
-void		draw_ceiling(t_game *sv, int start, int finish)
-{
-
-}
-
 void		cast_frame(t_game *sv)
 {
+    //1D Zbuffer
+    double ZBuffer[sv->map.res_w];
+
 	unsigned int color;
 	unsigned int texture_pixel;
 	int texture_x;
@@ -109,7 +69,6 @@ void		cast_frame(t_game *sv)
 			step_y = 1;
 			side_dist_y = (map_y + 1.0 - sv->map.pos_y) * delta_dist_y;
 		}
-
 		//perform DDA
 		while (hit == 0)
 		{
@@ -160,12 +119,8 @@ void		cast_frame(t_game *sv)
 		int draw_end = line_height / 2 + sv->map.res_h / 2;
 		if(draw_end >= sv->map.res_h)draw_end = sv->map.res_h - 1;
 
-		//give x and y sides different brightness
-//		if (side == 1)
-//		{
-//			color = color / 2;
-//		}
-	//texturing calculations
+
+		//texturing calculations
 		int texNum = sv->map.map_array[map_x + map_y * sv->map.max_len - 1]; // worldMap[mapX][mapY] - 1; //1 subtracted from it so that texture 0 can be used!
 
 		//calculate value of wallX
@@ -177,7 +132,6 @@ void		cast_frame(t_game *sv)
 		wallX -= floor((wallX));
 
 		int texX;
-
 		// NORTH----------------------------------
 		if (side == 1 && step_y < 0)
 		{
@@ -210,15 +164,6 @@ void		cast_frame(t_game *sv)
 				my_mlx_pixel_put(sv, x, y, add_shade(0.4, texture_pixel));
 			}
 		}
-
-//
-//		//x coordinate on the texture
-//		texX = (int)(wallX * (double)sv->map.no_w);
-//		if(side == 0 && ray_dir_x > 0)
-//			texX = sv->map.no_w - texX - 1;
-//		if(side == 1 && ray_dir_y < 0)
-//			texX = sv->map.no_w - texX - 1;
-
 		// EAST----------------------------------
 		else if (side == 0 && step_x < 0)
 		{
@@ -251,41 +196,29 @@ void		cast_frame(t_game *sv)
 				my_mlx_pixel_put(sv, x, y, texture_pixel);
 			}
 		}
-//		else
-//			draw_line_bresenham(x, draw_start, x, draw_end, color, sv);
 		draw_line_bresenham(x, 0, x, draw_start, sv->map.ceiling_color, sv);
 		draw_line_bresenham(x, draw_end, x, sv->map.res_h - 1, sv->map.floor_color, sv);
-//		draw_ceiling(sv, draw_start, draw_end);
+        //SET THE ZBUFFER FOR THE SPRITE CASTING
+        ZBuffer[x] = perpWallDist; //perpendicular distance is used
 	}
 }
 
-void		create_map_array(t_game *sv)
-{
-	int		i;
-	int 	j;
+//sort the sprites based on distance
+//void sortSprites(int* order, double* dist, int amount)
+//{
+//	std::vector<std::pair<double, int>> sprites(amount);
+//	for(int i = 0; i < amount; i++) {
+//		sprites[i].first = dist[i];
+//		sprites[i].second = order[i];
+//	}
+//	std::sort(sprites.begin(), sprites.end());
+//	// restore in reverse order to go from farthest to nearest
+//	for(int i = 0; i < amount; i++) {
+//		dist[i] = sprites[amount - i - 1].first;
+//		order[i] = sprites[amount - i - 1].second;
+//	}
+//}
 
-	i = 0;
-	j = 0;
-	if (!(sv->map.map_array = ft_calloc(1, sv->map.map_rows * sv->map.map_cols + 1)))
-		ft_error_close(ERR_MALLOC);
-	while (sv->lst)
-	{
-		while (((char *)sv->lst->content)[i])
-		{
-			sv->map.map_array[j] = ((char *)sv->lst->content)[i];
-			if (sv->map.map_array[j] == 'N' || sv->map.map_array[j] == 'S' || \
-				sv->map.map_array[j] == 'W' || sv->map.map_array[j] == 'E')
-			{
-				set_player_vectors(sv, j, i);
-			}
-			i++;
-			j++;
-		}
-		i = 0;
-		sv->lst = sv->lst->next;
-	}
-	sv->map.map_array[j] = '\0';
-}
 
 void draw_rectangle(t_game *sv, const int img_w, const int img_h, const int x, const int y, const int w, const int h, int color)
 {

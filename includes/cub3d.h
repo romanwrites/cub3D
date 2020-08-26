@@ -6,7 +6,7 @@
 /*   By: mkristie <kukinpower@ya.ru>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/19 11:03:51 by mkristie          #+#    #+#             */
-/*   Updated: 2020/08/25 18:17:11 by mkristie         ###   ########.fr       */
+/*   Updated: 2020/08/26 18:54:09 by mkristie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -204,7 +204,7 @@ unsigned int	get_pixel(t_data *img, int x, int y);
 
 
 
-
+void		create_map_array(t_game *sv);
 
 
 /* draw_map */
@@ -212,7 +212,7 @@ void			draw_map(t_game *sv); // bad algorithm
 
 void			create_map_array(t_game *sv);
 void			draw_black_screen(t_game *sv, int win_h, int win_w, int color);
-
+void		set_player_vectors(t_game *sv, int j, int i);
 
 /* render */
 void			cast_frame(t_game *sv);
