@@ -43,7 +43,7 @@
 //# define ERR_MAP_OPEN -13
 
 # define FOV						tan(80/2 * M_PI/180)
-# define MOVE_SPEED					0.14
+# define MOVE_SPEED					0.16
 # define ROT						0.1
 # define NINETY_DEGREES				2 * M_PI / 4
 # define TEX_W						64
