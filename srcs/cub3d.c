@@ -34,14 +34,13 @@ void		create_texture_imgs(t_game *sv)
 
 int			main(int argc, char **argv)
 {
-
 	t_game	sv;
 	char	*filename;
+
 	if (argc == 1)
 		ft_error_close(ERR_ARGC_MIN);
 	else if (argc == 2)
 	{
-		printf("filename: %s\n", argv[1]);
 		if (parse_args(2, argv[1], NULL))
 		{
 			init_game(&sv);
@@ -57,8 +56,6 @@ int			main(int argc, char **argv)
 	filename = argv[1];
 	filename[ft_strlen(filename) - 4] = '\0';
 
-	printf("w: %d, h: %d\n", sv.map.res_w,sv.map.res_h);
-
 	create_map_array(&sv);
 
 	sv.mlx = mlx_init();
@@ -73,15 +70,6 @@ int			main(int argc, char **argv)
 	cast_frame(&sv);
 	mlx_put_image_to_window(sv.mlx, sv.win, sv.img.img, 0, 0);
 	mlx_destroy_image(sv.mlx, sv.img.img);
-
-	printf("bits_per_pixel: %d, line_length %%d: %d, line_length %%u: %d, endian: %d\n", sv.img.bits_per_pixel, sv.img.line_length, sv.img.line_length, sv.img.endian);
-//	printf("bits_per_pixel: %u, line_length: %u\n", vars->img.addr[0], vars->img.addr[1], vars->img.addr[2], vars->img.addr[3]);
-//	printf("data.addr: %s\nlen data.addr: %zu\n", sv.img.addr, ft_strlen(sv.img.addr));
-	printf("lines size: %d\n", sv.map.map_rows);
-	printf("player: %d\n", sv.map.player_num);
-
-
-//	mlx_key_hook(sv.win, press_key, &sv);
 
 	mlx_loop_hook(sv.mlx, render_frame, &sv);
 

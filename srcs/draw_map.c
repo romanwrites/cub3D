@@ -15,7 +15,7 @@
 void		set_player_vectors(t_game *sv, int j, int i)
 {
 	sv->map.player_num = j;
-	sv->map.pos_x = (double)i + 0.5; // не позволять сдвинуться внутрь стены
+	sv->map.pos_x = (double)i + 0.5;
 	sv->map.pos_y = (((double)j - i) / sv->map.max_len) + 0.5;
 	if (sv->map.map_array[j] == 'N')
 	{
@@ -48,20 +48,7 @@ void		set_player_vectors(t_game *sv, int j, int i)
 	sv->map.map_array[j] = '0';
 	sv->map.plane_x *= FOV;
 	sv->map.plane_y *= FOV;
-	printf ("\nPOSITION-------------------------\nx: %f, y: %f, dir_x: %f, dir_y: %f\n\n", sv->map.pos_x,sv->map.pos_y,sv->map.dir_x,	sv->map.dir_y);
 }
-
-void		set_plane_and_time(t_game *sv)
-{
-//	sv->map.plane_x = 0; //   // всегда должны быть перпендикулярны вектору направления
-//	sv->map.plane_y = 1; //the 2d raycaster version of camera plane
-	// потом этот вектор буду вращать с вектором направления      //
-
-
-	sv->map.time = 0; //time of current frame
-	sv->map.old_time = 0;; //time of previous frame
-}
-
 
 void		draw_ceiling(t_game *sv, int start, int finish)
 {
@@ -298,7 +285,6 @@ void		create_map_array(t_game *sv)
 		sv->lst = sv->lst->next;
 	}
 	sv->map.map_array[j] = '\0';
-	set_plane_and_time(sv);
 }
 
 void draw_rectangle(t_game *sv, const int img_w, const int img_h, const int x, const int y, const int w, const int h, int color)

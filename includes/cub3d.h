@@ -129,10 +129,6 @@ typedef struct	s_conf {
 	double 		dir_y; //x and y direction vector
 	double		plane_x; //the 2d raycaster version of camera plane
 	double		plane_y;
-	double		time; //time of current frame
-	double		old_time; //time of previous frame
-	double		move_speed;
-	// double		ROT;
 }				t_conf;
 
 typedef struct s_keys {
