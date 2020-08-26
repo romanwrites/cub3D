@@ -48,13 +48,21 @@ int			main(int argc, char **argv)
 	sv.img.addr = mlx_get_data_addr(sv.img.img, &sv.img.bits_per_pixel, &sv.img.line_length,
 								 &sv.img.endian);
 
-
-
-
-
-	sv.north.img = mlx_xpm_file_to_image(sv.mlx, sv.map.no_path, &sv.map.no_w, &sv.map.no_w);
+	sv.north.img = mlx_xpm_file_to_image(sv.mlx, sv.map.no_path, &sv.map.no_w, &sv.map.no_h);
 	sv.north.addr = mlx_get_data_addr(sv.north.img, &sv.north.bits_per_pixel, &sv.north.line_length,
 									  &sv.north.endian);
+
+	sv.south.img = mlx_xpm_file_to_image(sv.mlx, sv.map.so_path, &sv.map.so_w, &sv.map.so_h);
+	sv.south.addr = mlx_get_data_addr(sv.south.img, &sv.south.bits_per_pixel, &sv.south.line_length,
+									  &sv.south.endian);
+
+	sv.east.img = mlx_xpm_file_to_image(sv.mlx, sv.map.ea_path, &sv.map.ea_w, &sv.map.ea_h);
+	sv.east.addr = mlx_get_data_addr(sv.east.img, &sv.east.bits_per_pixel, &sv.east.line_length,
+									  &sv.east.endian);
+
+	sv.west.img = mlx_xpm_file_to_image(sv.mlx, sv.map.we_path, &sv.map.we_w, &sv.map.we_h);
+	sv.west.addr = mlx_get_data_addr(sv.west.img, &sv.west.bits_per_pixel, &sv.west.line_length,
+									  &sv.west.endian);
 
 
 //	int y = 0;
@@ -69,7 +77,7 @@ int			main(int argc, char **argv)
 
 //	mlx_put_image_to_window(sv.mlx, sv.win, sv.north.img, 0, 0);
 
-//	cast_frame(&sv);
+	cast_frame(&sv);
 	mlx_put_image_to_window(sv.mlx, sv.win, sv.img.img, 0, 0);
 	mlx_destroy_image(sv.mlx, sv.img.img);
 

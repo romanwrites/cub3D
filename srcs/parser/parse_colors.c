@@ -66,14 +66,16 @@ void				parse_color(const char *str, t_conf *map)
 	if (str[0] == 'C')
 	{
 		while (j++ < 2)
-			map->ceiling_color[j] = ft_atoi(rgb[j]);
+			map->ceiling_rgb[j] = ft_atoi(rgb[j]);
 		c = 1;
+		map->ceiling_color = create_trgb(0, map->ceiling_rgb[0], map->ceiling_rgb[1], map->ceiling_rgb[2]);
 	}
 	else if (str[0] == 'F')
 	{
 		while (j++ < 2)
-			map->floor_color[j] = ft_atoi(rgb[j]);
+			map->floor_rgb[j] = ft_atoi(rgb[j]);
 		f = 1;
+		map->floor_color = create_trgb(0, map->floor_rgb[0], map->floor_rgb[1], map->floor_rgb[2]);
 	}
 	else
 		ft_error_close(ERR_MAP_C);

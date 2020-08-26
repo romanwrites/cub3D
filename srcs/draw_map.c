@@ -20,8 +20,8 @@ void		set_player_vectors(t_game *sv, int j, int i)
 	if (sv->map.map_array[j] == 'N')
 	{
 		sv->map.dir_x = 0;
-		sv->map.dir_y = -1;
-		sv->map.plane_x = 1;
+		sv->map.dir_y = -0.66;
+		sv->map.plane_x = 0.66;
 		sv->map.plane_y = 0;
 	}
 	else if (sv->map.map_array[j] == 'S')
@@ -46,8 +46,8 @@ void		set_player_vectors(t_game *sv, int j, int i)
 		sv->map.plane_y = 1;
 	}
 	sv->map.map_array[j] = '0';
-	sv->map.plane_x *= tan(80/2 * M_PI/180); // FOV // можно просто значение написать, можно задефайнить фов
-	sv->map.plane_y *= tan(80/2 * M_PI/180);
+	sv->map.plane_x *= FOV;
+	sv->map.plane_y *= FOV;
 	printf ("\nPOSITION-------------------------\nx: %f, y: %f, dir_x: %f, dir_y: %f\n\n", sv->map.pos_x,sv->map.pos_y,sv->map.dir_x,	sv->map.dir_y);
 }
 
@@ -62,9 +62,17 @@ void		set_plane_and_time(t_game *sv)
 	sv->map.old_time = 0;; //time of previous frame
 }
 
+
+void		draw_ceiling(t_game *sv, int start, int finish)
+{
+
+}
+
 void		cast_frame(t_game *sv)
 {
 	unsigned int color;
+	unsigned int texture_pixel;
+	int texture_x;
 
 	for(int x = 0; x < sv->map.res_w; x++)
 	{
@@ -170,13 +178,97 @@ void		cast_frame(t_game *sv)
 //		{
 //			color = color / 2;
 //		}
+	//texturing calculations
+		int texNum = sv->map.map_array[map_x + map_y * sv->map.max_len - 1]; // worldMap[mapX][mapY] - 1; //1 subtracted from it so that texture 0 can be used!
 
-		//draw the pixels of the stripe as a vertical line
-		for (int y = draw_start; y < draw_end; y++)
+		//calculate value of wallX
+		double wallX; //where exactly the wall was hit
+		if (side == 0)
+			wallX = sv->map.pos_y + perp_wall_dist * ray_dir_y;
+		else
+			wallX = sv->map.pos_x + perp_wall_dist * ray_dir_x;
+		wallX -= floor((wallX));
+
+		int texX;
+
+		// NORTH----------------------------------
+		if (side == 1 && step_y < 0)
 		{
-			my_mlx_pixel_put(sv, x, y, get_pixel(&sv->north,x % 64,y % 64));
+			texX = (int)(wallX * (double)sv->map.no_w);
+			if(side == 1 && ray_dir_y < 0)
+				texX = sv->map.no_w - texX - 1;
+			double step = 1.0 * sv->map.no_h / line_height;
+			double texPos = (draw_start - sv->map.res_h / 2 + line_height / 2) * step;
+			for (int y = draw_start; y < draw_end; y++)
+			{
+				int texY = (int)texPos & (sv->map.no_h - 1);
+				texPos += step;
+				texture_pixel = get_pixel(&sv->north, texX, texY);
+				my_mlx_pixel_put(sv, x, y, add_shade(0.2, texture_pixel));
+			}
 		}
-//		draw_line_bresenham(x, draw_start, x, draw_end, color, sv);
+		// SOUTH----------------------------------
+		else if (side == 1 && step_y > 0)
+		{
+			texX = (int)(wallX * (double)sv->map.so_w);
+			if(side == 1 && ray_dir_y < 0)
+				texX = sv->map.so_w - texX - 1;
+			double step = 1.0 * sv->map.so_h / line_height;
+			double texPos = (draw_start - sv->map.res_h / 2 + line_height / 2) * step;
+			for (int y = draw_start; y < draw_end; y++)
+			{
+				int texY = (int)texPos & (sv->map.so_h - 1);
+				texPos += step;
+				texture_pixel = get_pixel(&sv->south, texX, texY);
+				my_mlx_pixel_put(sv, x, y, add_shade(0.4, texture_pixel));
+			}
+		}
+
+//
+//		//x coordinate on the texture
+//		texX = (int)(wallX * (double)sv->map.no_w);
+//		if(side == 0 && ray_dir_x > 0)
+//			texX = sv->map.no_w - texX - 1;
+//		if(side == 1 && ray_dir_y < 0)
+//			texX = sv->map.no_w - texX - 1;
+
+		// EAST----------------------------------
+		else if (side == 0 && step_x < 0)
+		{
+			texX = (int)(wallX * (double)sv->map.ea_w);
+			if(side == 0 && ray_dir_x > 0)
+				texX = sv->map.no_w - texX - 1;
+			double step = 1.0 * sv->map.ea_h / line_height;
+			double texPos = (draw_start - sv->map.res_h / 2 + line_height / 2) * step;
+			for (int y = draw_start; y < draw_end; y++)
+			{
+				int texY = (int)texPos & (sv->map.ea_h - 1);
+				texPos += step;
+				texture_pixel = get_pixel(&sv->east, texX, texY);
+				my_mlx_pixel_put(sv, x, y, texture_pixel);
+			}
+		}
+		// WEST----------------------------------
+		else if (side == 0 && step_x > 0)
+		{
+			texX = (int)(wallX * (double)sv->map.we_w);
+			if(side == 0 && ray_dir_x > 0)
+				texX = sv->map.no_w - texX - 1;
+			double step = 1.0 * sv->map.we_h / line_height;
+			double texPos = (draw_start - sv->map.res_h / 2 + line_height / 2) * step;
+			for (int y = draw_start; y < draw_end; y++)
+			{
+				int texY = (int)texPos & (sv->map.we_h - 1);
+				texPos += step;
+				texture_pixel = get_pixel(&sv->west, texX, texY);
+				my_mlx_pixel_put(sv, x, y, texture_pixel);
+			}
+		}
+//		else
+//			draw_line_bresenham(x, draw_start, x, draw_end, color, sv);
+		draw_line_bresenham(x, 0, x, draw_start, sv->map.ceiling_color, sv);
+		draw_line_bresenham(x, draw_end, x, sv->map.res_h - 1, sv->map.floor_color, sv);
+//		draw_ceiling(sv, draw_start, draw_end);
 	}
 }
 

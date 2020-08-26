@@ -42,8 +42,9 @@
 //# define ERR_MAP_C -12
 //# define ERR_MAP_OPEN -13
 
+# define FOV						tan(80/2 * M_PI/180)
 # define MOVE_SPEED					0.14
-# define ROT				0.1
+# define ROT						0.1
 # define NINETY_DEGREES				2 * M_PI / 4
 # define TEX_W						64
 # define TEX_H						64
@@ -102,12 +103,20 @@ typedef struct	s_conf {
 	char		*no_path;
 	int			no_w;
 	int			no_h;
+	int			so_w;
+	int			so_h;
+	int			ea_w;
+	int			ea_h;
+	int			we_w;
+	int			we_h;
 	char		*so_path;
 	char		*we_path;
 	char		*ea_path;
 	char		*s_path;
-	int			floor_color[3];
-	int			ceiling_color[3];
+	int			floor_rgb[3];
+	int			floor_color;
+	int			ceiling_rgb[3];
+	int			ceiling_color;
 	char		player_direction;
 	char 		*map_array;
 	int			map_cols;
