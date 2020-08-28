@@ -1,7 +1,14 @@
 
 #include "cub3d.h"
 
-void			ft_error_close(int error_code)
+void		exit_with_error_message(char *str)
+{
+	write(2, "Error!\n", 7);
+	write(2, str, ft_strlen(str));
+	exit(2);
+}
+
+void			ft_error_close(int error_code)//refactor errors to upper function
 {
 	if (error_code == ERR_MALLOC)
 		write(2, "Error!\nMalloc() error.\n", 23); //7

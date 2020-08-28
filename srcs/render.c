@@ -12,7 +12,7 @@
 
 #include "cub3d.h"
 
-int		render_frame(t_game *sv)
+int		render_frame(t_game *sv)//PROTECT
 {
 	if (!sv->keys.w && !sv->keys.s && !sv->keys.a && !sv->keys.d && !sv->keys.right && !sv->keys.left)
 		return (0);

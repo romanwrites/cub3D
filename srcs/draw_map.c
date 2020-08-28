@@ -12,6 +12,30 @@
 
 #include "cub3d.h"
 
+
+#define numSprites 19
+//arrays used to sort the sprites
+int spriteOrder[numSprites];
+double spriteDistance[numSprites];
+
+//function used to sort the sprites
+//sort the sprites based on distance
+//void sortSprites(int* order, double* dist, int amount)
+//{
+//	std::vector<std::pair<double, int>> sprites(amount);
+//	for(int i = 0; i < amount; i++) {
+//		sprites[i].first = dist[i];
+//		sprites[i].second = order[i];
+//	}
+//	std::sort(sprites.begin(), sprites.end());
+//	// restore in reverse order to go from farthest to nearest
+//	for(int i = 0; i < amount; i++) {
+//		dist[i] = sprites[amount - i - 1].first;
+//		order[i] = sprites[amount - i - 1].second;
+//	}
+//}
+
+
 void		cast_frame(t_game *sv)
 {
     //1D Zbuffer
@@ -198,26 +222,88 @@ void		cast_frame(t_game *sv)
 		}
 		draw_line_bresenham(x, 0, x, draw_start, sv->map.ceiling_color, sv);
 		draw_line_bresenham(x, draw_end, x, sv->map.res_h - 1, sv->map.floor_color, sv);
-        //SET THE ZBUFFER FOR THE SPRITE CASTING
-        ZBuffer[x] = perpWallDist; //perpendicular distance is used
-	}
-}
 
-//sort the sprites based on distance
-//void sortSprites(int* order, double* dist, int amount)
-//{
-//	std::vector<std::pair<double, int>> sprites(amount);
-//	for(int i = 0; i < amount; i++) {
-//		sprites[i].first = dist[i];
-//		sprites[i].second = order[i];
+        ZBuffer[x] = perp_wall_dist; // store the perpendicular distance of each vertical stripe in a 1D ZBuffer
+	}
+//
+//	1: While raycasting the walls, store the perpendicular distance of each vertical stripe in a 1D ZBuffer
+//	2: Calculate the distance of each sprite to the player
+//	3: Use this distance to sort the sprites, from furthest away to closest to the camera
+//	4: Project the sprite on the camera plane (in 2D): subtract the player position from the sprite position, then multiply the result with the inverse of the 2x2 camera matrix
+//	5: Calculate the size of the sprite on the screen (both in x and y direction) by using the perpendicular distance
+//	6: Draw the sprites vertical stripe by vertical stripe, don't draw the vertical stripe if the distance is further away than the 1D ZBuffer of the walls of the current stripe
+//	7: Draw the vertical stripe pixel by pixel, make sure there's an invisible color or all sprites would be rectangles
+
+
+
+	//SPRITE CASTING
+	//sort sprites from far to close
+//	for(int i = 0; i < numSprites; i++)
+//	{
+//		spriteOrder[i] = i;
+//		spriteDistance[i] = ((sv->map.pos_x - sprite[i].x) * (sv->map.pos_x - sprite[i].x) + (sv->map.pos_y - sprite[i].y) * (sv->map.pos_y - sprite[i].y)); //sqrt not taken, unneeded
 //	}
-//	std::sort(sprites.begin(), sprites.end());
-//	// restore in reverse order to go from farthest to nearest
-//	for(int i = 0; i < amount; i++) {
-//		dist[i] = sprites[amount - i - 1].first;
-//		order[i] = sprites[amount - i - 1].second;
+//	sortSprites(spriteOrder, spriteDistance, numSprites);
+//	//after sorting the sprites, do the projection and draw them
+//	for(int i = 0; i < numSprites; i++)
+//	{
+//		//translate sprite position to relative to camera
+//		double spriteX = sprite[spriteOrder[i]].x - sv->map.pos_x;
+//		double spriteY = sprite[spriteOrder[i]].y - sv->map.pos_y;
+//
+//		//transform sprite with the inverse camera matrix
+//		// [ sv->map.plane_x   sv->map.dir_x ] -1                                       [ sv->map.dir_y      -sv->map.dir_x ]
+//		// [               ]       =  1/(sv->map.plane_x*sv->map.dir_y-sv->map.dir_x*sv->map.plane_y) *   [                 ]
+//		// [ sv->map.plane_y   sv->map.dir_y ]                                          [ -sv->map.plane_y  sv->map.plane_x ]
+//
+//		double invDet = 1.0 / (sv->map.plane_x * sv->map.dir_y - sv->map.dir_x * sv->map.plane_y); //required for correct matrix multiplication
+//
+//		double transformX = invDet * (sv->map.dir_y * spriteX - sv->map.dir_x * spriteY);
+//		double transformY = invDet * (-sv->map.plane_y * spriteX + sv->map.plane_x * spriteY); //this is actually the depth inside the screen, that what Z is in 3D, the distance of sprite to player, matching sqrt(spriteDistance[i])
+//
+//		int spriteScreenX = (int)((sv->map.res_w / 2) * (1 + transformX / transformY));
+//
+//		//parameters for scaling and moving the sprites
+//		#define uDiv 1
+//		#define vDiv 1
+//		#define vMove 0.0
+//		int vMoveScreen = (int)(vMove / transformY);
+//
+//		//calculate height of the sprite on screen
+//		int spriteHeight = abs((int)(sv->map.res_h / (transformY))) / vDiv; //using "transformY" instead of the real distance prevents fisheye
+//		//calculate lowest and highest pixel to fill in current stripe
+//		int drawStartY = -spriteHeight / 2 + sv->map.res_h / 2 + vMoveScreen;
+//		if(drawStartY < 0) drawStartY = 0;
+//		int drawEndY = spriteHeight / 2 + sv->map.res_h / 2 + vMoveScreen;
+//		if(drawEndY >= sv->map.res_h) drawEndY = sv->map.res_h - 1;
+//
+//		//calculate width of the sprite
+//		int spriteWidth = abs( (int) (sv->map.res_h / (transformY))) / uDiv;
+//		int drawStartX = -spriteWidth / 2 + spriteScreenX;
+//		if(drawStartX < 0) drawStartX = 0;
+//		int drawEndX = spriteWidth / 2 + spriteScreenX;
+//		if(drawEndX >= sv->map.res_w) drawEndX = sv->map.res_w - 1;
+//
+//		//loop through every vertical stripe of the sprite on screen
+//		for(int stripe = drawStartX; stripe < drawEndX; stripe++)
+//		{
+//			int texX = (int)(256 * (stripe - (-spriteWidth / 2 + spriteScreenX)) * 64 / spriteWidth) / 256; //64=texWidth
+//			//the conditions in the if are:
+//			//1) it's in front of camera plane so you don't see things behind you
+//			//2) it's on the screen (left)
+//			//3) it's on the screen (right)
+//			//4) ZBuffer, with perpendicular distance
+//			if(transformY > 0 && stripe > 0 && stripe < sv->map.res_w && transformY < ZBuffer[stripe])
+//				for(int y = drawStartY; y < drawEndY; y++) //for every pixel of the current stripe
+//				{
+//					int d = (y-vMoveScreen) * 256 - sv->map.res_h * 128 + spriteHeight * 128; //256 and 128 factors to avoid floats
+//					int texY = ((d * 64) / spriteHeight) / 256;												//64 = texHeight
+//					unsigned int colour = texture[sprite[spriteOrder[i]].texture][texWidth * texY + texX]; //get current color from the texture
+//					if((colour & 0x00FFFFFF) != 0) buffer[y][stripe] = colour; //paint pixel if it isn't black, black is the invisible color
+//				}
+//		}
 //	}
-//}
+}
 
 
 void draw_rectangle(t_game *sv, const int img_w, const int img_h, const int x, const int y, const int w, const int h, int color)

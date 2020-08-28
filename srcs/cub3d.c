@@ -12,7 +12,7 @@
 
 #include "cub3d.h"
 
-void		create_texture_imgs(t_game *sv)
+void		create_texture_imgs(t_game *sv) // PROTECT ALL CALLS
 {
 	sv->north.img = mlx_xpm_file_to_image(sv->mlx, sv->map.no_path, &sv->map.no_w, &sv->map.no_h);
 	sv->north.addr = mlx_get_data_addr(sv->north.img, &sv->north.bits_per_pixel, &sv->north.line_length,
@@ -30,6 +30,10 @@ void		create_texture_imgs(t_game *sv)
 	sv->west.addr = mlx_get_data_addr(sv->west.img, &sv->west.bits_per_pixel, &sv->west.line_length,
 									 &sv->west.endian);
 
+	sv->sprite.img = mlx_xpm_file_to_image(sv->mlx, sv->map.s_path, &sv->map.sprite_w, &sv->map.sprite_h);
+	sv->sprite.addr = mlx_get_data_addr(sv->sprite.img, &sv->sprite.bits_per_pixel, &sv->sprite.line_length,
+									  &sv->sprite.endian);
+
 }
 
 int			main(int argc, char **argv)
@@ -37,7 +41,8 @@ int			main(int argc, char **argv)
 	t_game	sv;
 	char	*filename;
 
-	if (argc == 1)
+//	exit_with_error_message(-6, "Error!\ncheck!\n");
+	if (argc == 1) //HANDLE ARGS ERRORS
 		ft_error_close(ERR_ARGC_MIN);
 	else if (argc == 2)
 	{
@@ -58,12 +63,13 @@ int			main(int argc, char **argv)
 
 	create_map_array(&sv);
 
-	sv.mlx = mlx_init();
-	sv.win = mlx_new_window(sv.mlx, sv.map.res_w, sv.map.res_h, filename);
+	if (!(sv.mlx = mlx_init()))
+		ft_error_close(ERR_MALLOC);//handle error message
+	sv.win = mlx_new_window(sv.mlx, sv.map.res_w, sv.map.res_h, filename); // PROTECT
 
-	sv.img.img = mlx_new_image(sv.mlx, sv.map.res_w, sv.map.res_h);
+	sv.img.img = mlx_new_image(sv.mlx, sv.map.res_w, sv.map.res_h); // PROTECT
 	sv.img.addr = mlx_get_data_addr(sv.img.img, &sv.img.bits_per_pixel, &sv.img.line_length,
-								 &sv.img.endian);
+								 &sv.img.endian); // PROTECT
 
 	create_texture_imgs(&sv);
 

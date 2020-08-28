@@ -6,7 +6,7 @@
 /*   By: mkristie <kukinpower@ya.ru>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/19 11:03:51 by mkristie          #+#    #+#             */
-/*   Updated: 2020/08/26 18:54:09 by mkristie         ###   ########.fr       */
+/*   Updated: 2020/08/27 16:40:08 by mkristie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,6 +109,8 @@ typedef struct	s_conf {
 	int			ea_h;
 	int			we_w;
 	int			we_h;
+	int			sprite_w;
+	int			sprite_h;
 	char		*so_path;
 	char		*we_path;
 	char		*ea_path;
@@ -146,6 +148,13 @@ typedef struct s_player {
 	double player_a;
 }				t_player;
 
+typedef	struct	s_sprite
+{
+	double			x;
+	double			y;
+	double		s_dist;
+}				t_sprite;
+
 typedef struct		s_game {
 	void			*mlx;
 	void			*win;
@@ -160,6 +169,8 @@ typedef struct		s_game {
 	t_data			south;
 	t_data			west;
 	t_data			east;
+	t_data			sprite;
+	t_sprite		**barrell;
 }					t_game;
 
 /* parse_map */
@@ -239,6 +250,7 @@ void		turn_right(t_game *sv);
 /* exit */
 void			ft_error_close(int error_code);
 int				ft_close(int exit_code, t_game *sv);
+void		ft_alloc_check(void *ptr);
 
 
 

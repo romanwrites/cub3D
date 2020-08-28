@@ -4,13 +4,13 @@ NO ./textures/brick.xpm
 SO ./textures/lego.xpm
 WE ./textures/kandinsky.xpm
 EA ./textures/binary.xpm
-S ./textures/sprite.xpm
+S ./textures/barrel.xpm
 
 F 50,50,50
 C 10,10,10
 
 1111111111111111
-1E00000000000001
+1E00002000000001
 1000000111110001
 1000001000000001
 1000001000111111
