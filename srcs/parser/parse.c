@@ -18,7 +18,9 @@ void			what_is_line_content(char *str, t_game *sv, \
 	if (!(*str) && !(*map_started_flag))
 		return ;
 	else if (!(*str) && *map_started_flag)
-		ft_error_close(ERR_MAP_VALIDITY);
+    {
+        ft_error_close(ERR_MAP_VALIDITY);
+    }
 	if (*str == ' ')
 	{
 		while (*str == ' ')

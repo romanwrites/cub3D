@@ -12,6 +12,25 @@
 
 #include "cub3d.h"
 
+void			set_sprites_coordinates(t_game *sv)
+{
+    int i;
+    int j;
+
+    i = j = 0;
+
+    while (sv->map.map_array[i])
+    {
+        if (sv->map.map_array[i] == '2')
+        {
+            sv->sprites_on_map[j].x = i % sv->map.map_cols + 0.5;
+            sv->sprites_on_map[j].y = i / sv->map.map_rows + 0.5;
+            j++;
+        }
+        i++;
+    }
+}
+
 void		create_map_array(t_game *sv)
 {
 	int		i;
@@ -31,6 +50,10 @@ void		create_map_array(t_game *sv)
 			{
 				set_player_vectors(sv, j, i);
 			}
+			if (sv->map.map_array[j] == '2')
+            {
+			    sv->sprites_count++;
+            }
 			i++;
 			j++;
 		}
@@ -38,4 +61,6 @@ void		create_map_array(t_game *sv)
 		sv->lst = sv->lst->next;
 	}
 	sv->map.map_array[j] = '\0';
+	sv->sprites_on_map = (t_sprite *)malloc(sizeof(t_sprite) * sv->sprites_count); //do need NULL elem at the end?
+    set_sprites_coordinates(sv);
 }

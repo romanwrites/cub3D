@@ -3,20 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   draw_map.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkristie <kukinpower@ya.ru>                +#+  +:+       +#+        */
+/*   By: mkristie <mkristie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/12 03:24:11 by mkristie          #+#    #+#             */
-/*   Updated: 2020/08/26 20:58:11 by mkristie         ###   ########.fr       */
+/*   Updated: 2020/08/28 22:04:46 by mkristie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
 
-#define numSprites 19
 //arrays used to sort the sprites
-int spriteOrder[numSprites];
-double spriteDistance[numSprites];
+
 
 //function used to sort the sprites
 //sort the sprites based on distance
@@ -38,6 +36,8 @@ double spriteDistance[numSprites];
 
 void		cast_frame(t_game *sv)
 {
+	int spriteOrder[sv->sprites_count];
+	double spriteDistance[sv->sprites_count];
     //1D Zbuffer
     double ZBuffer[sv->map.res_w];
 
@@ -139,13 +139,11 @@ void		cast_frame(t_game *sv)
 
 		//calculate lowest and highest pixel to fill in current stripe
 		int draw_start = -line_height / 2 + sv->map.res_h / 2;
-		if(draw_start < 0)draw_start = 0;
+		if(draw_start < 0)
+		    draw_start = 0;
 		int draw_end = line_height / 2 + sv->map.res_h / 2;
-		if(draw_end >= sv->map.res_h)draw_end = sv->map.res_h - 1;
-
-
-		//texturing calculations
-		int texNum = sv->map.map_array[map_x + map_y * sv->map.max_len - 1]; // worldMap[mapX][mapY] - 1; //1 subtracted from it so that texture 0 can be used!
+		if(draw_end >= sv->map.res_h)
+		    draw_end = sv->map.res_h - 1;
 
 		//calculate value of wallX
 		double wallX; //where exactly the wall was hit
@@ -224,6 +222,7 @@ void		cast_frame(t_game *sv)
 		draw_line_bresenham(x, draw_end, x, sv->map.res_h - 1, sv->map.floor_color, sv);
 
         ZBuffer[x] = perp_wall_dist; // store the perpendicular distance of each vertical stripe in a 1D ZBuffer
+        // чтобы понять что конкретная часть спрайта за стеной. Чтобы не отрисовать то, что находится дальше чем стена
 	}
 //
 //	1: While raycasting the walls, store the perpendicular distance of each vertical stripe in a 1D ZBuffer
@@ -234,75 +233,99 @@ void		cast_frame(t_game *sv)
 //	6: Draw the sprites vertical stripe by vertical stripe, don't draw the vertical stripe if the distance is further away than the 1D ZBuffer of the walls of the current stripe
 //	7: Draw the vertical stripe pixel by pixel, make sure there's an invisible color or all sprites would be rectangles
 
+//	SPRITE CASTING
+//	sort sprites from far to close
+	for(int i = 0; i < sv->sprites_count; i++)
+	{
+        sv->sprites_on_map[i].s_dist = ((sv->map.pos_x - sv->sprites_on_map[i].x) * (sv->map.pos_x - sv->sprites_on_map[i].x) + (sv->map.pos_y - sv->sprites_on_map[i].y) * (sv->map.pos_y - sv->sprites_on_map[i].y)); //sqrt not taken, unneeded
+	}
 
 
-	//SPRITE CASTING
-	//sort sprites from far to close
-//	for(int i = 0; i < numSprites; i++)
-//	{
-//		spriteOrder[i] = i;
-//		spriteDistance[i] = ((sv->map.pos_x - sprite[i].x) * (sv->map.pos_x - sprite[i].x) + (sv->map.pos_y - sprite[i].y) * (sv->map.pos_y - sprite[i].y)); //sqrt not taken, unneeded
-//	}
-//	sortSprites(spriteOrder, spriteDistance, numSprites);
-//	//after sorting the sprites, do the projection and draw them
-//	for(int i = 0; i < numSprites; i++)
-//	{
-//		//translate sprite position to relative to camera
-//		double spriteX = sprite[spriteOrder[i]].x - sv->map.pos_x;
-//		double spriteY = sprite[spriteOrder[i]].y - sv->map.pos_y;
-//
-//		//transform sprite with the inverse camera matrix
-//		// [ sv->map.plane_x   sv->map.dir_x ] -1                                       [ sv->map.dir_y      -sv->map.dir_x ]
-//		// [               ]       =  1/(sv->map.plane_x*sv->map.dir_y-sv->map.dir_x*sv->map.plane_y) *   [                 ]
-//		// [ sv->map.plane_y   sv->map.dir_y ]                                          [ -sv->map.plane_y  sv->map.plane_x ]
-//
-//		double invDet = 1.0 / (sv->map.plane_x * sv->map.dir_y - sv->map.dir_x * sv->map.plane_y); //required for correct matrix multiplication
-//
-//		double transformX = invDet * (sv->map.dir_y * spriteX - sv->map.dir_x * spriteY);
-//		double transformY = invDet * (-sv->map.plane_y * spriteX + sv->map.plane_x * spriteY); //this is actually the depth inside the screen, that what Z is in 3D, the distance of sprite to player, matching sqrt(spriteDistance[i])
-//
-//		int spriteScreenX = (int)((sv->map.res_w / 2) * (1 + transformX / transformY));
-//
-//		//parameters for scaling and moving the sprites
-//		#define uDiv 1
-//		#define vDiv 1
-//		#define vMove 0.0
-//		int vMoveScreen = (int)(vMove / transformY);
-//
-//		//calculate height of the sprite on screen
-//		int spriteHeight = abs((int)(sv->map.res_h / (transformY))) / vDiv; //using "transformY" instead of the real distance prevents fisheye
-//		//calculate lowest and highest pixel to fill in current stripe
-//		int drawStartY = -spriteHeight / 2 + sv->map.res_h / 2 + vMoveScreen;
-//		if(drawStartY < 0) drawStartY = 0;
-//		int drawEndY = spriteHeight / 2 + sv->map.res_h / 2 + vMoveScreen;
-//		if(drawEndY >= sv->map.res_h) drawEndY = sv->map.res_h - 1;
-//
-//		//calculate width of the sprite
-//		int spriteWidth = abs( (int) (sv->map.res_h / (transformY))) / uDiv;
-//		int drawStartX = -spriteWidth / 2 + spriteScreenX;
-//		if(drawStartX < 0) drawStartX = 0;
-//		int drawEndX = spriteWidth / 2 + spriteScreenX;
-//		if(drawEndX >= sv->map.res_w) drawEndX = sv->map.res_w - 1;
-//
-//		//loop through every vertical stripe of the sprite on screen
-//		for(int stripe = drawStartX; stripe < drawEndX; stripe++)
-//		{
-//			int texX = (int)(256 * (stripe - (-spriteWidth / 2 + spriteScreenX)) * 64 / spriteWidth) / 256; //64=texWidth
-//			//the conditions in the if are:
-//			//1) it's in front of camera plane so you don't see things behind you
-//			//2) it's on the screen (left)
-//			//3) it's on the screen (right)
-//			//4) ZBuffer, with perpendicular distance
-//			if(transformY > 0 && stripe > 0 && stripe < sv->map.res_w && transformY < ZBuffer[stripe])
-//				for(int y = drawStartY; y < drawEndY; y++) //for every pixel of the current stripe
-//				{
-//					int d = (y-vMoveScreen) * 256 - sv->map.res_h * 128 + spriteHeight * 128; //256 and 128 factors to avoid floats
-//					int texY = ((d * 64) / spriteHeight) / 256;												//64 = texHeight
-//					unsigned int colour = texture[sprite[spriteOrder[i]].texture][texWidth * texY + texX]; //get current color from the texture
-//					if((colour & 0x00FFFFFF) != 0) buffer[y][stripe] = colour; //paint pixel if it isn't black, black is the invisible color
-//				}
-//		}
-//	}
+
+    int j = 0;
+	int i = 0;
+
+    t_sprite	tmp;
+
+    while (j < sv->sprites_count - 1)
+    {
+        i = 0;
+        while (i < sv->sprites_count - j - 1)
+        {
+            if (sv->sprites_on_map[i].s_dist < sv->sprites_on_map[i + 1].s_dist)
+            {
+                tmp = sv->sprites_on_map[i];
+                sv->sprites_on_map[i] = sv->sprites_on_map[i + 1];
+                sv->sprites_on_map[i + 1] = tmp;
+            }
+            i++;
+        }
+        j++;
+    }
+
+
+	//after sorting the sprites, do the projection and draw them
+	for(int i = 0; i < sv->sprites_count; i++)
+	{
+		//translate sprite position to relative to camera
+		double spriteX = sv->sprites_on_map[i].x - sv->map.pos_x;
+		double spriteY = sv->sprites_on_map[i].y - sv->map.pos_y;
+
+		//transform sprite with the inverse camera matrix
+		// [ sv->map.plane_x   sv->map.dir_x ] -1                                       [ sv->map.dir_y      -sv->map.dir_x ]
+		// [               ]       =  1/(sv->map.plane_x*sv->map.dir_y-sv->map.dir_x*sv->map.plane_y) *   [                 ]
+		// [ sv->map.plane_y   sv->map.dir_y ]                                          [ -sv->map.plane_y  sv->map.plane_x ]
+
+		double invDet = 1.0 / (sv->map.plane_x * sv->map.dir_y - sv->map.dir_x * sv->map.plane_y); //required for correct matrix multiplication
+
+		double transformX = invDet * (sv->map.dir_y * spriteX - sv->map.dir_x * spriteY);
+		double transformY = invDet * (-sv->map.plane_y * spriteX + sv->map.plane_x * spriteY); //this is actually the depth inside the screen, that what Z is in 3D, the distance of sprite to player, matching sqrt(spriteDistance[i])
+
+		int spriteScreenX = (int)((sv->map.res_w / 2) * (1 + transformX / transformY));
+
+		//parameters for scaling and moving the sprites
+		#define uDiv 1
+		#define vDiv 1
+		#define vMove 150.0
+		int vMoveScreen = (int)(vMove / transformY);
+
+		//calculate height of the sprite on screen
+		int spriteHeight = abs((int)(sv->map.res_h / (transformY))) / vDiv; //using "transformY" instead of the real distance prevents fisheye
+		//calculate lowest and highest pixel to fill in current stripe
+		int drawStartY = -spriteHeight / 2 + sv->map.res_h / 2 + vMoveScreen;
+		if(drawStartY < 0) drawStartY = 0;
+		int drawEndY = spriteHeight / 2 + sv->map.res_h / 2 + vMoveScreen;
+		if(drawEndY >= sv->map.res_h) drawEndY = sv->map.res_h - 1;
+
+		//calculate width of the sprite
+		int spriteWidth = abs( (int) (sv->map.res_h / (transformY))) / uDiv;
+		int drawStartX = -spriteWidth / 2 + spriteScreenX;
+		if(drawStartX < 0) drawStartX = 0;
+		int drawEndX = spriteWidth / 2 + spriteScreenX;
+		if(drawEndX >= sv->map.res_w) drawEndX = sv->map.res_w - 1;
+
+		//loop through every vertical stripe of the sprite on screen
+		for(int stripe = drawStartX; stripe < drawEndX; stripe++)
+		{
+			int texX = (int)(256 * (stripe - (-spriteWidth / 2 + spriteScreenX)) * 64 / spriteWidth) / 256; //64=texWidth
+			//the conditions in the if are:
+			//1) it's in front of camera plane so you don't see things behind you
+			//2) it's on the screen (left)
+			//3) it's on the screen (right)
+			//4) ZBuffer, with perpendicular distance
+			if(transformY > 0 && stripe > 0 && stripe < sv->map.res_w && transformY < ZBuffer[stripe])
+            {
+                for(int y = drawStartY; y < drawEndY; y++) //for every pixel of the current stripe
+                {
+                    int d = (y-vMoveScreen) * 256 - sv->map.res_h * 128 + spriteHeight * 128; //256 and 128 factors to avoid floats
+                    int texY = ((d * 64) / spriteHeight) / 256;								    //64 = texHeight
+                    int sprite_pixel = get_pixel(&sv->sprite, texX, texY);
+                    if((sprite_pixel & 0x00FFFFFF) != 0)
+                        my_mlx_pixel_put(sv, stripe, y, sprite_pixel);
+                }
+            }
+		}
+	}
 }
 
 

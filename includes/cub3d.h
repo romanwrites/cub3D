@@ -43,7 +43,7 @@
 //# define ERR_MAP_OPEN -13
 
 # define FOV						tan(80/2 * M_PI/180)
-# define MOVE_SPEED					0.16
+# define MOVE_SPEED					0.3
 # define ROT						0.1
 # define NINETY_DEGREES				2 * M_PI / 4
 # define TEX_W						64
@@ -152,7 +152,7 @@ typedef	struct	s_sprite
 {
 	double			x;
 	double			y;
-	double		s_dist;
+	double		    s_dist;
 }				t_sprite;
 
 typedef struct		s_game {
@@ -170,7 +170,8 @@ typedef struct		s_game {
 	t_data			west;
 	t_data			east;
 	t_data			sprite;
-	t_sprite		**barrell;
+	t_sprite		*sprites_on_map;
+	int             sprites_count;
 }					t_game;
 
 /* parse_map */
@@ -212,7 +213,7 @@ void				parse_color(const char *str, t_conf *map);
 
 //textures
 unsigned int	get_pixel(t_data *img, int x, int y);
-
+void			set_sprites_coordinates(t_game *sv);
 
 
 void		create_map_array(t_game *sv);

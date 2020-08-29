@@ -56,7 +56,10 @@ void		all_map_bits_are_valid(t_game *sv)
 			i++;
 		}
 		if ((((char *)(sv->tmp->content))[i]) != '\0')
-			ft_error_close(ERR_MAP_VALIDITY);
+        {
+            printf("BLAT\n\n");
+            ft_error_close(ERR_MAP_VALIDITY);
+        }
 		i = 0;
 		sv->tmp = sv->tmp->next;
 	}

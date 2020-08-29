@@ -22,6 +22,7 @@ int		render_frame(t_game *sv)//PROTECT
 	sv->img.img = mlx_new_image(sv->mlx, sv->map.res_w, sv->map.res_h);
 	sv->img.addr = mlx_get_data_addr(sv->img.img, &sv->img.bits_per_pixel, &sv->img.line_length,
 									 &sv->img.endian);
+    set_sprites_coordinates(sv);
 	cast_frame(sv);
 	mlx_put_image_to_window(sv->mlx, sv->win, sv->img.img, 0, 0);
 	mlx_destroy_image(sv->mlx, sv->img.img);

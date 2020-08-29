@@ -63,4 +63,5 @@ void		init_game(t_game *sv)
 	init_img(sv);
 	init_map(&sv->map);
 	init_keys(sv);
+    sv->sprites_count = 0;
 }

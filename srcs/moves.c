@@ -23,9 +23,9 @@ void		move_w(t_game *sv)
 	mx_y = (int)(sv->map.pos_y);
 	my_x = (int)(sv->map.pos_x);
 	my_y = (int)(sv->map.pos_y + sv->map.dir_y * MOVE_SPEED);
-	if (sv->map.map_array[mx_x + mx_y * sv->map.max_len] == '0')
+	if (sv->map.map_array[mx_x + mx_y * sv->map.max_len] != '1')
 		sv->map.pos_x += sv->map.dir_x * MOVE_SPEED;
-	if (sv->map.map_array[my_x + my_y * sv->map.max_len] == '0')
+	if (sv->map.map_array[my_x + my_y * sv->map.max_len] != '1')
 		sv->map.pos_y += sv->map.dir_y * MOVE_SPEED;
 }
 
@@ -40,9 +40,9 @@ void		move_s(t_game *sv)
 	mx_y = (int)(sv->map.pos_y);
 	my_x = (int)(sv->map.pos_x);
 	my_y = (int)(sv->map.pos_y - sv->map.dir_y * MOVE_SPEED);
-	if (sv->map.map_array[mx_x + mx_y * sv->map.max_len] == '0')
+	if (sv->map.map_array[mx_x + mx_y * sv->map.max_len] != '1')
 		sv->map.pos_x -= sv->map.dir_x * MOVE_SPEED;
-	if (sv->map.map_array[my_x + my_y * sv->map.max_len] == '0')
+	if (sv->map.map_array[my_x + my_y * sv->map.max_len] != '1')
 		sv->map.pos_y -= sv->map.dir_y * MOVE_SPEED;
 }
 
@@ -57,9 +57,9 @@ void		move_a(t_game *sv)
 	mx_y = (int)(sv->map.pos_y);
 	my_x = (int)(sv->map.pos_x);
 	my_y = (int)(sv->map.pos_y - sv->map.plane_y * MOVE_SPEED);
-	if (sv->map.map_array[mx_x + mx_y * sv->map.max_len] == '0')
+	if (sv->map.map_array[mx_x + mx_y * sv->map.max_len] != '1')
 		sv->map.pos_x -= sv->map.plane_x * MOVE_SPEED;
-	if (sv->map.map_array[my_x + my_y * sv->map.max_len] == '0')
+	if (sv->map.map_array[my_x + my_y * sv->map.max_len] != '1')
 		sv->map.pos_y -= sv->map.plane_y * MOVE_SPEED;
 }
 
@@ -74,8 +74,8 @@ void		move_d(t_game *sv)
 	mx_y = (int)(sv->map.pos_y);
 	my_x = (int)(sv->map.pos_x);
 	my_y = (int)(sv->map.pos_y + sv->map.plane_y * MOVE_SPEED);
-	if (sv->map.map_array[mx_x + mx_y * sv->map.max_len] == '0')
+	if (sv->map.map_array[mx_x + mx_y * sv->map.max_len] != '1')
 		sv->map.pos_x += sv->map.plane_x * MOVE_SPEED;
-	if (sv->map.map_array[my_x + my_y * sv->map.max_len] == '0')
+	if (sv->map.map_array[my_x + my_y * sv->map.max_len] != '1')
 		sv->map.pos_y += sv->map.plane_y * MOVE_SPEED;
 }
