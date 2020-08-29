@@ -50,7 +50,7 @@ static void		set_dir_and_plane_ea_we(t_game *sv, int j, int i)
 
 void			set_player_vectors(t_game *sv, int j, int i)
 {
-	sv->map.player_num = j;
+//	sv->map.player_num = j;
 	sv->map.pos_x = (double)i + 0.5;
 	sv->map.pos_y = (((double)j - i) / sv->map.max_len) + 0.5;
 	if (sv->map.map_array[j] == 'N' || sv->map.map_array[j] == 'S')

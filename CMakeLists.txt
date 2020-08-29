@@ -27,4 +27,8 @@ add_executable(cub3D
         libft/libft/double_linked_lists/ft_my_lstnew.c
         libft/libft/double_linked_lists/ft_my_lstadd_back.c
         libft/libft/double_linked_lists/ft_my_lstlast.c
-        libft/libft/double_linked_lists/ft_my_lstiter.c srcs/utils/get_pixel.c srcs/set_player_vectors.c srcs/create_map_array.c)
+        libft/libft/double_linked_lists/ft_my_lstiter.c
+        srcs/set_player_vectors.c
+        srcs/create_map_array.c
+        srcs/draw_sprites.c
+        srcs/draw_frame.c srcs/draw_utils.c)

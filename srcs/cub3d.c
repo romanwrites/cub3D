@@ -41,7 +41,6 @@ int			main(int argc, char **argv)
 	t_game	sv;
 	char	*filename;
 
-//	exit_with_error_message(-6, "Error!\ncheck!\n");
 	if (argc == 1) //HANDLE ARGS ERRORS
 		ft_error_close(ERR_ARGC_MIN);
 	else if (argc == 2)
@@ -62,6 +61,7 @@ int			main(int argc, char **argv)
 	filename[ft_strlen(filename) - 4] = '\0';
 
 	create_map_array(&sv);
+	set_sprites_coordinates(&sv);
 
 	if (!(sv.mlx = mlx_init()))
 		ft_error_close(ERR_MALLOC);//handle error message

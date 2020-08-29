@@ -12,9 +12,9 @@
 
 #include "cub3d.h"
 
-_Bool				ft_all_isprint(const char *s)
+_Bool		ft_all_isprint(const char *s)
 {
-	int i;
+	int 	i;
 
 	i = 0;
 	while (ft_isprint((int)s[i]))
@@ -25,9 +25,9 @@ _Bool				ft_all_isprint(const char *s)
 		return (1);
 }
 
-_Bool				ft_all_digits(const char *s)
+_Bool		ft_all_digits(const char *s)
 {
-	int	i;
+	int		i;
 
 	i = 0;
 	while (ft_isdigit(s[i]))
@@ -52,21 +52,14 @@ void		all_map_bits_are_valid(t_game *sv)
 	while (sv->tmp->next != NULL)
 	{
 		while (is_valid_map_bit(((char *)(sv->tmp->content))[i]))
-		{
 			i++;
-		}
 		if ((((char *)(sv->tmp->content))[i]) != '\0')
-        {
-            printf("BLAT\n\n");
             ft_error_close(ERR_MAP_VALIDITY);
-        }
 		i = 0;
 		sv->tmp = sv->tmp->next;
 	}
 	while (is_valid_map_bit(((char *)(sv->tmp->content))[i]))
-	{
 		i++;
-	}
 	if ((((char *)(sv->tmp->content))[i]) != '\0')
 		ft_error_close(ERR_MAP_VALIDITY);
 }

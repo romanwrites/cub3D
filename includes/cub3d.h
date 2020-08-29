@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkristie <kukinpower@ya.ru>                +#+  +:+       +#+        */
+/*   By: mkristie <mkristie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/19 11:03:51 by mkristie          #+#    #+#             */
-/*   Updated: 2020/08/27 16:40:08 by mkristie         ###   ########.fr       */
+/*   Updated: 2020/08/29 19:25:10 by mkristie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,25 +26,9 @@
 /* temp */
 
 
-
-/* errors */
-//# define ERR_MALLOC -1
-//# define ERR_ARGC_MIN -2
-//# define ERR_ARGC_MAX -5
-//# define ERR_FILENAME -3
-//# define ERR_ARG_SAVE -4
-//# define ERR_READ_MAP -6
-//# define ERR_MAP_VALIDITY -7
-//# define ERR_MAP_R -8
-//# define ERR_MAP_BAD_ARG -9
-//# define ERR_MAP_T -10
-//# define ERR_BAD_MAP -11
-//# define ERR_MAP_C -12
-//# define ERR_MAP_OPEN -13
-
 # define FOV						tan(80/2 * M_PI/180)
 # define MOVE_SPEED					0.3
-# define ROT						0.1
+# define ROT						0.2
 # define NINETY_DEGREES				2 * M_PI / 4
 # define TEX_W						64
 # define TEX_H						64
@@ -54,6 +38,11 @@
 # define KEY_PRESS					2
 # define KEY_RELEASE				3
 
+
+
+// [pos_x : pos_y] x and y start position
+// [dir_x : dir_y] x and y direction vector
+// [plane_x : plane_y] the 2d raycaster version of camera plane
 
 
 
@@ -74,7 +63,7 @@ enum		e_errors {
 };
 
 /* keys */
-enum		e_keys {
+enum				e_keys {
 	A,
 	S,
 	D,
@@ -87,73 +76,78 @@ enum		e_keys {
 
 
 /* structs */
+typedef struct		s_data {
+	void			*img;
+	char			*addr;
+	int				bits_per_pixel;
+	int				line_length;
+	int				endian;
+}					t_data;
 
+typedef struct		s_conf {
+	int				res_w;
+	int				res_h;
+	char			*no_path;
+	int				no_w;
+	int				no_h;
+	int				so_w;
+	int				so_h;
+	int				ea_w;
+	int				ea_h;
+	int				we_w;
+	int				we_h;
+	int				sprite_w;
+	int				sprite_h;
+	char			*so_path;
+	char			*we_path;
+	char			*ea_path;
+	char			*s_path;
+	int				floor_rgb[3];
+	int				floor_color;
+	int				ceiling_rgb[3];
+	int				ceiling_color;
+	char			player_direction;
+	char 			*map_array;
+	int				map_cols;
+	int				map_rows;
+	size_t			max_len;
+	double 			pos_x;
+	double 			pos_y;
+	double 				dir_x;
+	double 			dir_y;
+	double			plane_x;
+	double			plane_y;
+	_Bool			f_color_parse;
+	_Bool			c_color_parse;
+}					t_conf;
 
-typedef struct	s_data {
-	void				*img;
-	char				*addr;
-	int					bits_per_pixel;
-	int					line_length;
-	int					endian;
-}				t_data;
+typedef struct		s_keys {
+	_Bool			w;
+	_Bool			s;
+	_Bool			a;
+	_Bool			d;
+	_Bool			left;
+	_Bool			right;
+}					t_keys;
 
-typedef struct	s_conf {
-	int			res_w;
-	int			res_h;
-	char		*no_path;
-	int			no_w;
-	int			no_h;
-	int			so_w;
-	int			so_h;
-	int			ea_w;
-	int			ea_h;
-	int			we_w;
-	int			we_h;
-	int			sprite_w;
-	int			sprite_h;
-	char		*so_path;
-	char		*we_path;
-	char		*ea_path;
-	char		*s_path;
-	int			floor_rgb[3];
-	int			floor_color;
-	int			ceiling_rgb[3];
-	int			ceiling_color;
-	char		player_direction;
-	char 		*map_array;
-	int			map_cols;
-	int			map_rows;
-	int 		player_num;
-	size_t		max_len;
-	double 		pos_x;
-	double 		pos_y; //x and y start position
-	double 		dir_x;
-	double 		dir_y; //x and y direction vector
-	double		plane_x; //the 2d raycaster version of camera plane
-	double		plane_y;
-}				t_conf;
-
-typedef struct s_keys {
-	_Bool		w;
-	_Bool		s;
-	_Bool		a;
-	_Bool		d;
-	_Bool		left;
-	_Bool		right;
-}				t_keys;
-
-typedef struct s_player {
-	double player_x; // player x position
-	double player_y; // player y position
-	double player_a;
-}				t_player;
-
-typedef	struct	s_sprite
+typedef	struct		s_sprite
 {
 	double			x;
 	double			y;
-	double		    s_dist;
-}				t_sprite;
+	double			s_dist;
+}					t_sprite;
+
+typedef	struct		s_draw
+{
+	int				x;
+	int				draw_start;
+	int				draw_end;
+	int				color;
+	int				ceiling_y0;
+	int				ceiling_y1;
+	int				floor_y0;
+	int				floor_y1;
+}					t_draw;
 
 typedef struct		s_game {
 	void			*mlx;
@@ -164,110 +158,108 @@ typedef struct		s_game {
 	t_linked_list	*lst;
 	t_linked_list	*tmp;
 	t_keys			keys;
-	t_player        player;
 	t_data			north;
 	t_data			south;
 	t_data			west;
 	t_data			east;
 	t_data			sprite;
 	t_sprite		*sprites_on_map;
+	t_draw			draw;
 	int             sprites_count;
 }					t_game;
 
 /* parse_map */
-void			parse_map(t_game *sv);
-
-_Bool		    parse_args(int ac, char *filename, char *save);
-void			read_map(const int fd, t_game *sv);
-void			what_is_line_content(char *str, t_game *sv, _Bool *map_started_flag);
-
-
+void				parse_map(t_game *sv);
+_Bool		    	parse_args(int ac, char *filename, char *save);
+void				read_map(const int fd, t_game *sv);
+void				what_is_line_content(char *str, t_game *sv, _Bool *map_started_flag);
 
 //parse_map_utils1
-_Bool			ft_all_isprint(const char *s);
-_Bool			ft_all_digits(const char *s);
-_Bool 		    is_valid_map_bit(char c);
-void			all_map_bits_are_valid(t_game *sv);
+_Bool				ft_all_isprint(const char *s);
+_Bool				ft_all_digits(const char *s);
+_Bool 			    is_valid_map_bit(char c);
+void				all_map_bits_are_valid(t_game *sv);
 
 
 //parse_map_utils2
-void			check_horizontal_border(const char *str);
-void			check_vertical_borders(t_game *sv);
-void			check_sign(const char *str, const char *previous, const char *next, t_game *sv);
-void			check_map_params(t_game *sv);
+void				check_horizontal_border(const char *str);
+void				check_vertical_borders(t_game *sv);
+void				check_sign(const char *str, const char *previous, const char *next, t_game *sv);
+void				check_map_params(t_game *sv);
 
 //parse_resolution
-void		parse_resolution(char *str, t_conf *map);
+void				parse_resolution(char *str, t_conf *map);
 
 //parse_textures
-void		handle_textures(const char *str, t_conf *map);
-void			parse_textures(const char *str, t_conf *map);
-_Bool 		    texture_paths_filled(t_conf *map);
+void				handle_textures(const char *str, t_conf *map);
+void				parse_textures(const char *str, t_conf *map);
+_Bool 			    texture_paths_filled(t_conf *map);
 
 
 //parse_color
-void		handle_color(const char *str, t_conf *map);
+void				handle_color(const char *str, t_conf *map);
 void				parse_color(const char *str, t_conf *map);
 
 
 
 //textures
-unsigned int	get_pixel(t_data *img, int x, int y);
-void			set_sprites_coordinates(t_game *sv);
+int		get_pixel(t_data *img, int x, int y);
+void				set_sprites_coordinates(t_game *sv);
 
 
-void		create_map_array(t_game *sv);
+void				create_map_array(t_game *sv);
 
 
-/* draw_map */
-void			draw_map(t_game *sv); // bad algorithm
-
-void			create_map_array(t_game *sv);
-void			draw_black_screen(t_game *sv, int win_h, int win_w, int color);
-void		set_player_vectors(t_game *sv, int j, int i);
+void				set_player_vectors(t_game *sv, int j, int i);
 
 /* render */
-void			cast_frame(t_game *sv);
-int				render_frame(t_game *sv);
+void				cast_frame(t_game *sv);
+int					render_frame(t_game *sv);
 
 
 
 /* init */
-void			init_game(t_game *sv);
+void				init_game(t_game *sv);
 
 /* keys */
-int			press_key(int key, t_game *sv);
-int			release_key(int key, t_game *sv);
-void		check_buttons_state(t_game *sv);
+int					press_key(int key, t_game *sv);
+int					release_key(int key, t_game *sv);
+void				check_buttons_state(t_game *sv);
 
 /* moves and turns */
-void		move_w(t_game *sv);
-void		move_a(t_game *sv);
-void		move_s(t_game *sv);
-void		move_d(t_game *sv);
-void		turn_left(t_game *sv);
-void		turn_right(t_game *sv);
+void				move_w(t_game *sv);
+void				move_a(t_game *sv);
+void				move_s(t_game *sv);
+void				move_d(t_game *sv);
+void				turn_left(t_game *sv);
+void				turn_right(t_game *sv);
 
 /* exit */
-void			ft_error_close(int error_code);
-int				ft_close(int exit_code, t_game *sv);
-void		ft_alloc_check(void *ptr);
+void				ft_error_close(int error_code);
+int					ft_close(int exit_code, t_game *sv);
+void				ft_alloc_check(void *ptr);
 
 
 
 /* colors */
-unsigned int	create_trgb(unsigned int t, unsigned int r, \
+int					create_trgb(unsigned int t, unsigned int r, \
 								unsigned int g, unsigned int b);
-unsigned int	get_t(unsigned int trgb);
-unsigned int	get_r(unsigned int trgb);
-unsigned int	get_g(unsigned int trgb);
-unsigned int	get_b(unsigned int trgb);
-unsigned int	add_shade(double distance, unsigned int color);
-unsigned int	get_opposite(unsigned int color);
+int					add_shade(double distance, unsigned int color);
 
 /* drawings */
-void		my_mlx_pixel_put(t_game *sv, int x, int y, unsigned int color);
-void		draw_line_bresenham(int x0, int y0, int x1, int y1, unsigned int colour, t_game *sv);
+void				my_mlx_pixel_put(t_game *sv, int x, int y, unsigned int color);
+
+
+
+void				draw_ceiling_and_floor(t_game *sv);
+void				draw_ver_line(t_game *sv, int draw_start, int draw_end);
+
+
+void				sort_sprites(t_game *sv);
+void				count_sprite_dst(t_game *sv);
+
+void				exit_with_error_message(char *str);
+
 
 
 

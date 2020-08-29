@@ -4,7 +4,7 @@ NO ./textures/brick.xpm
 SO ./textures/lego.xpm
 WE ./textures/kandinsky.xpm
 EA ./textures/binary.xpm
-S ./textures/barrel.xpm
+S ./textures/crate.xpm
 
 F 50,50,50
 C 10,10,10

@@ -31,8 +31,7 @@ static void				init_map(t_conf *map)
 	map->map_cols = 0;
 	map->map_rows = 0;
 	map->map_array = NULL;
-	map->player_num = 0;
-}// всё остальное инициализировать перед сдачей проекта
+}
 
 static void		init_keys(t_game *sv)
 {
@@ -64,4 +63,6 @@ void		init_game(t_game *sv)
 	init_map(&sv->map);
 	init_keys(sv);
     sv->sprites_count = 0;
+	sv->map.f_color_parse = 0;
+	sv->map.c_color_parse = 0;
 }

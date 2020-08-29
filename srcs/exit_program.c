@@ -3,8 +3,8 @@
 
 void		exit_with_error_message(char *str)
 {
-	write(2, "Error!\n", 7);
-	write(2, str, ft_strlen(str));
+	ft_putendl_fd("Error!", 2);
+	ft_putendl_fd(str, 2);
 	exit(2);
 }
 

@@ -6,39 +6,15 @@
 /*   By: mkristie <mkristie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/12 03:24:11 by mkristie          #+#    #+#             */
-/*   Updated: 2020/08/28 22:04:46 by mkristie         ###   ########.fr       */
+/*   Updated: 2020/08/29 19:20:42 by mkristie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
 
-//arrays used to sort the sprites
-
-
-//function used to sort the sprites
-//sort the sprites based on distance
-//void sortSprites(int* order, double* dist, int amount)
-//{
-//	std::vector<std::pair<double, int>> sprites(amount);
-//	for(int i = 0; i < amount; i++) {
-//		sprites[i].first = dist[i];
-//		sprites[i].second = order[i];
-//	}
-//	std::sort(sprites.begin(), sprites.end());
-//	// restore in reverse order to go from farthest to nearest
-//	for(int i = 0; i < amount; i++) {
-//		dist[i] = sprites[amount - i - 1].first;
-//		order[i] = sprites[amount - i - 1].second;
-//	}
-//}
-
-
 void		cast_frame(t_game *sv)
 {
-	int spriteOrder[sv->sprites_count];
-	double spriteDistance[sv->sprites_count];
-    //1D Zbuffer
     double ZBuffer[sv->map.res_w];
 
 	unsigned int color;
@@ -138,12 +114,12 @@ void		cast_frame(t_game *sv)
 		int line_height = (int)(sv->map.res_h / perp_wall_dist);
 
 		//calculate lowest and highest pixel to fill in current stripe
-		int draw_start = -line_height / 2 + sv->map.res_h / 2;
-		if(draw_start < 0)
-		    draw_start = 0;
-		int draw_end = line_height / 2 + sv->map.res_h / 2;
-		if(draw_end >= sv->map.res_h)
-		    draw_end = sv->map.res_h - 1;
+		sv->draw.draw_start = -line_height / 2 + sv->map.res_h / 2;
+		if(sv->draw.draw_start < 0)
+		    sv->draw.draw_start = 0;
+		sv->draw.draw_end = line_height / 2 + sv->map.res_h / 2;
+		if(sv->draw.draw_end >= sv->map.res_h)
+		    sv->draw.draw_end = sv->map.res_h - 1;
 
 		//calculate value of wallX
 		double wallX; //where exactly the wall was hit
@@ -161,8 +137,8 @@ void		cast_frame(t_game *sv)
 			if(side == 1 && ray_dir_y < 0)
 				texX = sv->map.no_w - texX - 1;
 			double step = 1.0 * sv->map.no_h / line_height;
-			double texPos = (draw_start - sv->map.res_h / 2 + line_height / 2) * step;
-			for (int y = draw_start; y < draw_end; y++)
+			double texPos = (sv->draw.draw_start - sv->map.res_h / 2 + line_height / 2) * step;
+			for (int y = sv->draw.draw_start; y < sv->draw.draw_end; y++)
 			{
 				int texY = (int)texPos & (sv->map.no_h - 1);
 				texPos += step;
@@ -177,8 +153,8 @@ void		cast_frame(t_game *sv)
 			if(side == 1 && ray_dir_y < 0)
 				texX = sv->map.so_w - texX - 1;
 			double step = 1.0 * sv->map.so_h / line_height;
-			double texPos = (draw_start - sv->map.res_h / 2 + line_height / 2) * step;
-			for (int y = draw_start; y < draw_end; y++)
+			double texPos = (sv->draw.draw_start - sv->map.res_h / 2 + line_height / 2) * step;
+			for (int y = sv->draw.draw_start; y < sv->draw.draw_end; y++)
 			{
 				int texY = (int)texPos & (sv->map.so_h - 1);
 				texPos += step;
@@ -193,8 +169,8 @@ void		cast_frame(t_game *sv)
 			if(side == 0 && ray_dir_x > 0)
 				texX = sv->map.no_w - texX - 1;
 			double step = 1.0 * sv->map.ea_h / line_height;
-			double texPos = (draw_start - sv->map.res_h / 2 + line_height / 2) * step;
-			for (int y = draw_start; y < draw_end; y++)
+			double texPos = (sv->draw.draw_start - sv->map.res_h / 2 + line_height / 2) * step;
+			for (int y = sv->draw.draw_start; y < sv->draw.draw_end; y++)
 			{
 				int texY = (int)texPos & (sv->map.ea_h - 1);
 				texPos += step;
@@ -209,8 +185,8 @@ void		cast_frame(t_game *sv)
 			if(side == 0 && ray_dir_x > 0)
 				texX = sv->map.no_w - texX - 1;
 			double step = 1.0 * sv->map.we_h / line_height;
-			double texPos = (draw_start - sv->map.res_h / 2 + line_height / 2) * step;
-			for (int y = draw_start; y < draw_end; y++)
+			double texPos = (sv->draw.draw_start - sv->map.res_h / 2 + line_height / 2) * step;
+			for (int y = sv->draw.draw_start; y < sv->draw.draw_end; y++)
 			{
 				int texY = (int)texPos & (sv->map.we_h - 1);
 				texPos += step;
@@ -218,8 +194,16 @@ void		cast_frame(t_game *sv)
 				my_mlx_pixel_put(sv, x, y, texture_pixel);
 			}
 		}
-		draw_line_bresenham(x, 0, x, draw_start, sv->map.ceiling_color, sv);
-		draw_line_bresenham(x, draw_end, x, sv->map.res_h - 1, sv->map.floor_color, sv);
+		sv->draw.ceiling_y0 = 0;
+		sv->draw.ceiling_y1 = sv->draw.draw_start;
+		sv->draw.floor_y0 = sv->draw.draw_end;
+		sv->draw.floor_y1 = sv->map.res_h - 1;
+		sv->draw.x = x;
+		draw_ceiling_and_floor(sv);
+//		draw_line_bresenham(x, 0, x, sv->draw.draw_start, sv->map.ceiling_color, sv);
+		
+//		draw_floor(sv);
+//		draw_line_bresenham(x, sv->draw.draw_end, x, sv->map.res_h - 1, sv->map.floor_color, sv);
 
         ZBuffer[x] = perp_wall_dist; // store the perpendicular distance of each vertical stripe in a 1D ZBuffer
         // чтобы понять что конкретная часть спрайта за стеной. Чтобы не отрисовать то, что находится дальше чем стена
@@ -233,36 +217,11 @@ void		cast_frame(t_game *sv)
 //	6: Draw the sprites vertical stripe by vertical stripe, don't draw the vertical stripe if the distance is further away than the 1D ZBuffer of the walls of the current stripe
 //	7: Draw the vertical stripe pixel by pixel, make sure there's an invisible color or all sprites would be rectangles
 
+
+
 //	SPRITE CASTING
-//	sort sprites from far to close
-	for(int i = 0; i < sv->sprites_count; i++)
-	{
-        sv->sprites_on_map[i].s_dist = ((sv->map.pos_x - sv->sprites_on_map[i].x) * (sv->map.pos_x - sv->sprites_on_map[i].x) + (sv->map.pos_y - sv->sprites_on_map[i].y) * (sv->map.pos_y - sv->sprites_on_map[i].y)); //sqrt not taken, unneeded
-	}
-
-
-
-    int j = 0;
-	int i = 0;
-
-    t_sprite	tmp;
-
-    while (j < sv->sprites_count - 1)
-    {
-        i = 0;
-        while (i < sv->sprites_count - j - 1)
-        {
-            if (sv->sprites_on_map[i].s_dist < sv->sprites_on_map[i + 1].s_dist)
-            {
-                tmp = sv->sprites_on_map[i];
-                sv->sprites_on_map[i] = sv->sprites_on_map[i + 1];
-                sv->sprites_on_map[i + 1] = tmp;
-            }
-            i++;
-        }
-        j++;
-    }
-
+	count_sprite_dst(sv);
+	sort_sprites(sv);
 
 	//after sorting the sprites, do the projection and draw them
 	for(int i = 0; i < sv->sprites_count; i++)
@@ -327,96 +286,3 @@ void		cast_frame(t_game *sv)
 		}
 	}
 }
-
-
-void draw_rectangle(t_game *sv, const int img_w, const int img_h, const int x, const int y, const int w, const int h, int color)
-{
-	for (int i=0; i<w; i++)
-	{
-		for (int j=0; j<h; j++)
-		{
-			size_t cx = x+i;
-			size_t cy = y+j;
-			if (cx >= img_w || cy >= img_h) continue; // no need to check negative values, (unsigned variables)
-			sv->img.addr[cx + cy * img_w] = color;
-		}
-	}
-}
-
-void    draw_black_screen(t_game *sv, int win_h, int win_w, int color)
-{
-    for (size_t j = 0; j<win_h; j++) { // fill the screen with color gradients
-        for (size_t i = 0; i<win_w; i++) {
-            uint8_t r = 255 * j / (float)win_h; // varies between 0 and 255 as j sweeps the vertical
-            uint8_t g = 255 * i / (float)win_w; // varies between 0 and 255 as i sweeps the horizontal
-            uint8_t b = 0;
-            sv->img.addr[i+j*win_w] = color;
-        }
-    }
-}
-
-void		draw_map(t_game *sv)
-{
-	int 	i;
-	int 	j;
-	int 	map_w = 16;
-	int 	map_h = 16;
-	int		rect_x;
-	int		rect_y;
-
-	i = 0;
-	j = 0;
-
-////	double player_x = 3.456; // player x position
-////	double player_y = 2.345; // player y position
-////	double player_a = 1.523; // player view direction
-//    sv->player.player_x = 3; // player x position
-//    sv->player.player_y = 2; // player y position
-//    sv->player.player_a = 1; // player view direction
-	const double fov = M_PI/3.; // field of view
-
-	const int rect_w = sv->map.res_w / (map_w * 2);
-	const int rect_h = sv->map.res_h / map_h;
-
-	while (i < map_h)
-	{
-		while (j < map_w)
-		{
-			if (sv->map.map_array[i + j * map_w] == '0')
-			{
-				j++;
-				continue ;
-			}
-
-			rect_x = i * rect_w;
-			rect_y = j * rect_h;
-			draw_rectangle(sv, sv->map.res_w, sv->map.res_h, rect_x, rect_y, rect_w, rect_h, create_trgb(0, 0, 255, 255));
-			mlx_put_image_to_window(sv->mlx, sv->win, sv->img.img, 0, 0);
-			j++;
-		}
-		j = 0;
-		i++;
-	}
-
-	for (size_t i=0; i < (sv->map.res_w / 2); i++)
-	{ // draw the visibility cone AND the "3D" view
-		double angle = sv->player.player_a-fov/2 + fov * i / ((double)(sv->map.res_w / 2));
-		for (double t=0; t<20; t+=.05)
-		{
-			double cx = sv->player.player_x + t * cos(angle);
-			double cy = sv->player.player_y + t * sin(angle);
-
-			int pix_x = cx * rect_w;
-			int pix_y = cy * rect_h;
-			sv->img.addr[pix_x + pix_y * sv->map.res_w] = create_trgb(0, 255, 0, 0); // this draws the visibility cone
-
-			if (sv->map.map_array[((int)cx) + ((int)cy) * map_w] != '0')
-			{ // our ray touches a wall, so draw the vertical column to create an illusion of 3D
-				size_t column_height = sv->map.res_h / t;
-				draw_rectangle(sv, sv->map.res_w, sv->map.res_h, sv->map.res_w / 2 + i, sv->map.res_h / 2 - column_height / 2, 1, column_height, create_trgb(0, 255, 255, 0));
-				break;
-			}
-		}
-	}
-}
-
