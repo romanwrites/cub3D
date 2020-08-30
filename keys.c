@@ -12,7 +12,7 @@
 
 #include "cub3d.h"
 
-void		check_buttons_state(t_game *sv)
+void	check_buttons_state(t_game *sv)
 {
 	if (sv->keys.left)
 		turn_left(sv);

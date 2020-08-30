@@ -108,18 +108,36 @@ typedef struct		s_conf {
 	int				ceiling_rgb[3];
 	int				ceiling_color;
 	char			player_direction;
+	_Bool			f_color_parse;
+	_Bool			c_color_parse;
 	char 			*map_array;
 	size_t			map_cols;
 	size_t			map_rows;
 	size_t			max_len;
 	double 			pos_x;
 	double 			pos_y;
+	//draw
 	double 			dir_x;
 	double 			dir_y;
 	double			plane_x;
 	double			plane_y;
-	_Bool			f_color_parse;
-	_Bool			c_color_parse;
+	int				x;
+	double			*z_buffer;
+	double camera_x;
+	double ray_dir_x;
+	double ray_dir_y;
+	int map_x;//which box of the map we're in
+	int map_y;
+	double side_dist_x;//length of ray from current position to next x or y-side
+	double side_dist_y;
+	double delta_dist_x;//length of ray from one x or y-side to next x or y-side
+	double delta_dist_y;
+	double perp_wall_dist;//нужно для избегания фишай эффекта
+
+	int step_x;//what direction to step in x or y-direction (either +1 or -1)
+	int step_y;
+	int hit;//was there a wall hit?
+	int side;//was a NS or a EW wall hit?
 }					t_conf;
 
 typedef struct		s_keys {
@@ -201,8 +219,6 @@ void				parse_resolution(char *str, t_conf *map);
 
 //parse_textures
 void				handle_textures(const char *str, t_conf *map);
-void				parse_textures(const char *str, t_conf *map);
-_Bool 			    texture_paths_filled(t_conf *map);
 
 
 //parse_color
@@ -253,7 +269,7 @@ void				ft_alloc_check(void *ptr);
 /* colors */
 int					create_trgb(unsigned int t, unsigned int r, \
 								unsigned int g, unsigned int b);
-int					add_shade(double distance, unsigned int color);
+int					add_shade(double distance, int color);
 
 /* drawings */
 void				my_mlx_pixel_put(t_game *sv, int x, int y, unsigned int color);
