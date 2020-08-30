@@ -3,17 +3,24 @@
 
 ## 🕵🏽‍♀️ Research
 
+### Core
+
+I built the graphics engine using this guide: [Lode's Computer Graphics Tutorial](https://lodev.org/cgtutor/raycasting.html)
+
+And peer2peer communication
+
 ### Maths
 
 * [Vector intro for linear algebra](https://www.khanacademy.org/math/linear-algebra/vectors-and-spaces/vectors/v/vector-introduction-linear-algebra)
 * [Linear combinations and span](https://www.khanacademy.org/math/linear-algebra/vectors-and-spaces/linear-combinations/v/linear-combinations-and-span)
 
-### Raycasting
-
+### Graphics
 * [Lode's Computer Graphics Tutorial Raycasting](https://lodev.org/cgtutor/raycasting.html)
 * [🎥 DDA Line Drawing Algorithm](https://www.youtube.com/watch?v=W5P8GlaEOSI)
-
-### Others
+* [Generate BMP on clean C](https://stackoverflow.com/a/47785639)
+* [Man open()](https://man7.org/linux/man-pages/man2/open.2.html)
+* [O_CREAT mode argument](https://stackoverflow.com/a/28466757)
+### Others (not used in final project)
 * [🎥 Bresenham's Line Drawing Algorithm](https://www.youtube.com/watch?v=RGB-wlatStc)
 
 
