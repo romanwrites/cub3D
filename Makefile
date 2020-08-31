@@ -33,6 +33,11 @@ SRC =	cub3d.c \
         read_map.c \
 		get_next_line/get_next_line.c \
 		get_next_line/get_next_line_utils.c \
+		draw_all_txt.c \
+		calculations.c \
+		dda.c \
+		draw_sprites_calc.c \
+
 
 OBJ =	$(SRC:%.c=%.o)
 
@@ -73,7 +78,6 @@ clean:	#mlxclean
 		rm -f $(OBJ)
 		rm -f *.d
 		cd libft/libft && make fclean
-		rm -f cub3D
 		
 
 fclean:

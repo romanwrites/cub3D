@@ -53,7 +53,8 @@ void			check_vertical_borders(t_game *sv)
 	sv->tmp = sv->lst;
 }
 
-void			check_sign(const char *str, const char *previous, const char *next, t_game *sv)
+void			check_sign(const char *str, const char *previous, \
+							const char *next, t_game *sv)
 {
 	size_t		j;
 
@@ -72,7 +73,6 @@ void			check_sign(const char *str, const char *previous, const char *next, t_gam
 			if (str[j - 1] == ' ' || (str[j + 1] == ' ' || str[j + 1] == '\0') || \
                 previous[j] == ' ' || next[j] == ' ')
 				ft_error_close(ERR_MAP_OPEN);
-
 		}
 		j++;
 	}

@@ -6,7 +6,7 @@
 /*   By: mkristie <mkristie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/19 11:03:51 by mkristie          #+#    #+#             */
-/*   Updated: 2020/08/30 18:09:20 by mkristie         ###   ########.fr       */
+/*   Updated: 2020/08/31 18:30:14 by mkristie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,9 @@
 # define BYTES_PER_PIXEL			4
 # define FILE_HEADER_SIZE			14
 # define INFO_HEADER_SIZE			40
+# define UDIV						1
+# define VDIV						1
+# define VMOVE						150.0
 
 
 
@@ -190,14 +193,6 @@ typedef	struct		s_draw
 	int				floor_y1;
 }					t_draw;
 
-//typedef struct		s_bmp
-//{
-//	int				width_in_bytes;
-//	int				padding_size;
-//	int				stride;
-//	char			*screen_addr;
-//}					t_bmp;
-
 typedef struct		s_game {
 	void			*mlx;
 	void			*win;
@@ -250,7 +245,7 @@ void				parse_color(const char *str, t_conf *map);
 
 
 //textures
-int		get_pixel(t_data *img, int x, int y);
+int					get_pixel(t_data *img, int x, int y);
 void				set_sprites_coordinates(t_game *sv);
 
 
@@ -302,13 +297,23 @@ void				draw_ceiling_and_floor(t_game *sv);
 void				draw_ver_line(t_game *sv, int draw_start, int draw_end);
 
 
-void				sort_sprites(t_game *sv);
-void				count_sprite_dst(t_game *sv);
-
 void				exit_with_error_message(char *str);
 
-int		save_screenshot(t_game *sv, char *filename);
-
-
+int					save_screenshot(t_game *sv, char *filename);
+void				draw_all_txt(t_game *sv);
+void				calc_wall_x(t_game *sv);
+void				calc_lowest_and_highest_pixels(t_game *sv);
+void				calc_dist_projected_on_camera_direction(t_game *sv);
+void				calc_ray_pos_and_dir(t_game *sv);
+void				calc_step_and_side_dst(t_game *sv);
+void				perform_dda(t_game *sv);
+void				draw_sprite_verline(t_game *sv, int stripe, int y);
+void				loop_through_every_ver_sprite_on_the_screen(t_game *sv);
+void				sort_sprites(t_game *sv);
+void				count_sprite_dst(t_game *sv);
+void				translate_sprite_pos(t_game *sv, int i);
+void				transform_sprite_wt_inv_camera_mtrix(t_game *sv);
+void				calc_min_max_sprite_pixels(t_game *sv);
+void				calc_width_of_the_sprite(t_game *sv);
 
 #endif

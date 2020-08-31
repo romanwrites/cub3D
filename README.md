@@ -13,6 +13,7 @@ And peer2peer communication
 
 * [Vector intro for linear algebra](https://www.khanacademy.org/math/linear-algebra/vectors-and-spaces/vectors/v/vector-introduction-linear-algebra)
 * [Linear combinations and span](https://www.khanacademy.org/math/linear-algebra/vectors-and-spaces/linear-combinations/v/linear-combinations-and-span)
+* [Rotation matrix](https://en.wikipedia.org/wiki/Rotation_matrix)
 
 ### Graphics
 * [Lode's Computer Graphics Tutorial Raycasting](https://lodev.org/cgtutor/raycasting.html)

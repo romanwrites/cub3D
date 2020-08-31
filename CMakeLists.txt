@@ -24,4 +24,4 @@ add_executable(cub3D
         ${LIBFT}
         ${SRCS}
         ${PARSER}
-        libft/libft/libft.h)
+        libft/libft/libft.h draw_all_txt.c calculations.c dda.c)
