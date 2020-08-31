@@ -110,13 +110,13 @@ typedef struct		s_conf {
 	char			player_direction;
 	_Bool			f_color_parse;
 	_Bool			c_color_parse;
-	char 			*map_array;
+	char 			*map_arr;
 	size_t			map_cols;
 	size_t			map_rows;
 	size_t			max_len;
 	double 			pos_x;
 	double 			pos_y;
-	//draw
+	//draw----------------------------------------------
 	double 			dir_x;
 	double 			dir_y;
 	double			plane_x;
@@ -138,6 +138,28 @@ typedef struct		s_conf {
 	int step_y;
 	int hit;//was there a wall hit?
 	int side;//was a NS or a EW wall hit?
+	int line_height;
+	double wall_x; //where exactly the wall was sv->map.hit
+	int tex_x;
+	int s_tex_x;
+	int tex_y;
+	int s_tex_y;
+	double step;
+	double tex_pos;
+	//sprites-------------------------------
+	double sprite_x;
+	double sprite_y;
+	double inv_det;
+	double transform_x;
+	double transform_y;
+	int sprite_screen_x;
+	int v_move_screen;
+	int sprite_height;
+	int draw_start_y;
+	int draw_end_y;
+	int sprite_width;
+	int draw_start_x;
+	int draw_end_x;
 }					t_conf;
 
 typedef struct		s_keys {

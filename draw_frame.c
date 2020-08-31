@@ -26,6 +26,11 @@ void		draw_ver_line(t_game *sv, int draw_start, int draw_end)
 
 void		draw_ceiling_and_floor(t_game *sv)
 {
+	sv->draw.ceiling_y0 = 0;
+	sv->draw.ceiling_y1 = sv->draw.draw_start;
+	sv->draw.floor_y0 = sv->draw.draw_end;
+	sv->draw.floor_y1 = sv->map.res_h - 1;
+	sv->draw.x = sv->map.x;
 	sv->draw.color = sv->map.ceiling_color;
 	draw_ver_line(sv, sv->draw.ceiling_y0, sv->draw.ceiling_y1);
 	sv->draw.color = sv->map.floor_color;

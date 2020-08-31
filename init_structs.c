@@ -30,7 +30,7 @@ static void				init_map(t_conf *map)
 	map->player_direction = 0;
 	map->map_cols = 0;
 	map->map_rows = 0;
-	map->map_array = NULL;
+	map->map_arr = NULL;
 }
 
 static void		init_keys(t_game *sv)
