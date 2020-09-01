@@ -82,11 +82,12 @@ void				parse_color(const char *str, t_conf *map)
 		i++;
 	if (i > 13 || str[i] != '\0')
 		ft_error_close(ERR_MAP_C);
-	if (!(rgb = ft_split(str + 1, ',')))
-		ft_error_close(ERR_MALLOC);
+	rgb = ft_split(str + 1, ',');
+	ft_alloc_check(rgb);
 	check_rgb(rgb);
 	set_color(str, map, rgb);
 	ft_free2d(rgb);
+	rgb = NULL;
 }
 
 void				handle_color(const char *str, t_conf *map)
@@ -95,8 +96,9 @@ void				handle_color(const char *str, t_conf *map)
 
 	if (!(ft_all_isprint(str)))
 		ft_error_close(ERR_MAP_C);
-	if (!(tmp = ft_replace(str, " ", "")))
-		ft_error_close(ERR_MALLOC);
+	tmp = ft_replace(str, " ", "");
+	ft_alloc_check(tmp);
 	parse_color(tmp, map);
 	free(tmp);
+	tmp = NULL;
 }

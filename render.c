@@ -12,7 +12,7 @@
 
 #include "cub3d.h"
 
-static void					print_frame_number()
+static void					print_frame_number(void)
 {
 	static long long int	frame_number;
 	char					*frame;

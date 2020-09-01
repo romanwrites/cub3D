@@ -68,10 +68,10 @@ void			check_sign(const char *str, const char *previous, \
 			else
 				ft_error_close(ERR_MAP_VALIDITY);
 		}
-		if (str[j] != '1' && str[j] != ' ' )
+		if (str[j] != '1' && str[j] != ' ')
 		{
-			if (str[j - 1] == ' ' || (str[j + 1] == ' ' || str[j + 1] == '\0') || \
-                previous[j] == ' ' || next[j] == ' ')
+			if (str[j - 1] == ' ' || (str[j + 1] == ' ' || \
+				str[j + 1] == '\0') || previous[j] == ' ' || next[j] == ' ')
 				ft_error_close(ERR_MAP_OPEN);
 		}
 		j++;

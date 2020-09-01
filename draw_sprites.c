@@ -12,11 +12,11 @@
 
 #include "cub3d.h"
 
-void				draw_sprite_verline(t_game *sv, int stripe, int y)
+void			draw_sprite_verline(t_game *sv, int stripe, int y)
 {
-	int				d;
-	int				sprite_pixel;
-	
+	int			d;
+	int			sprite_pixel;
+
 	while (y < sv->map.draw_end_y)
 	{
 		d = (y - sv->map.v_move_screen) * 256 - sv->map.res_h * \
@@ -29,11 +29,12 @@ void				draw_sprite_verline(t_game *sv, int stripe, int y)
 		y++;
 	}
 }
-void				loop_through_every_ver_sprite_on_the_screen(t_game *sv)
+
+void			loop_through_every_ver_sprite_on_the_screen(t_game *sv)
 {
-	int				stripe;
-	int				y;
-	
+	int			stripe;
+	int			y;
+
 	stripe = sv->map.draw_start_x;
 	y = sv->map.draw_start_y;
 	while (stripe < sv->map.draw_end_x)

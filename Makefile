@@ -37,6 +37,7 @@ SRC =	cub3d.c \
 		calculations.c \
 		dda.c \
 		draw_sprites_calc.c \
+		create_txt_and_sprite_imgs.c \
 
 
 OBJ =	$(SRC:%.c=%.o)

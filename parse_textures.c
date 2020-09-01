@@ -21,9 +21,9 @@ static _Bool	texture_paths_filled(t_conf *map)
 static void		save_path(char **dst, const char *src)
 {
 	if (*dst)
-		ft_error_close(ERR_MAP_T);
-	else if (!(*dst = ft_strdup(src)))
-		ft_error_close(ERR_MALLOC);
+		exit_with_err_msg("Map params are bad. Check texture parameters.");
+	*dst = ft_strdup(src);
+	ft_alloc_check(*dst);
 }
 
 static void		parse_textures(const char *str, t_conf *map)
@@ -39,7 +39,7 @@ static void		parse_textures(const char *str, t_conf *map)
 	else if (str[0] == 'S')
 		save_path(&map->s_path, str + 1);
 	else
-		ft_error_close(ERR_MAP_T);
+		exit_with_err_msg("Map params are bad. Check texture parameters.");
 }
 
 void			handle_textures(const char *str, t_conf *map)
@@ -47,9 +47,9 @@ void			handle_textures(const char *str, t_conf *map)
 	char		*tmp;
 
 	if (texture_paths_filled(map) || !(ft_all_isprint(str)))
-		ft_error_close(ERR_MAP_T);
-	if (!(tmp = ft_replace(str, " ", "")))
-		ft_error_close(ERR_MALLOC);
+		exit_with_err_msg("Map params are bad. Check texture parameters.");
+	tmp = ft_replace(str, " ", "");
+	ft_alloc_check(tmp);
 	parse_textures(tmp, map);
 	free(tmp);
 }

@@ -17,17 +17,18 @@ void			read_map(const int fd, t_game *sv)
 	int				bytes;
 
 	sv->lst = ft_my_lstnew(NULL, NULL);
+	ft_alloc_check(sv->lst);
 	sv->head = sv->lst;
 	while ((bytes = get_next_line(fd, (char **)&sv->lst->content)) == 1)
 	{
-		if (!(sv->lst->content) || \
-			!(sv->lst->next = ft_my_lstnew(NULL, &sv->lst)))
-			ft_error_close(ERR_MALLOC);
+		ft_alloc_check(sv->lst->content);
+		sv->lst->next = ft_my_lstnew(NULL, &sv->lst);
+		ft_alloc_check(sv->lst->next);
 		sv->lst->len = ft_strlen(sv->lst->content);
 		sv->lst = sv->lst->next;
 	}
 	sv->lst->len = ft_strlen(sv->lst->content);
 	if (bytes == -1)
-		ft_error_close(ERR_READ_MAP);
+		exit_with_err_msg("Can't read map");
 	close(fd);
 }

@@ -12,7 +12,7 @@
 
 #include "cub3d.h"
 
-static void				init_map(t_conf *map)
+static void		init_map(t_conf *map)
 {
 	map->res_w = 0;
 	map->res_h = 0;
@@ -43,7 +43,6 @@ static void		init_keys(t_game *sv)
 	sv->keys.right = 0;
 }
 
-
 static void		init_img(t_game *sv)
 {
 	sv->img.img = NULL;
@@ -53,16 +52,16 @@ static void		init_img(t_game *sv)
 	sv->img.endian = 0;
 }
 
-void		init_game(t_game *sv)
+void			init_game(t_game *sv)
 {
 	sv->head = NULL;
 	sv->lst = NULL;
 	sv->mlx = NULL;
 	sv->win = NULL;
+	sv->sprites_count = 0;
+	sv->map.f_color_parse = 0;
+	sv->map.c_color_parse = 0;
 	init_img(sv);
 	init_map(&sv->map);
 	init_keys(sv);
-    sv->sprites_count = 0;
-	sv->map.f_color_parse = 0;
-	sv->map.c_color_parse = 0;
 }

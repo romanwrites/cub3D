@@ -18,7 +18,7 @@ void			what_is_line_content(char *str, t_game *sv, \
 	if (!(*str) && !(*map_started_flag))
 		return ;
 	else if (!(*str) && *map_started_flag)
-		exit_with_error_message("Map is not valid.");
+		exit_with_err_msg("Map is not valid.");
 	if (*str == ' ')
 	{
 		while (*str == ' ')
@@ -36,5 +36,5 @@ void			what_is_line_content(char *str, t_game *sv, \
 		parse_map(sv);
 	}
 	else
-		exit_with_error_message("Map is not valid.");
+		exit_with_err_msg("Map is not valid.");
 }

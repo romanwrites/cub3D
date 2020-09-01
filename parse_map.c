@@ -27,15 +27,14 @@ size_t			find_max_len(t_game *sv)
 	return (max);
 }
 
-
 void			append_spaces(const char *src, t_game *sv, size_t len)
 {
 	char		*dst;
-	size_t 		i;
+	size_t		i;
 
 	i = 0;
-	if (!(dst = ft_calloc(1, len + 1)))
-		ft_error_close(ERR_MALLOC);
+	dst = ft_calloc(1, len + 1);
+	ft_alloc_check(dst);
 	while (src[i])
 	{
 		dst[i] = src[i];
@@ -50,7 +49,6 @@ void			append_spaces(const char *src, t_game *sv, size_t len)
 	free(sv->tmp->content);
 	sv->tmp->content = dst;
 }
-
 
 void			convert_spaces_to_ones(t_game *sv)
 {

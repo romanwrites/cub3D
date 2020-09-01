@@ -22,7 +22,8 @@ void		my_mlx_pixel_put(t_game *sv, int x, int y, unsigned int color)
 {
 	int		*dst;
 
-	dst = (void *)sv->img.addr + (y * sv->img.line_length + x * (sv->img.bits_per_pixel / 8));
+	dst = (void *)sv->img.addr + (y * sv->img.line_length + x * \
+											(sv->img.bits_per_pixel / 8));
 	*(int*)dst = color;
 }
 
@@ -31,7 +32,8 @@ int			get_pixel(t_data *img, int x, int y)
 	int		*dst;
 	int		color;
 
-	dst = (void *)img->addr + (y * img->line_length + x * (img->bits_per_pixel / 8));
+	dst = (void *)img->addr + (y * img->line_length + x * \
+												(img->bits_per_pixel / 8));
 	color = *(int*)dst;
 	return (color);
 }
