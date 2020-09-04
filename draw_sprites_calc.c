@@ -6,7 +6,7 @@
 /*   By: mkristie <mkristie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/31 18:25:28 by mkristie          #+#    #+#             */
-/*   Updated: 2020/08/31 18:29:31 by mkristie         ###   ########.fr       */
+/*   Updated: 2020/09/01 23:13:25 by mkristie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ void				transform_sprite_wt_inv_camera_mtrix(t_game *sv)
 	sv->map.sprite_screen_x = (int)((sv->map.res_w / 2) * \
 							(1 + sv->map.transform_x / sv->map.transform_y));
 }
+
 
 void				calc_min_max_sprite_pixels(t_game *sv)
 {

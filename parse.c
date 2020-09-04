@@ -25,7 +25,7 @@ void			what_is_line_content(char *str, t_game *sv, \
 			str++;
 	}
 	if (*str == 'R')
-		parse_resolution(str, &sv->map);
+		parse_resolution(sv, str, &sv->map);
 	else if (*str == 'N' || *str == 'S' || *str == 'W' || *str == 'E')
 		handle_textures(str, &sv->map);
 	else if (*str == 'C' || *str == 'F')

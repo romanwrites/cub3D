@@ -169,9 +169,9 @@ typedef struct		s_game {
 	void			*win;
 	t_data			img;
 	t_conf			map;
-	t_d_list	*head;
-	t_d_list	*lst;
-	t_d_list	*tmp;
+	t_d_list		*head;
+	t_d_list		*lst;
+	t_d_list		*tmp;
 	t_keys			keys;
 	t_data			north;
 	t_data			south;
@@ -180,6 +180,8 @@ typedef struct		s_game {
 	t_data			sprite;
 	t_sprite		*sprites_on_map;
 	t_draw			draw;
+	int				get_res_w;
+	int				get_res_h;
 	int				sprites_count;
 	char			*filename;
 }					t_game;
@@ -198,7 +200,7 @@ void				check_vertical_borders(t_game *sv);
 void				check_sign(const char *str, const char *previous, \
 										const char *next, t_game *sv);
 void				check_map_params(t_game *sv);
-void				parse_resolution(char *str, t_conf *map);
+void				parse_resolution(t_game *sv, char *str, t_conf *map);
 void				handle_textures(const char *str, t_conf *map);
 void				handle_color(const char *str, t_conf *map);
 void				parse_color(const char *str, t_conf *map);

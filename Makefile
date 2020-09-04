@@ -38,37 +38,35 @@ SRC =	cub3d.c \
 		dda.c \
 		draw_sprites_calc.c \
 		create_txt_and_sprite_imgs.c \
+		utils.c \
 
 
-OBJ =	$(SRC:%.c=%.o)
+
+OBJ =	$(SRC:.c=.o)
+
+%.o: %.c cub3d.h
+		gcc $(FLAGS) -Imlx -c $< -o $@
 
 all:	$(NAME)
 
-MLX = -lmlx -lm -framework OpenGL -framework AppKit
+MLX = -L. -lmlx -framework OpenGL -framework AppKit
 
 $(NAME) : $(OBJ)
-	@make -C ./mlx
-	@cp mlx/libmlx.dylib .
-	@$(MAKE) -C ./libft/libft
-	@$(MAKE) bonus -C ./libft/libft
-	@gcc $(OBJ) -I. -Wall -Wextra -Werror $(MLX) ./libft/libft/libft.a -o $(NAME)
-	@echo "\033[33m[Done !]"
-
+		make -C ./mlx
+		cp mlx/libmlx.dylib ./
+		$(MAKE) -C ./libft/libft
+		$(MAKE) bonus -C ./libft/libft
+		gcc $(OBJ) -I. -I./mlx -Wall -Wextra -Werror $(MLX) ./libft/libft/libft.a -o $(NAME)
 
 
 run:
 	./cub3D map.cub
-
 
 .PHONY: mlx clean_mlx norm fclean clean re all run
 
 mlxclean:
 		@cd mlx && make clean
 		@cd mlx && rm -f *.swiftsourceinfo
-
-minilibx:
-		@make -C ./mlx
-		@cp mlx/libmlx.dylib .
 
 norm:	
 		@echo "\tlibft\n" && cd libft/libft && $(NORM)
@@ -86,3 +84,4 @@ fclean:
 		rm -f *.d
 		cd libft/libft && make fclean
 		rm -f cub3D
+		rm -f libmlx.dylib

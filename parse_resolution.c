@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parse_line_content.c                               :+:      :+:    :+:   */
+/*   parse_resolution.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkristie <kukinpower@ya.ru>                +#+  +:+       +#+        */
+/*   By: mkristie <mkristie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/08 20:06:32 by mkristie          #+#    #+#             */
-/*   Updated: 2020/08/08 20:06:37 by mkristie         ###   ########.fr       */
+/*   Updated: 2020/09/01 20:35:38 by mkristie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-static void	res_utils(char *str, t_conf *map)
+static void	res_utils(t_game *sv, char *str, t_conf *map)
 {
 	char	*replaced;
 	char	**temp;
@@ -28,8 +28,12 @@ static void	res_utils(char *str, t_conf *map)
 		exit_with_err_msg("Map params are bad. Check R.");
 	map->res_w = ft_atoi(temp[0]);
 	map->res_h = ft_atoi(temp[1]);
-	if (map->res_h > 3500 || map->res_w > 3500 || \
-		map->res_h < 1 || map->res_w < 1)
+	if (map->res_h > sv->get_res_h || map->res_w > sv->get_res_w)
+	{
+		map->res_h = sv->get_res_h;
+		map->res_w = sv->get_res_w;
+	}
+	if (map->res_h < 1 || map->res_w < 1)
 		exit_with_err_msg("Map params are bad. Check R.");
 	free(replaced);
 	ft_free2d(temp);
@@ -37,7 +41,7 @@ static void	res_utils(char *str, t_conf *map)
 	temp = NULL;
 }
 
-void		parse_resolution(char *str, t_conf *map)
+void		parse_resolution(t_game *sv, char *str, t_conf *map)
 {
 	int		i;
 
@@ -52,5 +56,6 @@ void		parse_resolution(char *str, t_conf *map)
 		str[i] = ',';
 	else
 		exit_with_err_msg("Map params are bad. Check R.");
-	res_utils(str, map);
+	mlx_get_screen_size(sv->mlx, &sv->get_res_w, &sv->get_res_h);
+	res_utils(sv, str, map);
 }

@@ -6,7 +6,7 @@
 /*   By: mkristie <mkristie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/01 19:15:26 by mkristie          #+#    #+#             */
-/*   Updated: 2020/09/01 19:15:30 by mkristie         ###   ########.fr       */
+/*   Updated: 2020/09/01 20:07:39 by mkristie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,6 @@ int				ft_close(int exit_code, t_game *sv)
 		ft_error_close(exit_code);
 	if (exit_code == 53)
 	{
-		printf("I am printing ESC when 53 is passed\n");
 		mlx_destroy_window(sv->mlx, sv->win);
 		exit(EXIT_SUCCESS);
 	}
