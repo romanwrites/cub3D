@@ -27,13 +27,14 @@ void			what_is_line_content(char *str, t_game *sv, \
 	if (*str == 'R')
 		parse_resolution(sv, str, &sv->map);
 	else if (*str == 'N' || *str == 'S' || *str == 'W' || *str == 'E')
-		handle_textures(str, &sv->map);
+		handle_textures(sv, str, &sv->map);
 	else if (*str == 'C' || *str == 'F')
-		handle_color(str, &sv->map);
+		handle_color(sv, str, &sv->map);
 	else if (!(*map_started_flag) && (*str == '1' || *str == ' '))
 	{
 		*map_started_flag = 1;
 		parse_map(sv);
+		sv->checklist.m += 1;
 	}
 	else
 		exit_with_err_msg("Map is not valid.");

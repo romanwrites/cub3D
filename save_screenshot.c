@@ -51,10 +51,10 @@ void						write_bmp(t_game *sv, int y, int fd)
 	int						width_in_bytes;
 	int						padding_size;
 	int						stride;
-	static unsigned char	padding[3] = {0, 0, 0};
+	static unsigned char	padding[4] = {0, 0, 0, 0};
 
 	y = 0;
-	width_in_bytes = sv->map.res_w * BYTES_PER_PIXEL;
+	width_in_bytes = sv->img.line_length * BYTES_PER_PIXEL;
 	padding_size = (4 - (width_in_bytes) % 4) % 4;
 	stride = (width_in_bytes) + padding_size;
 	write(fd, create_bmp_file_header(sv->map.res_h, stride), FILE_HEADER_SIZE);
@@ -69,7 +69,7 @@ void						write_bmp(t_game *sv, int y, int fd)
 	}
 }
 
-int							save_screenshot(t_game *sv, char *map_name)
+void							save_screenshot(t_game *sv, char *map_name)
 {
 	int						fd;
 	char					*filename;
@@ -84,5 +84,4 @@ int							save_screenshot(t_game *sv, char *map_name)
 	close(fd);
 	free(filename);
 	filename = NULL;
-	return (0);
 }

@@ -26,23 +26,38 @@ static void		save_path(char **dst, const char *src)
 	ft_alloc_check(*dst);
 }
 
-static void		parse_textures(const char *str, t_conf *map)
+static void		parse_textures(t_game *sv, const char *str, t_conf *map)
 {
 	if (ft_strnstr(str, "NO", 2) && !(ft_isspace(str[2])))
+	{
 		save_path(&map->no_path, str + 2);
+		sv->checklist.no_txt += 1;
+	}
 	else if (ft_strnstr(str, "SO", 2) && !(ft_isspace(str[2])))
+	{
 		save_path(&map->so_path, str + 2);
+		sv->checklist.so_txt += 1;
+	}
 	else if (ft_strnstr(str, "WE", 2) && !(ft_isspace(str[2])))
+	{
 		save_path(&map->we_path, str + 2);
+		sv->checklist.we_txt += 1;
+	}
 	else if (ft_strnstr(str, "EA", 2) && !(ft_isspace(str[2])))
+	{
 		save_path(&map->ea_path, str + 2);
+		sv->checklist.ea_txt += 1;
+	}
 	else if (str[0] == 'S')
+	{
 		save_path(&map->s_path, str + 1);
+		sv->checklist.sprite_txt += 1;
+	}
 	else
 		exit_with_err_msg("Map params are bad. Check texture parameters.");
 }
 
-void			handle_textures(const char *str, t_conf *map)
+void			handle_textures(t_game *sv, const char *str, t_conf *map)
 {
 	char		*tmp;
 
@@ -50,6 +65,6 @@ void			handle_textures(const char *str, t_conf *map)
 		exit_with_err_msg("Map params are bad. Check texture parameters.");
 	tmp = ft_replace(str, " ", "");
 	ft_alloc_check(tmp);
-	parse_textures(tmp, map);
+	parse_textures(sv, tmp, map);
 	free(tmp);
 }

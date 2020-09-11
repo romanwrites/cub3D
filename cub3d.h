@@ -62,6 +62,21 @@ typedef struct		s_data {
 	int				endian;
 }					t_data;
 
+typedef struct 		s_checklist {
+	int				no_txt;
+	int				so_txt;
+	int 			ea_txt;
+	int				we_txt;
+	int				sprite_txt;
+	int				res_width;
+	int				res_height;
+	int				floor_c;
+	int 			ceiling_c;
+	int				m;
+	int				player;
+
+}					t_checklist;
+
 typedef struct		s_conf {
 	int				res_w;
 	int				res_h;
@@ -180,6 +195,7 @@ typedef struct		s_game {
 	t_data			sprite;
 	t_sprite		*sprites_on_map;
 	t_draw			draw;
+	t_checklist		checklist;
 	int				get_res_w;
 	int				get_res_h;
 	int				sprites_count;
@@ -201,9 +217,9 @@ void				check_sign(const char *str, const char *previous, \
 										const char *next, t_game *sv);
 void				check_map_params(t_game *sv);
 void				parse_resolution(t_game *sv, char *str, t_conf *map);
-void				handle_textures(const char *str, t_conf *map);
-void				handle_color(const char *str, t_conf *map);
-void				parse_color(const char *str, t_conf *map);
+void				handle_textures(t_game *sv, const char *str, t_conf *map);
+void				handle_color(t_game *sv, const char *str, t_conf *map);
+void				parse_color(t_game *sv, const char *str, t_conf *map);
 unsigned char		*create_bmp_file_header(int height, int stride);
 unsigned char		*create_bmp_info_header(int height, int width);
 int					get_pixel(t_data *img, int x, int y);
@@ -233,7 +249,7 @@ void				my_mlx_pixel_put(t_game *sv, int x, int y, \
 void				draw_ceiling_and_floor(t_game *sv);
 void				draw_ver_line(t_game *sv, int draw_start, int draw_end);
 void				exit_with_err_msg(char *str);
-int					save_screenshot(t_game *sv, char *filename);
+void				save_screenshot(t_game *sv, char *map_name);
 void				draw_all_txt(t_game *sv);
 void				calc_wall_x(t_game *sv);
 void				calc_lowest_and_highest_pixels(t_game *sv);
@@ -252,4 +268,6 @@ void				calc_width_of_the_sprite(t_game *sv);
 void				create_texture_imgs(t_game *sv);
 void				create_sprite_img(t_game *sv);
 void				free_lst_content(void *content);
+void				check_res(t_game *sv);
+
 #endif

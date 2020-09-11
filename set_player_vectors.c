@@ -17,8 +17,8 @@ static void		set_dir_and_plane_no_so(t_game *sv, int j)
 	if (sv->map.map_arr[j] == 'N')
 	{
 		sv->map.dir_x = 0;
-		sv->map.dir_y = -0.66;
-		sv->map.plane_x = 0.66;
+		sv->map.dir_y = -0.1;
+		sv->map.plane_x = 0.1;
 		sv->map.plane_y = 0;
 	}
 	else if (sv->map.map_arr[j] == 'S')
@@ -56,6 +56,7 @@ void			set_player_vectors(t_game *sv, int j, int i)
 		set_dir_and_plane_no_so(sv, j);
 	else
 		set_dir_and_plane_ea_we(sv, j);
+	sv->checklist.player += 1;
 	sv->map.map_arr[j] = '0';
 	sv->map.plane_x *= FOV;
 	sv->map.plane_y *= FOV;

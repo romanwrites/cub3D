@@ -30,4 +30,5 @@ And peer2peer communication
 * Lego: <span>Photo by <a href="https://unsplash.com/@omarg247?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText">Omar Flores</a> on <a href="https://unsplash.com/s/photos/lego?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText">Unsplash</a></span>
 * Pink bricks: <span>Photo by <a href="https://unsplash.com/@pawel_czerwinski?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText">Paweł Czerwiński</a> on <a href="https://unsplash.com/s/photos/pink-brick?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText">Unsplash</a></span>
 * Binary: [me](https://twitter.com/Kukinpower)
+* Coin: [https://creazilla.com/nodes/60815-golden-dollar-coin-clipart](https://creazilla.com/nodes/60815-golden-dollar-coin-clipart)
 * Crate: [MostafaElTurkey36](https://pixabay.com/vectors/box-crate-wooden-box-wooden-wood-4989961/)

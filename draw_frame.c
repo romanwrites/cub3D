@@ -17,7 +17,7 @@ void		draw_ver_line(t_game *sv, int draw_start, int draw_end)
 	int		y;
 
 	y = draw_start;
-	while (y <= draw_end)
+	while (y < draw_end)
 	{
 		my_mlx_pixel_put(sv, sv->draw.x, y, sv->draw.color);
 		y++;

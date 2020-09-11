@@ -26,6 +26,18 @@ static void					print_frame_number(void)
 	frame = NULL;
 }
 
+int							render_frame_screenshot(t_game *sv)
+{
+	sv->img.img = mlx_new_image(sv->mlx, sv->map.res_w, sv->map.res_h);
+	ft_alloc_check(sv->img.img);
+	sv->img.addr = mlx_get_data_addr(sv->img.img, &sv->img.bits_per_pixel, \
+									&sv->img.line_length, &sv->img.endian);
+	set_sprites_coordinates(sv);
+	cast_frame(sv);
+	return (0);
+}
+
+
 int							render_frame(t_game *sv)
 {
 	if (!sv->keys.w && !sv->keys.s && !sv->keys.a && \

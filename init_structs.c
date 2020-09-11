@@ -12,6 +12,21 @@
 
 #include "cub3d.h"
 
+static void		init_checklist(t_checklist *checklist)
+{
+	checklist->no_txt = 0;
+	checklist->so_txt = 0;
+	checklist->ea_txt = 0;
+	checklist->we_txt = 0;
+	checklist->res_width = 0;
+	checklist->res_height = 0;
+	checklist->floor_c = 0;
+	checklist->ceiling_c = 0;
+	checklist->m = 0;
+	checklist->player = 0;
+	checklist->sprite_txt = 0;
+}
+
 static void		init_map(t_conf *map)
 {
 	map->res_w = 0;
@@ -64,4 +79,5 @@ void			init_game(t_game *sv)
 	init_img(sv);
 	init_map(&sv->map);
 	init_keys(sv);
+	init_checklist(&sv->checklist);
 }

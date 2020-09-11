@@ -43,7 +43,8 @@ static void			check_rgb(char **rgb)
 		ft_error_close(ERR_MAP_C);
 }
 
-void				set_color(const char *str, t_conf *map, char **rgb)
+void				set_color(t_game *sv, const char *str, \
+								t_conf *map, char **rgb)
 {
 	int				j;
 
@@ -55,6 +56,7 @@ void				set_color(const char *str, t_conf *map, char **rgb)
 		map->c_color_parse = 1;
 		map->ceiling_color = create_trgb(0, map->ceiling_rgb[0], \
 							map->ceiling_rgb[1], map->ceiling_rgb[2]);
+		sv->checklist.ceiling_c += 1;
 	}
 	else if (str[0] == 'F')
 	{
@@ -63,12 +65,13 @@ void				set_color(const char *str, t_conf *map, char **rgb)
 		map->f_color_parse = 1;
 		map->floor_color = create_trgb(0, map->floor_rgb[0], \
 							map->floor_rgb[1], map->floor_rgb[2]);
+		sv->checklist.floor_c += 1;
 	}
 	else
 		ft_error_close(ERR_MAP_C);
 }
 
-void				parse_color(const char *str, t_conf *map)
+void				parse_color(t_game *sv, const char *str, t_conf *map)
 {
 	int				i;
 	char			**rgb;
@@ -85,12 +88,12 @@ void				parse_color(const char *str, t_conf *map)
 	rgb = ft_split(str + 1, ',');
 	ft_alloc_check(rgb);
 	check_rgb(rgb);
-	set_color(str, map, rgb);
+	set_color(sv, str, map, rgb);
 	ft_free2d(rgb);
 	rgb = NULL;
 }
 
-void				handle_color(const char *str, t_conf *map)
+void				handle_color(t_game *sv, const char *str, t_conf *map)
 {
 	char			*tmp;
 
@@ -98,7 +101,7 @@ void				handle_color(const char *str, t_conf *map)
 		ft_error_close(ERR_MAP_C);
 	tmp = ft_replace(str, " ", "");
 	ft_alloc_check(tmp);
-	parse_color(tmp, map);
+	parse_color(sv, tmp, map);
 	free(tmp);
 	tmp = NULL;
 }

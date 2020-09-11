@@ -25,16 +25,15 @@ static void	res_utils(t_game *sv, char *str, t_conf *map)
 			!(ft_all_digits(temp[0])) || !(ft_all_digits(temp[1])))
 		exit_with_err_msg("Map params are bad. Check R.");
 	if (map->res_w || map->res_h)
-		exit_with_err_msg("Map params are bad. Check R.");
+		exit_with_err_msg("Resolution param passed twice.");
 	map->res_w = ft_atoi(temp[0]);
 	map->res_h = ft_atoi(temp[1]);
-	if (map->res_h > sv->get_res_h || map->res_w > sv->get_res_w)
-	{
+	if (map->res_h > sv->get_res_h)
 		map->res_h = sv->get_res_h;
+	if (map->res_w > sv->get_res_w)
 		map->res_w = sv->get_res_w;
-	}
 	if (map->res_h < 1 || map->res_w < 1)
-		exit_with_err_msg("Map params are bad. Check R.");
+		exit_with_err_msg("Resolution is less than 1.");
 	free(replaced);
 	ft_free2d(temp);
 	replaced = NULL;
@@ -58,4 +57,6 @@ void		parse_resolution(t_game *sv, char *str, t_conf *map)
 		exit_with_err_msg("Map params are bad. Check R.");
 	mlx_get_screen_size(sv->mlx, &sv->get_res_w, &sv->get_res_h);
 	res_utils(sv, str, map);
+	sv->checklist.res_height += 1;
+	sv->checklist.res_width += 1;
 }

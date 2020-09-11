@@ -26,6 +26,7 @@ void		handle_save(t_game *sv, char **argv)
 	read_map(open(argv[1], O_RDONLY), sv);
 	check_map_params(sv);
 	create_map_array(sv);
+	check_res(sv);
 	ft_my_lstclear(&sv->lst, free_lst_content);
 	set_sprites_coordinates(sv);
 	ft_alloc_check((sv->mlx = mlx_init()));
@@ -41,14 +42,32 @@ void		handle_save(t_game *sv, char **argv)
 	exit(0);
 }
 
+_Bool		is_valid_map_file(t_checklist *chk)
+{
+	if (!chk->no_txt || !chk->so_txt || !chk->ea_txt || !chk->we_txt || \
+		!chk->sprite_txt || !chk->res_width || !chk->res_height || \
+		!chk->floor_c || !chk->ceiling_c || !chk->m || !chk->player)
+		return (0);
+	if (chk->no_txt > 1 || chk->so_txt > 1 || chk->ea_txt > 1 || \
+		chk->we_txt > 1 || chk->sprite_txt > 1 || chk->res_width > 1 || \
+		chk->res_height > 1 || chk->floor_c > 1 || chk->ceiling_c > 1 || \
+		chk->m > 1 || chk->player > 1)
+		return (0);
+	return (1);
+}
+
 void		init_engine_parts(t_game *sv, char **argv)
 {
 	init_game(sv);
 	read_map(open(argv[1], O_RDONLY), sv);
 	check_map_params(sv);
+
 	sv->filename = argv[1];
 	sv->filename[ft_strlen(sv->filename) - 4] = '\0';
-	create_map_array(sv);
+	if (sv->checklist.m == 1)
+		create_map_array(sv);
+	if (!(is_valid_map_file(&sv->checklist)))
+		exit_with_err_msg("Map file is incorrect.");
 	ft_my_lstclear(&sv->head, free_lst_content);
 	sv->head = NULL;
 	set_sprites_coordinates(sv);

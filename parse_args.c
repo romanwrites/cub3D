@@ -30,8 +30,13 @@ static _Bool	check_str(const char *str, const char *s, const int num)
 void			parse_args(int ac, char *filename, char *save)
 {
 	_Bool		s_flag;
+	int			fd;
 
 	s_flag = 0;
+	fd = open(filename, O_RDONLY);
+	if (fd == -1)
+		exit_with_err_msg("Bad map file.");
+	close(fd);
 	if (!(check_str(filename, ".cub", 4)))
 		exit_with_err_msg("Incorrect map extension.");
 	if (ac == 2 && !save)
