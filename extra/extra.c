@@ -1,4 +1,4 @@
-#include "cub3d_extras.h"
+//#include "cub3d_extras.h"
 
 void		draw_square(int i, int j, unsigned int *colours, t_data *img)
 {

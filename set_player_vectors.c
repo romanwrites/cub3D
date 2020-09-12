@@ -17,8 +17,8 @@ static void		set_dir_and_plane_no_so(t_game *sv, int j)
 	if (sv->map.map_arr[j] == 'N')
 	{
 		sv->map.dir_x = 0;
-		sv->map.dir_y = -0.1;
-		sv->map.plane_x = 0.1;
+		sv->map.dir_y = -1;
+		sv->map.plane_x = 1;
 		sv->map.plane_y = 0;
 	}
 	else if (sv->map.map_arr[j] == 'S')

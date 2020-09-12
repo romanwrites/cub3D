@@ -19,7 +19,7 @@
 # include "get_next_line.h"
 # include "libft.h"
 
-# define FOV						tan(80/2 * M_PI/180)
+# define FOV						tan(70/2 * M_PI/180)
 # define MOVE_SPEED					0.15
 # define ROT						0.15
 # define PRINT_FRAME_NUMBER			0
