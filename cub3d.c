@@ -106,6 +106,6 @@ int			main(int argc, char **argv)
 	else if (argc == 2)
 		start_game(&sv, argv);
 	else
-		exit_with_err_msg("Too many args. Pass only map.cub and/or --save.");
+		exit_with_err_msg("Too many args. Pass only *.cub and --save.");
 	return (0);
 }

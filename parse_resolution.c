@@ -26,8 +26,14 @@ static void	res_utils(t_game *sv, char *str, t_conf *map)
 		exit_with_err_msg("Map params are bad. Check R.");
 	if (map->res_w || map->res_h)
 		exit_with_err_msg("Resolution param passed twice.");
-	map->res_w = ft_atoi(temp[0]);
-	map->res_h = ft_atoi(temp[1]);
+	if (ft_strlen(temp[0]) < 5)
+		map->res_w = ft_atoi(temp[0]);
+	else
+		map->res_w = sv->get_res_w;
+	if (ft_strlen(temp[1]) < 5)
+		map->res_h = ft_atoi(temp[1]);
+	else
+		map->res_h = sv->get_res_h;
 	if (map->res_h > sv->get_res_h)
 		map->res_h = sv->get_res_h;
 	if (map->res_w > sv->get_res_w)

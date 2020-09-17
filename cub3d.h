@@ -20,8 +20,8 @@
 # include "libft.h"
 
 # define FOV						tan(70/2 * M_PI/180)
-# define MOVE_SPEED					0.15
-# define ROT						0.15
+# define MOVE_SPEED					0.1
+# define ROT						0.05
 # define PRINT_FRAME_NUMBER			0
 
 # define KEY_PRESS_MASK				(1L<<0)

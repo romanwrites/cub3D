@@ -52,7 +52,11 @@ void				set_color(t_game *sv, const char *str, \
 	if (str[0] == 'C')
 	{
 		while (j++ < 2)
+		{
 			map->ceiling_rgb[j] = ft_atoi(rgb[j]);
+			if (map->ceiling_rgb[j] > 255 || map->ceiling_rgb[j] < 0)
+				exit_with_err_msg("Bad C color value.");
+		}
 		map->c_color_parse = 1;
 		map->ceiling_color = create_trgb(0, map->ceiling_rgb[0], \
 							map->ceiling_rgb[1], map->ceiling_rgb[2]);
@@ -61,7 +65,11 @@ void				set_color(t_game *sv, const char *str, \
 	else if (str[0] == 'F')
 	{
 		while (j++ < 2)
+		{
 			map->floor_rgb[j] = ft_atoi(rgb[j]);
+			if (map->floor_rgb[j] > 255 || map->floor_rgb[j] < 0)
+				exit_with_err_msg("Bad F color value.");
+		}
 		map->f_color_parse = 1;
 		map->floor_color = create_trgb(0, map->floor_rgb[0], \
 							map->floor_rgb[1], map->floor_rgb[2]);

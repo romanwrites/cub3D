@@ -10,7 +10,6 @@ include_directories(get_next_line)
 include_directories(includes)
 
 set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -L. -lmlx -framework OpenGL -framework AppKit")
-#set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS}")
 
 file(GLOB
         LIBFT "libft/libft/*.c")
@@ -23,7 +22,6 @@ add_executable(cub3D
         get_next_line/get_next_line.h
         ${LIBFT}
         ${SRCS}
-        ${PARSER}
         libft/libft/libft.h
         draw_all_txt.c
         calculations.c
