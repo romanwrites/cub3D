@@ -69,7 +69,7 @@ void						write_bmp(t_game *sv, int y, int fd)
 	}
 }
 
-void							save_screenshot(t_game *sv, char *map_name)
+void						save_screenshot(t_game *sv, char *map_name)
 {
 	int						fd;
 	char					*filename;

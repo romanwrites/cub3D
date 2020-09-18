@@ -12,22 +12,6 @@
 
 #include "cub3d.h"
 
-static _Bool		count_commas(const char *str)
-{
-	int				commas;
-	int				i;
-
-	commas = 0;
-	i = 0;
-	while (str[i])
-	{
-		if (str[i] == ',')
-			commas++;
-		i++;
-	}
-	return (commas == 2);
-}
-
 static void			check_rgb(char **rgb)
 {
 	int				i;
@@ -43,6 +27,23 @@ static void			check_rgb(char **rgb)
 		ft_error_close(ERR_MAP_C);
 }
 
+void				fill_c_colors(t_game *sv, t_conf *map, char **rgb, int j)
+{
+	while (j++ < 2)
+	{
+		if (ft_strlen(rgb[j]) > 0 && ft_strlen(rgb[j]) < 4)
+			map->ceiling_rgb[j] = ft_atoi(rgb[j]);
+		else
+			exit_with_err_msg("Bad F color value.");
+		if (map->ceiling_rgb[j] > 255 || map->ceiling_rgb[j] < 0)
+			exit_with_err_msg("Bad C color value.");
+	}
+	map->c_color_parse = 1;
+	map->ceiling_color = create_trgb(0, map->ceiling_rgb[0], \
+							map->ceiling_rgb[1], map->ceiling_rgb[2]);
+	sv->checklist.ceiling_c += 1;
+}
+
 void				set_color(t_game *sv, const char *str, \
 								t_conf *map, char **rgb)
 {
@@ -50,23 +51,15 @@ void				set_color(t_game *sv, const char *str, \
 
 	j = -1;
 	if (str[0] == 'C')
-	{
-		while (j++ < 2)
-		{
-			map->ceiling_rgb[j] = ft_atoi(rgb[j]);
-			if (map->ceiling_rgb[j] > 255 || map->ceiling_rgb[j] < 0)
-				exit_with_err_msg("Bad C color value.");
-		}
-		map->c_color_parse = 1;
-		map->ceiling_color = create_trgb(0, map->ceiling_rgb[0], \
-							map->ceiling_rgb[1], map->ceiling_rgb[2]);
-		sv->checklist.ceiling_c += 1;
-	}
+		fill_c_colors(sv, map, rgb, j);
 	else if (str[0] == 'F')
 	{
 		while (j++ < 2)
 		{
-			map->floor_rgb[j] = ft_atoi(rgb[j]);
+			if (ft_strlen(rgb[j]) > 0 && ft_strlen(rgb[j]) < 4)
+				map->floor_rgb[j] = ft_atoi(rgb[j]);
+			else
+				exit_with_err_msg("Bad F color value.");
 			if (map->floor_rgb[j] > 255 || map->floor_rgb[j] < 0)
 				exit_with_err_msg("Bad F color value.");
 		}

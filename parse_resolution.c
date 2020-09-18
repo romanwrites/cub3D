@@ -12,6 +12,16 @@
 
 #include "cub3d.h"
 
+static void	res_utils2(t_game *sv, t_conf *map)
+{
+	if (map->res_h > sv->get_res_h)
+		map->res_h = sv->get_res_h;
+	if (map->res_w > sv->get_res_w)
+		map->res_w = sv->get_res_w;
+	if (map->res_h < 1 || map->res_w < 1)
+		exit_with_err_msg("Resolution is less than 1.");
+}
+
 static void	res_utils(t_game *sv, char *str, t_conf *map)
 {
 	char	*replaced;
@@ -34,12 +44,7 @@ static void	res_utils(t_game *sv, char *str, t_conf *map)
 		map->res_h = ft_atoi(temp[1]);
 	else
 		map->res_h = sv->get_res_h;
-	if (map->res_h > sv->get_res_h)
-		map->res_h = sv->get_res_h;
-	if (map->res_w > sv->get_res_w)
-		map->res_w = sv->get_res_w;
-	if (map->res_h < 1 || map->res_w < 1)
-		exit_with_err_msg("Resolution is less than 1.");
+	res_utils2(sv, map);
 	free(replaced);
 	ft_free2d(temp);
 	replaced = NULL;

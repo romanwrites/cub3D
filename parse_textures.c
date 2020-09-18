@@ -50,25 +50,15 @@ static void		parse_textures(t_game *sv, const char *str, t_conf *map)
 		save_path(&map->ea_path, str + 2);
 		sv->checklist.ea_txt += 1;
 	}
-	else if (str[0] == 'S')
-	{
+	else if (str[0] == 'S' && sv->checklist.sprite_txt++ == 0)
 		save_path(&map->s_path, str + 1);
-		sv->checklist.sprite_txt += 1;
-	}
 	else
 		exit_with_err_msg("Map params are bad. Check texture parameters.");
 }
 
 void			handle_textures(t_game *sv, const char *str, t_conf *map)
 {
-//	char		*tmp;
-
 	if (texture_paths_filled(map) || !(ft_all_isprint(str)))
 		exit_with_err_msg("Map params are bad. Check texture parameters.");
-//	tmp = ft_replace(str, " ", "");
-//	ft_alloc_check(tmp);
-//	while (*str == ' ')
-//		str++;
 	parse_textures(sv, str, map);
-//	free(tmp);
 }

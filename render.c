@@ -37,7 +37,6 @@ int							render_frame_screenshot(t_game *sv)
 	return (0);
 }
 
-
 int							render_frame(t_game *sv)
 {
 	if (!sv->keys.w && !sv->keys.s && !sv->keys.a && \

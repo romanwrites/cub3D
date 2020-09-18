@@ -62,16 +62,16 @@ typedef struct		s_data {
 	int				endian;
 }					t_data;
 
-typedef struct 		s_checklist {
+typedef struct		s_checklist {
 	int				no_txt;
 	int				so_txt;
-	int 			ea_txt;
+	int				ea_txt;
 	int				we_txt;
 	int				sprite_txt;
 	int				res_width;
 	int				res_height;
 	int				floor_c;
-	int 			ceiling_c;
+	int				ceiling_c;
 	int				m;
 	int				player;
 
@@ -269,5 +269,7 @@ void				create_texture_imgs(t_game *sv);
 void				create_sprite_img(t_game *sv);
 void				free_lst_content(void *content);
 void				check_res(t_game *sv);
+_Bool				is_valid_map_file(t_checklist *chk);
+_Bool				count_commas(const char *str);
 
 #endif

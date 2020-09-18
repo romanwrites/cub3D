@@ -30,7 +30,6 @@ void				transform_sprite_wt_inv_camera_mtrix(t_game *sv)
 							(1 + sv->map.transform_x / sv->map.transform_y));
 }
 
-
 void				calc_min_max_sprite_pixels(t_game *sv)
 {
 	sv->map.draw_start_y = -sv->map.sprite_height / \
