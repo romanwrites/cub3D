@@ -19,7 +19,7 @@ void				draw_no_txt(t_game *sv)
 
 	y = sv->draw.draw_start;
 	sv->map.tex_x = (int)(sv->map.wall_x * (double)sv->map.no_w);
-	if (sv->map.side == 1 && sv->map.ray_dir_y < 0)
+	if (sv->map.side == 1 && sv->map.ray_dir_y > 0)
 		sv->map.tex_x = sv->map.no_w - sv->map.tex_x - 1;
 	sv->map.step = 1.0 * sv->map.no_h / sv->map.line_height;
 	sv->map.tex_pos = (sv->draw.draw_start - sv->map.res_h / 2 + \
@@ -42,7 +42,7 @@ void				draw_so_txt(t_game *sv)
 
 	y = sv->draw.draw_start;
 	sv->map.tex_x = (int)(sv->map.wall_x * (double)sv->map.so_w);
-	if (sv->map.side == 1 && sv->map.ray_dir_y < 0)
+	if (sv->map.side == 1 && sv->map.ray_dir_y > 0)
 		sv->map.tex_x = sv->map.so_w - sv->map.tex_x - 1;
 	sv->map.step = 1.0 * sv->map.so_h / sv->map.line_height;
 	sv->map.tex_pos = (sv->draw.draw_start - sv->map.res_h / 2 + \
@@ -65,7 +65,7 @@ void				draw_ea_txt(t_game *sv)
 
 	y = sv->draw.draw_start;
 	sv->map.tex_x = (int)(sv->map.wall_x * (double)sv->map.ea_w);
-	if (sv->map.side == 0 && sv->map.ray_dir_x > 0)
+	if (sv->map.side == 0 && sv->map.ray_dir_x < 0)
 		sv->map.tex_x = sv->map.no_w - sv->map.tex_x - 1;
 	sv->map.step = 1.0 * sv->map.ea_h / sv->map.line_height;
 	sv->map.tex_pos = (sv->draw.draw_start - sv->map.res_h / 2 + \
@@ -87,7 +87,7 @@ void				draw_we_txt(t_game *sv)
 
 	y = sv->draw.draw_start;
 	sv->map.tex_x = (int)(sv->map.wall_x * (double)sv->map.we_w);
-	if (sv->map.side == 0 && sv->map.ray_dir_x > 0)
+	if (sv->map.side == 0 && sv->map.ray_dir_x < 0)
 		sv->map.tex_x = sv->map.no_w - sv->map.tex_x - 1;
 	sv->map.step = 1.0 * sv->map.we_h / sv->map.line_height;
 	sv->map.tex_pos = (sv->draw.draw_start - sv->map.res_h / 2 + \
