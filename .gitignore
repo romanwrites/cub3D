@@ -1,6 +1,0 @@
-.idea
-cmake-build-debug
-.DS_Store
-mlx
-lodev.cpp
-.gitignore
