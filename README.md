@@ -19,7 +19,7 @@ make
 
 ### Controls
 ```
-W A S D				move
+W A S D					move
 ←					turn left
 →					turn right
 ```
@@ -30,7 +30,7 @@ Config file called `map.cub`
 R 					resolution
 C					ceiling rgb color
 F					floor rgb color
-NO SO WE EA			paths to textures
+NO SO WE EA				paths to textures
 S					path to sprite
 					empty lines
 
@@ -38,8 +38,8 @@ valid map is surrounded by walls (1) and can contain these characters
 1					wall
 0					player can move here
 2					sprite/item
-N S E W				player position and view direction
-space				empty space (player can't see them)
+N S E W					player position and view direction
+space					empty space (player can't see them)
 
 map can't be splitted by empty lines
 ```
