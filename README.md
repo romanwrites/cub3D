@@ -82,7 +82,7 @@ And peer2peer communication
 
 # Author
 ## Roman Kukin
-frontend developer <br/> school 21 (Ecole 42) student
+developer <br/> school 21 (Ecole 42) student
 
 [linkedin](https://www.linkedin.com/in/roman-kukin/)
 <span style="margin: 50px">[github](https://github.com/kukinpower)</span>
